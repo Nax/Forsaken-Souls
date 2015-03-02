@@ -1,7 +1,6 @@
 #include "Entity.hpp"
 
 Entity::Entity(int dataId, double x, double y, int level, double mult)
-: IEntity()
 {
     _dataId = dataId;
     _x = x;

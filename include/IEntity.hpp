@@ -38,9 +38,6 @@ struct  EntityData
 class   IEntity
 {
 public:
-
-    IEntity() {};
-
     int             id() const          { return _id; }
     double          x() const           { return _x; }
     double          y() const           { return _y; }
@@ -64,7 +61,6 @@ public:
     void        setStence(Stence stence)        { _stence = stence; }
     void        setHitState(HitState hitState)  { _hitState = hitState; }
     void        setDirection(bool direction)    { _direction = direction; }
-    virtual     ~IEntity() {};
 
 protected:
     int             _id;
