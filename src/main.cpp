@@ -1,4 +1,5 @@
 #include <Lums/Lums.hpp>
+#include "Game.hpp"
 
 int
 main()
@@ -10,7 +11,7 @@ main()
     glMatrixMode(GL_MODELVIEW);
     glEnable (GL_BLEND);
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+    core.push<Game>();
     core.start();
     return 0;
 }

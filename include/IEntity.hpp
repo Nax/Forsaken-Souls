@@ -3,6 +3,7 @@
 
 #include <string>
 #include <Lums/Lums.hpp>
+#include "ImageProvider.hpp"
 
 enum class Stence
 {
@@ -23,16 +24,16 @@ enum class HitState
 
 struct  EntityData
 {
-    std::string name;
-    lm::Sprite  sprite;
-    int         hp;
-    int         mp;
-    double      speed;
-    double      width;  
-    double      height;
-    int         xp;
-    int         damage;
-    int         armor;
+    const char*         name;
+    ImageId             image;
+    int                 hp;
+    int                 mp;
+    double              speed;
+    double              width;  
+    double              height;
+    int                 xp;
+    int                 damage;
+    int                 armor;
 };
 
 class   IEntity
@@ -62,11 +63,15 @@ public:
     void        setHitState(HitState hitState)  { _hitState = hitState; }
     void        setDirection(bool direction)    { _direction = direction; }
 
+    void        render() const;
+    void        update();
+
 protected:
     int             _id;
     double          _x;
     double          _y;
     lm::Vector2d    _speed;
+    lm::Sprite      _sprite;
     int             _hp;
     int             _mp;
     int             _dataId;
@@ -76,5 +81,7 @@ protected:
     HitState        _hitState;
     bool            _direction;
 };
+
+extern const EntityData gEntityData[];
 
 #endif
