@@ -3,7 +3,7 @@
 void
 IEntity::render() const
 {
-	_sprite.draw(0, 0);
+	_sprite.draw(50, 0);
 }
 
 void

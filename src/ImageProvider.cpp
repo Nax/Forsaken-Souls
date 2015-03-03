@@ -5,7 +5,7 @@ using namespace lm;
 
 static ImageProvider provider;
 
-static const Rect2i alucard[] = {
+static const FrameDescriptori alucard[] = {
 	#include "Alucard.inc"
 };
 

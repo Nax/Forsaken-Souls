@@ -15,6 +15,7 @@ public:
     void    setCloseWeaponId(int id)    { _closeWeaponId = id; }
     void    setFarWeaponId(int id)      { _farWeaponId = id; }
     void    setXp(int xp)               { _xp = xp; }
+    void    update();
     ~Player();
 
 private:
