@@ -26,20 +26,8 @@ Game::update()
     {
         moving = true;
         _player.setDirection(true);
-    }    
-
-    if (_space)
-        _player.setStence(Stence::Jump);
-    else if (_down)
-        _player.setStence(Stence::Crouch);
-    else if (_player.stence() != Stence::Jump)
-    {
-        if (moving)
-            _player.setStence(Stence::Run);
-        else
-            _player.setStence(Stence::Stand);
-    }
-
+    } 
+    // TO DO stence and old stence update
     _player.update();
 }
 

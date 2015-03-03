@@ -1,4 +1,5 @@
 #include "Player.hpp"
+#include "Physics.hpp"
 
 Player::Player()
 : _closeWeaponId(0)
@@ -14,7 +15,7 @@ Player::Player()
 void
 Player::update()
 {
-
+	Phys::updatePlayer(*this);
 }
 
 Player::~Player()

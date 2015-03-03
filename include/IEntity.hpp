@@ -34,6 +34,7 @@ struct  EntityData
     int                 xp;
     int                 damage;
     int                 armor;
+    int                 boundingBox[5][2];
 };
 
 class   IEntity
@@ -49,6 +50,7 @@ public:
     int             level() const       { return _level; }
     double          mult() const        { return _mult; }
     Stence          stence() const      { return _stence; }
+    Stence          oldStence() const   { return _oldStence; }
     HitState        hitState() const    { return _hitState; }
     bool            direction() const   { return _direction; }
 
@@ -60,6 +62,7 @@ public:
     void        setLevel(int level)             { _level = level; }
     void        setMult(double mult)            { _mult = mult; }
     void        setStence(Stence stence)        { _stence = stence; }
+    void        setOldStence()                  { _oldStence = _stence; }
     void        setHitState(HitState hitState)  { _hitState = hitState; }
     void        setDirection(bool direction)    { _direction = direction; }
 
@@ -70,6 +73,7 @@ protected:
     int             _id;
     double          _x;
     double          _y;
+    lm::Vector2d    _force;
     lm::Vector2d    _speed;
     lm::Sprite      _sprite;
     int             _hp;
@@ -77,6 +81,7 @@ protected:
     int             _dataId;
     int             _level;
     double          _mult;
+    Stence          _oldStence;
     Stence          _stence;
     HitState        _hitState;
     bool            _direction;
