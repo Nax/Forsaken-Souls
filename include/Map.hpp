@@ -11,16 +11,19 @@ class Map
 {
 	public:
 
-	Map() = delete;
+	Map();
 
 	explicit Map(const uint8_t *tiles, int width, int height);
 	Map(const Map&);
 	Map&			operator= (const Map&);
 
 	int				width(void) const;
+	void			setWidth(int w);
 	int				height(void) const;
+	void			setHeight(int h);
 	const uint8_t*	tiles(void) const;
 	uint8_t			tileAt(int at) const;
+	void			setTiles(uint8_t *tiles);
 
 	~Map();
 
