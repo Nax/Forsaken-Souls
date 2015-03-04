@@ -52,7 +52,12 @@ public:
     Stence          stence() const      { return _stence; }
     Stence          oldStence() const   { return _oldStence; }
     HitState        hitState() const    { return _hitState; }
+    bool            oldDir() const      { return _oldDir; }
     bool            direction() const   { return _direction; }
+    bool            grounded() const    { return _grounded; }
+    bool            transition() const  { return _transition; }
+    bool            animation() const   { return _animation; }
+    bool            finished() const    { return /*_sprite.finished();*/ true; }
 
     void        setX(double x)                  { _x = x; }
     void        setY(double y)                  { _y = y; }
@@ -65,6 +70,10 @@ public:
     void        setOldStence()                  { _oldStence = _stence; }
     void        setHitState(HitState hitState)  { _hitState = hitState; }
     void        setDirection(bool direction)    { _direction = direction; }
+    void        setOldDir()                     { _oldDir = _direction; }
+    void        setGrounded(bool grounded)      { _grounded = grounded; }
+    void        setTransition(bool transition)  { _transition = transition; }
+    void        setAnimation(int start, int end, int frames, bool once = false);
 
     void        render() const;
     void        update();
@@ -85,6 +94,10 @@ protected:
     Stence          _stence;
     HitState        _hitState;
     bool            _direction;
+    bool            _oldDir;
+    bool            _transition;
+    bool            _animation;
+    bool            _grounded;
 };
 
 extern const EntityData gEntityData[];

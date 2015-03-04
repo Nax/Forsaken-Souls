@@ -5,34 +5,16 @@
 
 namespace Phys
 {
-
-	void	updatePlayer(Player& p)
-	{
-		switch (p.stence())
-		{
-			case Stence::Stand:
-			{
-				if (p.speed().x != 0.0 || p.speed().y != 0.0)			
-				{
-					p.setSpeed(0.0, 0.0);
-					p.setAnimationOnce(); // TO DO
-					p.animation = true;
-				}
-				else
-				break;
-			}
-			case Stence::Run:
-				break;
-			case Stence::Crouch:
-				break;
-			case Stence::Jump:
-				break;
-			case Stence::Secret:
-				break;
-			default:
-				break;
-		}
-	}
+    void    updatePlayer(Player& p);
+    void    checkGrounded(Player &p);
+    void    updatePlayerStence(Player &p);
+    void    setPlayerTransition(Player &p);
+    void    setPlayerTransitionFromStand(Player &p);
+    void    setPlayerTransitionFromRun(Player &p);
+    void    setPlayerTransitionFromCrouch(Player &p);
+    void    setPlayerTransitionFromJump(Player &p);
+    void    setPlayerTransitionFromSecret(Player &p);
+    void    setPlayerAnimation(Player &p);
 }
 
 #endif

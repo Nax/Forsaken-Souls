@@ -3,11 +3,6 @@
 using namespace lm;
 
 Game::Game()
-: _right(false)
-, _left(false)
-, _up(false)
-, _down(false)
-, _space(false)
 {
 
 }
@@ -15,16 +10,6 @@ Game::Game()
 void
 Game::update()
 {
-    bool moving;
-
-    moving = (_left && !_right) || (_right && !_left);
-
-    if (moving)
-        (_left) ? _player.setDirection(false) : _player.setDirection(true);
- 
-    // TO DO stence and old stence update
-
-
     _player.update();
 }
 
@@ -45,20 +30,20 @@ Game::handleEvent(const Event& event)
                 Core::get().stop();
                 break;
             case Key::Right:
-                _right = true;
+                _player.setKey(KeyId::Right, true);
                 break;
             case Key::Left:
-                _left = true;
+                _player.setKey(KeyId::Left, true);
                 break;
             case Key::Up:
-                _up = true;
+                _player.setKey(KeyId::Up, true);
                 break;
             case Key::Down:
-                _down = true;
+                _player.setKey(KeyId::Down, true);
                 break;
             case Key::Space:
-                _space = true;
-                break;           
+                _player.setKey(KeyId::Space, true);
+                break;
             default:
                 break;
         }
@@ -67,21 +52,24 @@ Game::handleEvent(const Event& event)
     {
         switch (event.key)
         {
+            case Key::Escape:
+                Core::get().stop();
+                break;
             case Key::Right:
-                _right = false;
+                _player.setKey(KeyId::Right, false);
                 break;
             case Key::Left:
-                _left = false;
+                _player.setKey(KeyId::Left, false);
                 break;
             case Key::Up:
-                _up = false;
+                _player.setKey(KeyId::Up, false);
                 break;
             case Key::Down:
-                _down = false;
+                _player.setKey(KeyId::Down, false);
                 break;
             case Key::Space:
-                _space = false;
-                break;           
+                _player.setKey(KeyId::Space, false);
+                break;
             default:
                 break;
         }

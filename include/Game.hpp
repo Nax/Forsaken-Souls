@@ -12,9 +12,4 @@ public:
 
 private:
 	Player	_player;
-	bool	_right;
-	bool	_left;
-	bool	_up;
-	bool	_down;
-	bool	_space;
 };

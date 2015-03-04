@@ -16,7 +16,7 @@ static const ImageDescriptor descriptors[] =
 
 ImageProvider::ImageProvider()
 {
-	std::fill(_images.begin(), _images.end(), false);
+	std::fill(_loaded.begin(), _loaded.end(), false);
 }
 
 Image&
