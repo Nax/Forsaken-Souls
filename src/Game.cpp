@@ -15,19 +15,16 @@ Game::Game()
 void
 Game::update()
 {
-    bool moving = false;
+    bool moving;
 
-    if (_left && !_right)
-    {
-        moving = true;
-        _player.setDirection(false);
-    }
-    if (!_left && _right)
-    {
-        moving = true;
-        _player.setDirection(true);
-    } 
+    moving = (_left && !_right) || (_right && !_left);
+
+    if (moving)
+        (_left) ? _player.setDirection(false) : _player.setDirection(true);
+ 
     // TO DO stence and old stence update
+
+
     _player.update();
 }
 

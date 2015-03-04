@@ -13,7 +13,12 @@ namespace Phys
 			case Stence::Stand:
 			{
 				if (p.speed().x != 0.0 || p.speed().y != 0.0)			
+				{
 					p.setSpeed(0.0, 0.0);
+					p.setAnimationOnce(); // TO DO
+					p.animation = true;
+				}
+				else
 				break;
 			}
 			case Stence::Run:
