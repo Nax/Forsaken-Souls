@@ -37,7 +37,7 @@ Phys::updatePlayerStence(Player &p)
             else if (p.key(KeyId::Down))
                 p.setStence(Stence::Crouch);
             else
-                p.setStence(Stence::Stand);
+                p.setStence(Stence::Run);
             break;
         }
         case Stence::Crouch:

@@ -35,6 +35,16 @@ struct  EntityData
     int                 damage;
     int                 armor;
     int                 boundingBox[5][2];
+    struct
+    {
+        int             begin;
+        int             length;
+    }                   transitions[5][5];
+    struct
+    {
+        int             begin;
+        int             length;
+    }                   animations[5];
 };
 
 class   IEntity
