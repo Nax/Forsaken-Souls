@@ -38,6 +38,8 @@ class Level
 		int32_t				_nmaps;
 		int					_currentMap;
 		Map					*_mapsArray;
+
+		void				parseBinaryLevel(int levelNum);
 };
 
 #endif
