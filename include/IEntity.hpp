@@ -67,7 +67,7 @@ public:
     bool            grounded() const    { return _grounded; }
     bool            transition() const  { return _transition; }
     bool            animation() const   { return _animation; }
-    bool            finished() const    { return /*_sprite.finished();*/ true; }
+    bool            finished()          { _transition = !_sprite.finished(); return _transition; }
 
     void        setX(double x)                  { _x = x; }
     void        setY(double y)                  { _y = y; }
@@ -83,7 +83,7 @@ public:
     void        setOldDir()                     { _oldDir = _direction; }
     void        setGrounded(bool grounded)      { _grounded = grounded; }
     void        setTransition(bool transition)  { _transition = transition; }
-    void        setAnimation(int start, int end, int frames, bool once = false);
+    void        setAnimation(int start, int end, int frames, bool once = true);
 
     void        render() const;
     void        update();

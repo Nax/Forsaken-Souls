@@ -66,163 +66,23 @@ Phys::updatePlayerStence(Player &p)
 }
 
 void
-Phys::setPlayerTransitionFromStand(Player &p)
-{
-    switch (p.stence())
-    {
-        case Stence::Run:
-            // p.setAnimation(start, end, frames, true);
-            break;
-        case Stence::Crouch:
-            // p.setAnimation(start, end, frames, true);
-            break;
-        case Stence::Jump:
-            // p.setAnimation(start, end, frames, true);
-            break;
-        case Stence::Secret:
-            // p.setAnimation(start, end, frames, true);
-            break;
-        default:
-            break;
-    }
-}
-
-void
-Phys::setPlayerTransitionFromRun(Player &p)
-{
-    switch (p.stence())
-    {
-        case Stence::Stand:
-            // p.setAnimation(start, end, frames, true);
-            break;
-        case Stence::Crouch:
-            // p.setAnimation(start, end, frames, true);
-            break;
-        case Stence::Jump:
-            // p.setAnimation(start, end, frames, true);
-            break;
-        case Stence::Secret:
-            // p.setAnimation(start, end, frames, true);
-            break;
-        default:
-            break;
-    }
-}
-
-void
-Phys::setPlayerTransitionFromCrouch(Player &p)
-{
-    switch (p.stence())
-    {
-        case Stence::Stand:
-            // p.setAnimation(start, end, frames, true);
-            break;
-        case Stence::Run:
-            // p.setAnimation(start, end, frames, true);
-            break;
-        case Stence::Jump:
-            // p.setAnimation(start, end, frames, true);
-            break;
-        case Stence::Secret:
-            // p.setAnimation(start, end, frames, true);
-            break;
-        default:
-            break;
-    }
-}
-
-void
-Phys::setPlayerTransitionFromJump(Player &p)
-{
-    switch (p.stence())
-    {
-        case Stence::Stand:
-            // p.setAnimation(start, end, frames, true);
-            break;
-        case Stence::Run:
-            // p.setAnimation(start, end, frames, true);
-            break;
-        case Stence::Crouch:
-            // p.setAnimation(start, end, frames, true);
-            break;
-        case Stence::Secret:
-            // p.setAnimation(start, end, frames, true);
-            break;
-        default:
-            break;
-    }
-}
-
-void
-Phys::setPlayerTransitionFromSecret(Player &p)
-{
-    switch (p.stence())
-    {
-        case Stence::Stand:
-            // p.setAnimation(start, end, frames, true);
-            break;
-        case Stence::Run:
-            // p.setAnimation(start, end, frames, true);
-            break;
-        case Stence::Crouch:
-            // p.setAnimation(start, end, frames, true);
-            break;
-        case Stence::Jump:
-            // p.setAnimation(start, end, frames, true);
-            break;
-        default:
-            break;
-    }
-}
-
-void
 Phys::setPlayerTransition(Player &p)
 {
+    std::cout << "launch transition" << std::endl;
     if (p.transition())
         return;
-    switch (p.oldStence())
-    {
-        case Stence::Stand:
-            setPlayerTransitionFromStand(p);
-            break;
-        case Stence::Run:
-            setPlayerTransitionFromRun(p);
-            break;
-        case Stence::Crouch:
-            setPlayerTransitionFromCrouch(p);
-            break;
-        case Stence::Jump:
-            setPlayerTransitionFromJump(p);
-            break;
-        case Stence::Secret:
-            setPlayerTransitionFromSecret(p);
-            break;
-        default:
-            break;
-    }
+    int begin = gEntityData[p.dataId()].transitions[static_cast<int>(p.oldStence())][static_cast<int>(p.stence())].begin;
+    int length = gEntityData[p.dataId()].transitions[static_cast<int>(p.oldStence())][static_cast<int>(p.stence())].length;
+    p.setAnimation(begin, length, 10, false);
 }
 
 void
 Phys::setPlayerAnimation(Player &p)
 {
-    switch (p.stence())
-    {
-        case Stence::Stand:
-            // p.setAnimation(start, end, frame);
-            break;
-        case Stence::Run:
-            // p.setAnimation(start, end, frame);
-            break;
-        case Stence::Crouch:
-            // p.setAnimation(start, end, frame);
-            break;
-        case Stence::Jump:
-            // p.setAnimation(start, end, frame);
-            break;
-        case Stence::Secret:
-            // p.setAnimation(start, end, frame);
-            break;
-    }
+    std::cout << "launch animation" << std::endl;
+    int begin = gEntityData[p.dataId()].animations[static_cast<int>(p.stence())].begin;
+    int length = gEntityData[p.dataId()].animations[static_cast<int>(p.stence())].length;
+    p.setAnimation(begin, length, 10);
 }
 
 void
@@ -234,14 +94,12 @@ Phys::updatePlayer(Player &p)
     checkGrounded(p);
     p.setOldDir();
     p.setOldStence();
-
     // update direction
     moving = (p.key(KeyId::Left) && !p.key(KeyId::Right)) || (p.key(KeyId::Right) && !p.key(KeyId::Left));
     if (moving)
         p.key(KeyId::Left) ? p.setDirection(false) : p.setDirection(true);
     //update stence
     updatePlayerStence(p);
-
     if (p.oldStence() != p.stence())
         setPlayerTransition(p);
 

@@ -15,6 +15,31 @@ const EntityData gEntityData[] =
 		0,
 		4,
 		10,
-		{ {23, 48}, {25, 44}, {26, 26}, {25, 46}, {19, 48} } },
-		{ {  } } // TO DO State machine for animations
+		 // Begin Bounding box
+		{
+			{23, 48},{25, 44}, {26, 26}, {25, 46}, {19, 48}
+		},
+		// End Bounding box
+		// Start Transitions
+		{
+			// Begin From Stand
+			{
+				{},
+				{0, 14},
+				{},
+				{},
+				{}
+			},
+			// End From stand
+			{
+
+			},
+		},
+		// End Transitions
+		// Start Animations
+		{
+			{32, 5}, {15, 16}, {}, {}, {}
+		}
+		// End Animations
+	}
 };
