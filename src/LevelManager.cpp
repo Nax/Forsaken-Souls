@@ -17,14 +17,16 @@ LevelManager::LevelManager()
 	bufferizeLinks();
 }
 
-LevelManager&				LevelManager::instance(void)
+LevelManager&		
+LevelManager::instance(void)
 {
 	if (LevelManager::_instance == nullptr)
 		LevelManager::_instance = new LevelManager;
 	return *LevelManager::_instance;
 }
 
-Level*						LevelManager::currentLevel(void) const
+Level*			
+LevelManager::currentLevel(void) const
 {
 	return _currentLevel;
 }
@@ -37,7 +39,8 @@ LevelManager::~LevelManager()
 		delete[] _linksData;
 }
 
-void						LevelManager::bufferizeLinks(void)
+void			
+LevelManager::bufferizeLinks(void)
 {
 	std::ifstream			ifs;
 	std::stringstream		sstr;
@@ -49,12 +52,13 @@ void						LevelManager::bufferizeLinks(void)
 	ifs.seekg(0, std::ios_base::end);
 	_dataSize = ifs.tellg();
 	ifs.seekg(0, std::ios_base::beg);
-	_linksData = new uint8_t[size];
-	ifs.read(reinterpret_cast<char *>(_linksData), size);
+	_linksData = new uint8_t[_dataSize];
+	ifs.read(reinterpret_cast<char *>(_linksData), _dataSize);
 	ifs.close();
 }
 
-void						LevelManager::setCurrentLevel(int levelNum)
+void			
+LevelManager::setCurrentLevel(int levelNum)
 {
 	if (_currentLevel == nullptr)
 		_currentLevel = new Level(levelNum);
