@@ -68,9 +68,8 @@ Phys::updatePlayerStence(Player &p)
 void
 Phys::setPlayerTransition(Player &p)
 {
-    std::cout << "launch transition" << std::endl;
-    if (p.transition())
-        return;
+    p.setAnimation(false);
+    p.setTransition(true);
     int begin = gEntityData[p.dataId()].transitions[static_cast<int>(p.oldStence())][static_cast<int>(p.stence())].begin;
     int length = gEntityData[p.dataId()].transitions[static_cast<int>(p.oldStence())][static_cast<int>(p.stence())].length;
     p.setAnimation(begin, length, 10, false);
@@ -79,7 +78,8 @@ Phys::setPlayerTransition(Player &p)
 void
 Phys::setPlayerAnimation(Player &p)
 {
-    std::cout << "launch animation" << std::endl;
+    p.setAnimation(true);
+    p.setTransition(false);
     int begin = gEntityData[p.dataId()].animations[static_cast<int>(p.stence())].begin;
     int length = gEntityData[p.dataId()].animations[static_cast<int>(p.stence())].length;
     p.setAnimation(begin, length, 10);
@@ -102,7 +102,6 @@ Phys::updatePlayer(Player &p)
     updatePlayerStence(p);
     if (p.oldStence() != p.stence())
         setPlayerTransition(p);
-
     if (p.finished() && !p.animation())
         setPlayerAnimation(p);
 

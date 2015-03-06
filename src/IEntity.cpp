@@ -1,11 +1,10 @@
 #include "IEntity.hpp"
+#include <iostream>
 
 void
-IEntity::setAnimation(int start, int end, int frames, bool once)
+IEntity::setAnimation(int start, int end, int frames, bool loop)
 {
-	_sprite.setAnimation(start, end, frames, once);
-    _transition = once;
-    _animation = !once;
+	_sprite.setAnimation(start, end, frames, loop);
 }
 
 void
