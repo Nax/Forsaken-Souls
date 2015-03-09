@@ -120,6 +120,7 @@ Level::parseBinaryLevel(int levelNum)
 	ifs.read(reinterpret_cast<char *>(_data), _dataSize);
 	ifs.close();
 
+	// Instantiate maps (Level flyweights) from binary data.
 	pdata = _data;
 	_nmaps = *reinterpret_cast<int32_t *>(pdata);
 	_mapsArray = new Map[_nmaps];
@@ -139,6 +140,7 @@ Level::parseBinaryLevel(int levelNum)
 		map.setLevel(*this);
 	}
 
+	// Instantiate InnerLink list : listarray[starting_map] == list<InnerLink>
 	_nlinks = *reinterpret_cast<int32_t *>(pdata);
 	pdata += sizeof(int32_t);
 	_innerLinksByMap = new std::list<InnerLink>[_nlinks];
@@ -176,4 +178,3 @@ Level::~Level()
 	delete[] _mapsArray;
 	delete[] _data;
 }
-

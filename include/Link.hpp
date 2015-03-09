@@ -18,4 +18,4 @@ struct Link
 	Tip end;
 };
 
-#endif //!LINK_HPP
+#endif // !LINK_HPP

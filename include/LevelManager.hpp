@@ -3,9 +3,9 @@
 # define LEVELMANAGER_HPP
 
 # include <cstdint>
+# include "Link.hpp"
 
 class Level;
-struct Link;
 
 class LevelManager
 {
@@ -13,8 +13,11 @@ class LevelManager
 
 		static LevelManager&	instance(void);
 
-		Level*					currentLevel(void) const;
+		const Level&			currentLevel(void) const;
+		int						currentLevelNum(void) const;
 		void					setCurrentLevel(int levelNum);
+		int						nlinks(void) const;
+		const Link*				levelLinks(void) const;
 
 		~LevelManager();
 		
@@ -22,8 +25,9 @@ class LevelManager
 
 		static LevelManager		*_instance;
 		Level					*_currentLevel;
-		uint8_t					*_linksData;
-		size_t					_dataSize;
+		int						_currentLevelNum;
+		int						_nlinks;
+		Link					*_levelLinks;
 
 		LevelManager();
 		LevelManager(const LevelManager&) = delete;
