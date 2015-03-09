@@ -130,14 +130,12 @@ Level::parseBinaryLevel(int levelNum)
 	{
 		Map		&map = _mapsArray[i];
 
-		map.setWidth(*reinterpret_cast<int32_t *>(pdata));
+		map._width = *reinterpret_cast<int32_t *>(pdata);
 		pdata += sizeof(int32_t);
-		map.setHeight(*reinterpret_cast<int32_t *>(pdata));
+		map._height = *reinterpret_cast<int32_t *>(pdata);
 		pdata += sizeof(int32_t);
-		map.setTiles(pdata);
-		pdata += map.width() * map.height();
-
-		map.setLevel(*this);
+		map._tiles = pdata;
+		pdata += map._width * map._height;
 	}
 
 	// Instantiate InnerLink list : listarray[starting_map] == list<InnerLink>
