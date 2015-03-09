@@ -30,4 +30,3 @@ find_path(LUMS_INCLUDE_DIRS
 message(STATUS "Found Lums : ${LUMS_LIBRARIES}")
 
 list(APPEND LUMS_LIBRARIES ${OPENGL_gl_LIBRARY})
-

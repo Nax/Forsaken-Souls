@@ -7,6 +7,7 @@ file(GLOB SRC "src/*.cpp")
 file(GLOB_RECURSE ASSETS "assets/*")
 file(GLOB TOP_ASSETS "assets/*")
 include_directories(include)
+include_directories(inc)
 include_directories(${LUMS_INCLUDE_DIRS} SYSTEM)
 add_custom_command(
 	OUTPUT "${CMAKE_SOURCE_DIR}/assets/level_links.bin"

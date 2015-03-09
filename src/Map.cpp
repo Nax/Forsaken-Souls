@@ -93,6 +93,12 @@ Map::setLevel(const Level& lvl)
 	_level = &lvl;
 }
 
+void
+Map::draw()
+{
+
+}
+
 Map::~Map()
 {
 }

@@ -1,21 +1,25 @@
-
 #ifndef GAME_HPP
 # define GAME_HPP
 
 # include <Lums/Lums.hpp>
+# include "Player.hpp"
 
 class Game : public lm::GameState
 {
 public:
 	Game();
 	
-	virtual void update();
-	virtual void render() const;
-	virtual void unload();
-	virtual void load();
-	virtual void handleEvent(const lm::Event& event);
+	void update();
+	void render() const;
+	void unload();
+	void load();
+	void handleEvent(const lm::Event& event);
 
-	virtual ~Game();
+	 ~Game();
+
+private:
+	Player	_player;
+
 };
 
 #endif // ! GAME_HPP

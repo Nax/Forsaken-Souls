@@ -3,6 +3,7 @@
 # define MAP_HPP
 
 # include <cstdint>
+# include <Lums/SpriteBatch.hpp>
 
 /**
  * Instantiatied by a Level object and holding values and pointers,
@@ -30,6 +31,8 @@ class Map
 	uint8_t			tileAt(int at) const;
 	const Level&	level(void) const;
 	void			setLevel(const Level&);
+
+	void			draw();
 
 	~Map();
 

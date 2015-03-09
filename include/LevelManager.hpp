@@ -11,13 +11,13 @@ class LevelManager
 {
 	public:
 
-		static LevelManager&	instance(void);
+		static LevelManager&	instance();
 
-		const Level&			currentLevel(void) const;
-		int						currentLevelNum(void) const;
+		const Level&			currentLevel() const;
+		int						currentLevelNum() const;
 		void					setCurrentLevel(int levelNum);
-		int						nlinks(void) const;
-		const Link*				levelLinks(void) const;
+		int						nlinks() const;
+		const Link*				levelLinks() const;
 
 		~LevelManager();
 		
@@ -33,7 +33,7 @@ class LevelManager
 		LevelManager(const LevelManager&) = delete;
 		LevelManager&			operator=(const LevelManager&) = delete;
 
-		void					bufferizeLinks(void);
+		void					bufferizeLinks();
 };
 
 #endif // !LEVELMANAGER_HPP
