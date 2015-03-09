@@ -18,9 +18,11 @@ public:
 
 	const TileBoundingBox&		boundingBoxes() const;
 
+	static const Tile&			fromId(uint8_t id);
+
 private:
 
-	int				_boundingType;
+	int							_boundingType;
 
 };
 
