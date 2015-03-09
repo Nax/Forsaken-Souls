@@ -11,6 +11,7 @@ static const FrameDescriptori alucard[] = {
 
 static const ImageDescriptor descriptors[] =
 {
+	ImageDescriptor("images/tileset.png").linear(false).atlas(5, 3),
 	ImageDescriptor("images/alucard.png").linear(false).atlas(alucard, sizeof(alucard) / sizeof(*alucard))
 };
 

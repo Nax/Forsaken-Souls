@@ -7,8 +7,8 @@
 # include <string>
 # include <list>
 # include "InnerLink.hpp"
+# include "Map.hpp"
 
-class Map;
 
 class Level
 {

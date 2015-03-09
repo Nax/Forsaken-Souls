@@ -1,4 +1,5 @@
 #include "Game.hpp"
+#include "LevelManager.hpp"
 
 using namespace lm;
 
@@ -16,6 +17,11 @@ Game::update()
 void
 Game::render() const
 {
+	lm::SpriteBatch sb;
+
+	sb.begin();
+	LevelManager::instance().currentLevel().map().draw(sb);
+	sb.end();
     _player.render();
 }
 
@@ -28,6 +34,10 @@ Game::unload()
 void
 Game::load()
 {
+	LevelManager& lman = LevelManager::instance();
+
+	lman.setCurrentLevel(0);
+	lman.currentLevel().setCurrentMap(0);
 }
 
 void

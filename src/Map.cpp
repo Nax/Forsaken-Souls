@@ -1,6 +1,7 @@
 
 #include "Level.hpp"
 #include "Map.hpp"
+#include "ImageProvider.hpp"
 
 Map::Map()
 	: _width(-1)
@@ -37,7 +38,7 @@ Map::operator= (const Map& src)
 }
 
 int		
-Map::width(void) const
+Map::width() const
 {
 	return _width;
 }
@@ -50,7 +51,7 @@ Map::setWidth(int w)
 
 
 int			
-Map::height(void) const
+Map::height() const
 {
 	return _height;
 }
@@ -63,7 +64,7 @@ Map::setHeight(int h)
 
 
 const uint8_t*	
-Map::tiles(void) const
+Map::tiles() const
 {
 	return _tiles;
 }
@@ -82,7 +83,7 @@ Map::setTiles(uint8_t *tiles)
 }
 
 const Level&
-Map::level(void) const
+Map::level() const
 {
 	return *_level;
 }
@@ -94,9 +95,17 @@ Map::setLevel(const Level& lvl)
 }
 
 void
-Map::draw()
+Map::draw(lm::SpriteBatch& sb) const
 {
+	lm::Image&		img = ImageProvider::get().image(ImageId::Tileset);
 
+	for (int j = 0; j < _height; j++)
+	{
+		for (int i = 0; i < _width; i++)
+		{
+			sb.draw(img, i * 32, j * 32, _tiles[i + j * _width]);
+		}
+	}
 }
 
 Map::~Map()

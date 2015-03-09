@@ -22,17 +22,17 @@ class Map
 	Map(const Map&);
 	Map&			operator= (const Map&);
 
-	int				width(void) const;
+	int				width() const;
 	void			setWidth(int w);
-	int				height(void) const;
+	int				height() const;
 	void			setHeight(int h);
-	const uint8_t*	tiles(void) const;
+	const uint8_t*	tiles() const;
 	void			setTiles(uint8_t *ptr);
 	uint8_t			tileAt(int at) const;
-	const Level&	level(void) const;
+	const Level&	level() const;
 	void			setLevel(const Level&);
 
-	void			draw();
+	void			draw(lm::SpriteBatch &) const;
 
 	~Map();
 

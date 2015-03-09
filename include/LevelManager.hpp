@@ -3,9 +3,8 @@
 # define LEVELMANAGER_HPP
 
 # include <cstdint>
+# include "Level.hpp"
 # include "Link.hpp"
-
-class Level;
 
 class LevelManager
 {
@@ -13,7 +12,7 @@ class LevelManager
 
 		static LevelManager&	instance();
 
-		const Level&			currentLevel() const;
+		Level&					currentLevel() const;
 		int						currentLevelNum() const;
 		void					setCurrentLevel(int levelNum);
 		int						nlinks() const;

@@ -13,5 +13,6 @@ main()
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     core.push<Game>();
     core.start();
+
     return 0;
 }

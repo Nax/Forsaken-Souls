@@ -4,8 +4,6 @@
 #include <string>
 #include <Lums/Lums.hpp>
 #include "LevelManager.hpp"
-#include "Level.hpp"
-#include "Link.hpp"
 
 LevelManager
 *LevelManager::_instance = nullptr;
@@ -27,7 +25,7 @@ LevelManager::instance(void)
 	return *LevelManager::_instance;
 }
 
-const Level&
+Level&
 LevelManager::currentLevel(void) const
 {
 	return *_currentLevel;
