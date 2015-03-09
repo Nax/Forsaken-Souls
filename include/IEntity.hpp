@@ -11,6 +11,7 @@ enum class Stence
     Run,
     Crouch,
     Jump,
+    Fall,
     Secret
 };
 
@@ -34,19 +35,19 @@ struct  EntityData
     int                 xp;
     int                 damage;
     int                 armor;
-    int                 boundingBox[5][2];
+    int                 boundingBox[6][2];
     struct
     {
         int             begin;
         int             length;
         int             frames;
-    }                   transitions[5][5];
+    }                   transitions[6][6];
     struct
     {
         int             begin;
         int             length;
         int             frames;
-    }                   animations[5];
+    }                   animations[6];
 };
 
 class   IEntity

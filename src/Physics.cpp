@@ -55,10 +55,18 @@ Phys::updatePlayerStence(Player &p)
             //
             p.setGrounded(false);
             //
+            if (p.speed().y < 0.0)
+                p.setStence(Stence::Fall);
+            else
+                p.setStence(Stence::Jump);
+            break;
+        }
+        case Stence::Fall:
+        {
             if (p.grounded())
                 p.setStence(Stence::Stand);
             else
-                p.setStence(Stence::Jump);
+                p.setStence(Stence::Fall);
             break;
         }
         case Stence::Secret:
@@ -76,14 +84,14 @@ Phys::setPlayerTransition(Player &p)
     int begin = gEntityData[p.dataId()].transitions[static_cast<int>(p.oldStence())][static_cast<int>(p.stence())].begin;
     int length = gEntityData[p.dataId()].transitions[static_cast<int>(p.oldStence())][static_cast<int>(p.stence())].length;
     int frames = gEntityData[p.dataId()].transitions[static_cast<int>(p.oldStence())][static_cast<int>(p.stence())].frames;
-    // //
+    //
     // std::cout << "----------------" << std::endl;
     // std::cout << "Old Stence: " << static_cast<int>(p.oldStence()) << " Stence: " << static_cast<int>(p.stence()) << std::endl;
     // std::cout << "Transition launched: " << static_cast<int>(p.oldStence()) << " to " << static_cast<int>(p.stence()) << std::endl;
     // std::cout << "Begin  id: " << begin << std::endl;
     // std::cout << "Numbers of sprites: " << length << std::endl;
     // std::cout << "Frame length: " << frames << std::endl;
-    // //
+    //
     p.setAnimation(begin, length, frames, false);
 }
 
@@ -95,14 +103,14 @@ Phys::setPlayerAnimation(Player &p)
     int begin = gEntityData[p.dataId()].animations[static_cast<int>(p.stence())].begin;
     int length = gEntityData[p.dataId()].animations[static_cast<int>(p.stence())].length;
     int frames = gEntityData[p.dataId()].animations[static_cast<int>(p.stence())].frames;
-    // //
+    //
     // std::cout << "----------------" << std::endl;
     // std::cout << "Old Stence: " << static_cast<int>(p.oldStence()) << " Stence: " << static_cast<int>(p.stence()) << std::endl;
     // std::cout << "Animation launched: " << static_cast<int>(p.stence()) << std::endl;
     // std::cout << "Begin sprite id: " << begin << std::endl;
     // std::cout << "Numbers of sprites: " << length << std::endl;
     // std::cout << "Frame length: " << frames << std::endl;
-    // //
+    //
     p.setAnimation(begin, length, frames);
 }
 
@@ -121,7 +129,7 @@ Phys::updatePlayerSpeed(Player &p, bool moving)
             p.setSpeed(p.speed().x, 0.0);
     }
     else
-        p.setSpeed(p.speed().x, fmax((p.speed().y - 0.03), -1.0));
+        p.setSpeed(p.speed().x, fmax((p.speed().y - 0.02), -2.0));
 
     // x speed
     if (p.grounded())
@@ -131,12 +139,12 @@ Phys::updatePlayerSpeed(Player &p, bool moving)
         else if (stence == Stence::Run)
             p.setSpeed(factor * 1.0, 0.0);
         else
-            p.setSpeed(factor * 0.5, p.speed().y);
+            p.setSpeed(factor * 0.7, p.speed().y);
     }
     else
     {
         if (moving)
-            p.setSpeed(factor * 0.5, p.speed().y);
+            p.setSpeed(factor * 0.7, p.speed().y);
         else
             p.setSpeed(0.0, p.speed().y);
     }
@@ -152,7 +160,7 @@ Phys::updatePlayerPosition(Player &p)
     y = p.y() - p.speed().y * 2.0;
 
 
-    // checkForCollision()
+    // checkForCollision();
     if (!collisionX)
         p.setX(x);
     if (!collisionY)
@@ -183,12 +191,7 @@ Phys::updatePlayer(Player &p)
     if (p.finished() && !p.animation())
         setPlayerAnimation(p);
 
-    // update speed vector
     updatePlayerSpeed(p, moving);
-    std::cout << "Speed X: " << p.speed().x << std::endl;
-    std::cout << "Speed Y: " << p.speed().y << std::endl << std::endl;
-
-    // update position
     updatePlayerPosition(p);
 
     // Final goal :
