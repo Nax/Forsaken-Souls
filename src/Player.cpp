@@ -9,7 +9,7 @@ Player::Player()
     _dataId = 0;
     _sprite.setImage(ImageProvider::get().image(gEntityData[0].image));
     _sprite.setScale(2);
-    _sprite.setAnimation(32, 5, 10);
+    _sprite.setAnimation(0, 6, 13);
     _grounded = true;
     _transition = false;
     _animation = true;

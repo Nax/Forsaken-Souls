@@ -39,11 +39,13 @@ struct  EntityData
     {
         int             begin;
         int             length;
+        int             frames;
     }                   transitions[5][5];
     struct
     {
         int             begin;
         int             length;
+        int             frames;
     }                   animations[5];
 };
 

@@ -52,6 +52,9 @@ Phys::updatePlayerStence(Player &p)
         }
         case Stence::Jump:
         {
+            //
+            p.setGrounded(false);
+            //
             if (p.grounded())
                 p.setStence(Stence::Stand);
             else
@@ -72,7 +75,16 @@ Phys::setPlayerTransition(Player &p)
     p.setTransition(true);
     int begin = gEntityData[p.dataId()].transitions[static_cast<int>(p.oldStence())][static_cast<int>(p.stence())].begin;
     int length = gEntityData[p.dataId()].transitions[static_cast<int>(p.oldStence())][static_cast<int>(p.stence())].length;
-    p.setAnimation(begin, length, 10, false);
+    int frames = gEntityData[p.dataId()].transitions[static_cast<int>(p.oldStence())][static_cast<int>(p.stence())].frames;
+    //
+    std::cout << "----------------" << std::endl;
+    std::cout << "Old Stence: " << static_cast<int>(p.oldStence()) << " Stence: " << static_cast<int>(p.stence()) << std::endl;
+    std::cout << "Transition launched: " << static_cast<int>(p.oldStence()) << " to " << static_cast<int>(p.stence()) << std::endl;
+    std::cout << "Begin sprite id: " << begin << std::endl;
+    std::cout << "Numbers of sprites: " << length << std::endl;
+    std::cout << "Frame length: " << frames << std::endl;
+    //
+    p.setAnimation(begin, length, frames, false);
 }
 
 void
@@ -82,7 +94,16 @@ Phys::setPlayerAnimation(Player &p)
     p.setTransition(false);
     int begin = gEntityData[p.dataId()].animations[static_cast<int>(p.stence())].begin;
     int length = gEntityData[p.dataId()].animations[static_cast<int>(p.stence())].length;
-    p.setAnimation(begin, length, 10);
+    int frames = gEntityData[p.dataId()].animations[static_cast<int>(p.stence())].frames;
+    //
+    std::cout << "----------------" << std::endl;
+    std::cout << "Old Stence: " << static_cast<int>(p.oldStence()) << " Stence: " << static_cast<int>(p.stence()) << std::endl;
+    std::cout << "Animation launched: " << static_cast<int>(p.stence()) << std::endl;
+    std::cout << "Begin sprite id: " << begin << std::endl;
+    std::cout << "Numbers of sprites: " << length << std::endl;
+    std::cout << "Frame length: " << frames << std::endl;
+    //
+    p.setAnimation(begin, length, frames);
 }
 
 void
@@ -91,13 +112,15 @@ Phys::updatePlayer(Player &p)
     bool    moving;
     bool    turning;
 
-    checkGrounded(p);
     p.setOldDir();
     p.setOldStence();
+    checkGrounded(p);
+
     // update direction
     moving = (p.key(KeyId::Left) && !p.key(KeyId::Right)) || (p.key(KeyId::Right) && !p.key(KeyId::Left));
     if (moving)
         p.key(KeyId::Left) ? p.setDirection(false) : p.setDirection(true);
+
     //update stence
     updatePlayerStence(p);
     if (p.oldStence() != p.stence())
