@@ -33,7 +33,7 @@ const EntityData gEntityData[] =
             },
             // Run to ...
             {
-                {83, 13, 4},    // Stand
+                {0, 1, 1},    // Stand
                 {0, 1, 1},
                 {0, 1, 1},      // Crouch
                 {0, 1, 1},      // Jump

@@ -10,6 +10,8 @@ namespace Phys
     void    updatePlayerStence(Player &p);
     void    setPlayerTransition(Player &p);
     void    setPlayerAnimation(Player &p);
+    void    updatePlayerSpeed(Player &p, bool moving);
+    void    updatePlayerPosition(Player &p);
 }
 
 #endif

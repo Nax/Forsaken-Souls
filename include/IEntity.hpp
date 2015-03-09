@@ -88,6 +88,9 @@ public:
     void        setAnimation(bool animation)    { _animation = animation; }
     void        setAnimation(int start, int end, int frames, bool loop = true);
 
+    void        flipX(bool flip)                { _sprite.flipX(flip); }
+    void        flipY(bool flip)                { _sprite.flipY(flip); }
+
     void        render() const;
     void        update();
 

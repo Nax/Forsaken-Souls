@@ -76,14 +76,14 @@ Phys::setPlayerTransition(Player &p)
     int begin = gEntityData[p.dataId()].transitions[static_cast<int>(p.oldStence())][static_cast<int>(p.stence())].begin;
     int length = gEntityData[p.dataId()].transitions[static_cast<int>(p.oldStence())][static_cast<int>(p.stence())].length;
     int frames = gEntityData[p.dataId()].transitions[static_cast<int>(p.oldStence())][static_cast<int>(p.stence())].frames;
-    //
-    std::cout << "----------------" << std::endl;
-    std::cout << "Old Stence: " << static_cast<int>(p.oldStence()) << " Stence: " << static_cast<int>(p.stence()) << std::endl;
-    std::cout << "Transition launched: " << static_cast<int>(p.oldStence()) << " to " << static_cast<int>(p.stence()) << std::endl;
-    std::cout << "Begin sprite id: " << begin << std::endl;
-    std::cout << "Numbers of sprites: " << length << std::endl;
-    std::cout << "Frame length: " << frames << std::endl;
-    //
+    // //
+    // std::cout << "----------------" << std::endl;
+    // std::cout << "Old Stence: " << static_cast<int>(p.oldStence()) << " Stence: " << static_cast<int>(p.stence()) << std::endl;
+    // std::cout << "Transition launched: " << static_cast<int>(p.oldStence()) << " to " << static_cast<int>(p.stence()) << std::endl;
+    // std::cout << "Begin  id: " << begin << std::endl;
+    // std::cout << "Numbers of sprites: " << length << std::endl;
+    // std::cout << "Frame length: " << frames << std::endl;
+    // //
     p.setAnimation(begin, length, frames, false);
 }
 
@@ -95,15 +95,69 @@ Phys::setPlayerAnimation(Player &p)
     int begin = gEntityData[p.dataId()].animations[static_cast<int>(p.stence())].begin;
     int length = gEntityData[p.dataId()].animations[static_cast<int>(p.stence())].length;
     int frames = gEntityData[p.dataId()].animations[static_cast<int>(p.stence())].frames;
-    //
-    std::cout << "----------------" << std::endl;
-    std::cout << "Old Stence: " << static_cast<int>(p.oldStence()) << " Stence: " << static_cast<int>(p.stence()) << std::endl;
-    std::cout << "Animation launched: " << static_cast<int>(p.stence()) << std::endl;
-    std::cout << "Begin sprite id: " << begin << std::endl;
-    std::cout << "Numbers of sprites: " << length << std::endl;
-    std::cout << "Frame length: " << frames << std::endl;
-    //
+    // //
+    // std::cout << "----------------" << std::endl;
+    // std::cout << "Old Stence: " << static_cast<int>(p.oldStence()) << " Stence: " << static_cast<int>(p.stence()) << std::endl;
+    // std::cout << "Animation launched: " << static_cast<int>(p.stence()) << std::endl;
+    // std::cout << "Begin sprite id: " << begin << std::endl;
+    // std::cout << "Numbers of sprites: " << length << std::endl;
+    // std::cout << "Frame length: " << frames << std::endl;
+    // //
     p.setAnimation(begin, length, frames);
+}
+
+void
+Phys::updatePlayerSpeed(Player &p, bool moving)
+{
+    double      factor = (p.direction()) ? 1.0 : -1.0;
+    Stence      stence = p.stence();
+
+    // y speed
+    if (p.grounded())
+    {
+        if (stence == Stence::Jump)
+            p.setSpeed(p.speed().x, 1.0);
+        else
+            p.setSpeed(p.speed().x, 0.0);
+    }
+    else
+        p.setSpeed(p.speed().x, fmax((p.speed().y - 0.03), -1.0));
+
+    // x speed
+    if (p.grounded())
+    {
+        if (stence == Stence::Stand || stence == Stence::Crouch)
+            p.setSpeed(0.0, 0.0);
+        else if (stence == Stence::Run)
+            p.setSpeed(factor * 1.0, 0.0);
+        else
+            p.setSpeed(factor * 0.5, p.speed().y);
+    }
+    else
+    {
+        if (moving)
+            p.setSpeed(factor * 0.5, p.speed().y);
+        else
+            p.setSpeed(0.0, p.speed().y);
+    }
+}
+
+void
+Phys::updatePlayerPosition(Player &p)
+{
+    double  x, y;
+    bool    collisionX = false, collisionY = false;
+
+    x = p.x() + p.speed().x * 2.0;
+    y = p.y() - p.speed().y * 2.0;
+
+
+    // checkForCollision()
+    if (!collisionX)
+        p.setX(x);
+    if (!collisionY)
+        p.setY(y);
+
 }
 
 void
@@ -120,13 +174,22 @@ Phys::updatePlayer(Player &p)
     moving = (p.key(KeyId::Left) && !p.key(KeyId::Right)) || (p.key(KeyId::Right) && !p.key(KeyId::Left));
     if (moving)
         p.key(KeyId::Left) ? p.setDirection(false) : p.setDirection(true);
+    p.flipX(!p.direction());
 
-    //update stence
+    // update stence
     updatePlayerStence(p);
     if (p.oldStence() != p.stence())
         setPlayerTransition(p);
     if (p.finished() && !p.animation())
         setPlayerAnimation(p);
+
+    // update speed vector
+    updatePlayerSpeed(p, moving);
+    std::cout << "Speed X: " << p.speed().x << std::endl;
+    std::cout << "Speed Y: " << p.speed().y << std::endl << std::endl;
+
+    // update position
+    updatePlayerPosition(p);
 
     // Final goal :
     //      Set new direction

@@ -10,7 +10,7 @@ IEntity::setAnimation(int start, int end, int frames, bool loop)
 void
 IEntity::render() const
 {
-	_sprite.draw(_x, 481);
+	_sprite.draw(_x, _y);
 }
 
 void
