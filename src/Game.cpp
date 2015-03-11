@@ -1,5 +1,4 @@
 #include "Game.hpp"
-#include "LevelManager.hpp"
 
 using namespace lm;
 
@@ -7,7 +6,13 @@ Game::Game()
 {
 
 }
-	
+
+void
+Game::load()
+{
+    _level.load(0);
+}
+
 void
 Game::update()
 {
@@ -20,81 +25,49 @@ Game::render() const
 	lm::SpriteBatch sb;
 
 	sb.begin();
-	LevelManager::instance().currentLevel().map().draw(sb);
+	_level.map().draw(sb);
 	sb.end();
     _player.render();
+}
+
+void
+Game::handleEvent(const Event& event)
+{
+    if (event.type == Event::Type::KeyDown
+        || event.type == Event::Type::KeyUp)
+    {
+        bool down = (event.type == Event::Type::KeyDown);
+
+        switch (event.key)
+        {
+            case Key::Escape:
+                Core::get().stop();
+                break;
+            case Key::Right:
+                _player.setKey(KeyId::Right, down);
+                break;
+            case Key::Left:
+                _player.setKey(KeyId::Left, down);
+                break;
+            case Key::Up:
+                _player.setKey(KeyId::Up, down);
+                break;
+            case Key::Down:
+                _player.setKey(KeyId::Down, down);
+                break;
+            case Key::Space:
+                _player.setKey(KeyId::Space, down);
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 void
 Game::unload()
 {
 
-}
-
-void
-Game::load()
-{
-	LevelManager& lman = LevelManager::instance();
-
-	lman.setCurrentLevel(0);
-	lman.currentLevel().setCurrentMap(0);
-}
-
-void
-Game::handleEvent(const Event& event)
-{
-    if (event.type == Event::Type::KeyDown)
-    {
-        switch (event.key)
-        {
-            case Key::Escape:
-                Core::get().stop();
-                break;
-            case Key::Right:
-                _player.setKey(KeyId::Right, true);
-                break;
-            case Key::Left:
-                _player.setKey(KeyId::Left, true);
-                break;
-            case Key::Up:
-                _player.setKey(KeyId::Up, true);
-                break;
-            case Key::Down:
-                _player.setKey(KeyId::Down, true);
-                break;
-            case Key::Space:
-                _player.setKey(KeyId::Space, true);
-                break;
-            default:
-                break;
-        }
-    }
-    else if (event.type == Event::Type::KeyUp)
-    {
-        switch (event.key)
-        {
-            case Key::Escape:
-                Core::get().stop();
-                break;
-            case Key::Right:
-                _player.setKey(KeyId::Right, false);
-                break;
-            case Key::Left:
-                _player.setKey(KeyId::Left, false);
-                break;
-            case Key::Up:
-                _player.setKey(KeyId::Up, false);
-                break;
-            case Key::Down:
-                _player.setKey(KeyId::Down, false);
-                break;
-            case Key::Space:
-                _player.setKey(KeyId::Space, false);
-                break;
-            default:
-                break;
-        }
-    }
 }
 
 Game::~Game()

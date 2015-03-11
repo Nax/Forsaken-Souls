@@ -1,42 +1,33 @@
-
 #ifndef MAP_HPP
-# define MAP_HPP
+#define MAP_HPP
 
-# include <cstdint>
-# include <Lums/SpriteBatch.hpp>
+#include <cstdint>
+#include <fstream>
+#include <Lums/Lums.hpp>
 
-/**
+/*
  * Instantiatied by a Level object and holding values and pointers,
  * class Map is a flyweight to a parcel of a Level object's data.
  */
 
-class Level;
-
 class Map
 {
-	friend class Level;
-
-	public:
-
-	Map();
-
+public:
+	Map(std::ifstream& file);
 	Map(const Map&) = delete;
-	Map&			operator= (const Map&) = delete;
-
-	int				width() const;
-	int				height() const;
+	Map(Map&& rhs);
+	Map&	operator=(const Map&) = delete;
+	uint32_t		width() const;
+	uint32_t		height() const;
 	uint8_t			at(int at) const;
 	uint8_t			at(int x, int y) const;
-
-	void			draw(lm::SpriteBatch &) const;
-
+	void			draw(lm::SpriteBatch& sb) const;
 	~Map();
 
-	private:
-
-	int				_width;
-	int				_height;
-	const uint8_t	*_tiles;
+private:
+	uint32_t		_width;
+	uint32_t		_height;
+	uint8_t*		_tiles;
 };
 
 #endif

@@ -1,23 +1,29 @@
-
-#include "Level.hpp"
 #include "Map.hpp"
 #include "ImageProvider.hpp"
 
-Map::Map()
-: _width(-1)
-, _height(-1)
-, _tiles(nullptr)
+Map::Map(std::ifstream& file)
 {
-
+	file.read(reinterpret_cast<char*>(&_width), 4);
+	file.read(reinterpret_cast<char*>(&_height), 4);
+	_tiles = new uint8_t[_width * _height];
+	file.read(reinterpret_cast<char*>(_tiles), _width * _height);
 }
 
-int		
+Map::Map(Map&& rhs)
+: _width(rhs._width)
+, _height(rhs._height)
+, _tiles(rhs._tiles)
+{
+	rhs._tiles = nullptr;
+}
+
+uint32_t		
 Map::width() const
 {
 	return _width;
 }
 
-int			
+uint32_t			
 Map::height() const
 {
 	return _height;
@@ -43,7 +49,7 @@ Map::at(int x, int y) const
 void
 Map::draw(lm::SpriteBatch& sb) const
 {
-	lm::Image&		img = ImageProvider::get().image(ImageId::Tileset);
+	lm::Image& img = ImageProvider::get().image(ImageId::Tileset);
 
 	for (int j = 0; j < _height; j++)
 	{
@@ -56,4 +62,5 @@ Map::draw(lm::SpriteBatch& sb) const
 
 Map::~Map()
 {
+	delete [] _tiles;
 }

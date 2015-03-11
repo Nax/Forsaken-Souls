@@ -1,25 +1,27 @@
 #ifndef GAME_HPP
-# define GAME_HPP
+#define GAME_HPP
 
-# include <Lums/Lums.hpp>
-# include "Player.hpp"
+#include <Lums/Lums.hpp>
+#include "Player.hpp"
+#include "Level.hpp"
 
 class Game : public lm::GameState
 {
 public:
-	Game();
-	
-	void update();
-	void render() const;
-	void unload();
-	void load();
-	void handleEvent(const lm::Event& event);
+    Game();
+    
+    void load();
+    void handleEvent(const lm::Event& event);
+    void update();
+    void render() const;
+    void unload();
 
-	 ~Game();
+    ~Game();
 
 private:
-	Player	_player;
+    Player  _player;
+    Level   _level;
 
 };
 
-#endif // ! GAME_HPP
+#endif
