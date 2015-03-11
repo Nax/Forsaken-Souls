@@ -16,7 +16,7 @@ Game::load()
 void
 Game::update()
 {
-    _player.update();
+    _player.update(_level.map());
 }
 
 void

@@ -35,7 +35,7 @@ struct  EntityData
     int                 xp;
     int                 damage;
     int                 armor;
-    int                 boundingBox[6][2];
+    double              boundingBox[6][2];
     struct
     {
         int             begin;
