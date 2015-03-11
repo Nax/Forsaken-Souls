@@ -1,3 +1,4 @@
+#include <fstream>
 #include "Map.hpp"
 #include "ImageProvider.hpp"
 
@@ -15,6 +16,30 @@ Map::Map(Map&& rhs)
 , _tiles(rhs._tiles)
 {
 	rhs._tiles = nullptr;
+}
+
+void
+Map::setLinks(const std::vector<int32_t>& linkBuf, const int& mapNum)
+{
+	if (linkBuf.size() == 0)
+		return;
+	if (linkBuf.size() % 4 != 0)
+	{
+		std::cerr << "Invalid linkBuf size % 4 : " << linkBuf.size() % 4 << std::endl;
+		return;
+	}
+	_links.clear();
+	for (int i = 0; i < linkBuf.size(); i += 4)
+	{
+		if (linkBuf[i] == mapNum)
+		{
+			_links.push_back(std::array<int, 4>());
+			_links.back()[0] = linkBuf[i];
+			_links.back()[1] = linkBuf[i + 1];
+			_links.back()[2] = linkBuf[i + 2];
+			_links.back()[3] = linkBuf[i + 3];
+		}
+	}
 }
 
 uint32_t		
