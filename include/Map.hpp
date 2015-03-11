@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <fstream>
 #include <Lums/Lums.hpp>
+#include <Tile.hpp>
 
 /*
  * Instantiatied by a Level object and holding values and pointers,
@@ -19,8 +20,8 @@ public:
 	Map&	operator=(const Map&) = delete;
 	uint32_t		width() const;
 	uint32_t		height() const;
-	uint8_t			at(int at) const;
-	uint8_t			at(int x, int y) const;
+	const Tile&		at(int at) const;
+	const Tile&		at(int x, int y) const;
 	void			draw(lm::SpriteBatch& sb) const;
 	~Map();
 

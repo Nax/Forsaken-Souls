@@ -29,21 +29,21 @@ Map::height() const
 	return _height;
 }
 
-uint8_t		
+const Tile&
 Map::at(int at) const
 {
 	if (at < 0 || at >= _width * _height)
-		return 0;
+		return Tile::fromId(0);
 	else
-		return _tiles[at];
+		return Tile::fromId(_tiles[at]);
 }
 
-uint8_t
+const Tile&
 Map::at(int x, int y) const
 {
 	if (x < 0 || x >= _width || y < 0 || y >= _height)
-		return 0;
-	return _tiles[x + y * _width];
+		return Tile::fromId(0);
+	return Tile::fromId(_tiles[x + y * _width]);
 }
 
 void
