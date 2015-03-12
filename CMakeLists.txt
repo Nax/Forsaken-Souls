@@ -27,9 +27,5 @@ foreach(M ${MAP})
 endforeach()
 add_executable(forsaken MACOSX_BUNDLE ${SRC} ${ASSETS})
 set_target_properties(forsaken PROPERTIES OUTPUT_NAME "Forsaken Souls")
-add_custom_command(
-    OUTPUT "Forsaken Souls.app/Content/Resources"
-    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/assets" "Forsaken Souls.app/Content/Resources"
-    MAIN_DEPENDENCY "${CMAKE_SOURCE_DIR}/assets"
-)
+file(COPY ${TOP_ASSETS} DESTINATION "${CMAKE_BINARY_DIR}/Forsaken Souls.app/Contents/Resources")
 target_link_libraries(forsaken ${LUMS_LIBRARIES})
