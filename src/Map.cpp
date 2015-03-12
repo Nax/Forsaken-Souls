@@ -33,11 +33,12 @@ Map::setLinks(const std::vector<int32_t>& linkBuf, const int& mapNum)
 	{
 		if (linkBuf[i] == mapNum)
 		{
-			_links.push_back(std::array<int, 4>());
-			_links.back()[0] = linkBuf[i];
-			_links.back()[1] = linkBuf[i + 1];
-			_links.back()[2] = linkBuf[i + 2];
-			_links.back()[3] = linkBuf[i + 3];
+			_links.push_back({{	
+				linkBuf[i],
+				linkBuf[i + 1],
+				linkBuf[i + 2],
+				linkBuf[i + 3]
+				}});
 		}
 	}
 }
@@ -52,6 +53,12 @@ uint32_t
 Map::height() const
 {
 	return _height;
+}
+
+const std::vector<std::array<int, 4>>&
+Map::links() const
+{
+	return _links;
 }
 
 const Tile&

@@ -20,12 +20,13 @@ public:
 	Map(std::ifstream& file);
 	Map(const Map&) = delete;
 	Map(Map&& rhs);
-	Map&	operator=(const Map&) = delete;
-	uint32_t		width() const;
-	uint32_t		height() const;
-	const Tile&		at(int at) const;
-	const Tile&		at(int x, int y) const;
-	void			draw(lm::SpriteBatch& sb) const;
+	Map&									operator=(const Map&) = delete;
+	uint32_t								width() const;
+	uint32_t								height() const;
+	const Tile&								at(int at) const;
+	const Tile&								at(int x, int y) const;
+	void									draw(lm::SpriteBatch& sb) const;
+	const std::vector<std::array<int, 4>>&	links() const;
 	~Map();
 
 private:

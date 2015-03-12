@@ -33,7 +33,7 @@ Level::load(int n)
 	_current = 0;
 
 	stream.read(reinterpret_cast<char*>(&linkCount), sizeof(linkCount));
-	linkBuf = std::vector<int32_t>(linkCount * 4);
+	linkBuf.resize(linkCount * 4);
 	for (uint32_t i = 0; i < linkBuf.size(); ++i)
 	{
 		stream.read(reinterpret_cast<char*>(&link), sizeof(link));
