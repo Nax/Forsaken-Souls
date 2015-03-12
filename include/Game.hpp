@@ -1,6 +1,8 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
+#include <vector>
+#include <array>
 #include <Lums/Lums.hpp>
 #include "Player.hpp"
 #include "Level.hpp"
@@ -21,7 +23,6 @@ public:
 private:
     Player  _player;
     Level   _level;
-
 };
 
 #endif

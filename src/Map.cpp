@@ -55,7 +55,7 @@ Map::height() const
 	return _height;
 }
 
-const std::vector<std::array<int, 4>>&
+const std::vector<Map::t_array4i>&
 Map::links() const
 {
 	return _links;
