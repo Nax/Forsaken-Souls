@@ -10,7 +10,7 @@ IEntity::setAnimation(int start, int end, int frames, bool loop)
 void
 IEntity::render() const
 {
-	_sprite.draw(_x * 32, _y * 32);
+	_sprite.draw(_x * 32, (_y - gEntityData[_dataId].boundingBox[static_cast<int>(_stence)][1]) * 32);
 }
 
 void

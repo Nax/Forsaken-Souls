@@ -8,7 +8,7 @@ Phys::checkGrounded(Player &p, const Map& map)
 
     double x0 = p.x();
     double x1 = p.x() + gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stence())][0];
-    double y = p.y() + gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stence())][1];
+    double y = p.y();
     int ox0 = static_cast<int>(x0);
     int ox1 = static_cast<int>(x1);
     int oy = static_cast<int>(y);
@@ -18,7 +18,7 @@ Phys::checkGrounded(Player &p, const Map& map)
         const TileBoundingBox& tile = map.at(k, oy).boundingBoxes();
         for (int i = 0; i < tile.count; i++)
         {
-            if (y > tile.boxes[i].y)
+            if (y >= tile.boxes[i].y)
             {
                 p.setGrounded(true);
                 return;
@@ -160,70 +160,85 @@ Phys::updatePlayerSpeed(Player &p, bool moving)
 
 void
 Phys::updatePlayerPosition(Player &p, const Map& map)
-{
-    double  newX = p.x() + p.speed().x * 0.1;
-    double  newY = p.y() - p.speed().y * 0.1;
-    
-    double x0 = newX;
-    double x1 = newX + gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stence())][0];
-    double y0 = newY;
-    double y1 = newY + gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stence())][1];
+{   
+    double x0 = p.x() + p.speed().x * 0.1;;
+    // double x1 = newX + gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stence())][0];
+    double y0 = p.y() - p.speed().y * 0.1;
+    double y1 = y0 - gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stence())][1];
 
     int ox0 = static_cast<int>(x0);
-    int ox1 = static_cast<int>(x1);
+    // int ox1 = static_cast<int>(x1);
     int oy0 = static_cast<int>(y0);
     int oy1 = static_cast<int>(y1);
 
-    oy1 = (p.grounded()) ? oy1 - 1 : oy1;
+    // oy1 = (p.grounded()) ? oy1 + 1 : oy1;
 
     bool    collisionX = false, collisionY = false;
 
     // check for X collision
-    if (p.speed().x != 0)
+    if (p.speed().x < 0.0)
     {
-        for (int i = oy0; i <= oy1; i++)
-        {
-            if (collisionX)
-                break;
 
-            // check for left collision
-            if (p.speed().x < 0)
+        std::cout << "oy0 = " << oy0 << std::endl;
+        for (int i = oy0; i >= oy1; i--)
+        {
+            const TileBoundingBox& left = map.at(ox0, i).boundingBoxes();
+            std::cout << "Boxes: " << left.count << std::endl;
+            for (int j = 0 ; j < left.count; j++)
             {
-                const TileBoundingBox& left = map.at(ox0, i).boundingBoxes();
-                for (int k = 0; k < left.count; k++)
-                {
-                    std::cout << "LEFT CHECKING" << std::endl << "newX: " << newX << "  left x: " << left.boxes[k].x << std::endl;
-                    if (x0 < ox0 + left.boxes[k].x + left.boxes[k].w)
-                    {
-                        collisionX = true;
-                        break;
-                    }
-                }
-            }
-            // check for right collision
-            else
-            {
-                const TileBoundingBox& right = map.at(ox1, i).boundingBoxes();
-                for (int k = 0; k < right.count; k++)
-                {
-                    std::cout << "RIGHT CHECKING" << std::endl <<  "newX: " << x1 << "  right x: " << ox1 + right.boxes[k].x << std::endl;
-                    if (x1 > ox1 + right.boxes[k].x)
-                    {
-                        collisionX = true;
-                        break;
-                    }
-                }
+                if (x0 < ox0 + left.boxes[j].w)
+                    collisionX = true;
             }
         }
+
     }
+    // if (p.speed().x > 0.0)
+    // {
+
+    // }
+
+        // for (int i = oy0; i >= oy1; i--)
+        // {
+        //     if (collisionX)
+        //         break;
+
+        //     // check for left collision
+        //     if (p.speed().x < 0)
+        //     {
+        //         const TileBoundingBox& left = map.at(ox0, i).boundingBoxes();
+        //         for (int k = 0; k < left.count; k++)
+        //         {
+        //             std::cout << "LEFT CHECKING" << std::endl << "newX: " << newX << "  left x: " << left.boxes[k].x<< std::endl;
+        //             if (x0 < ox0 + left.boxes[k].x + left.boxes[k].w)
+        //             {
+        //                 collisionX = true;
+        //                 break;
+        //             }
+        //         }
+        //     }
+        //     // check for right collision
+        //     else
+        //     {
+        //         const TileBoundingBox& right = map.at(ox1, i).boundingBoxes();
+        //         for (int k = 0; k < right.count; k++)
+        //         {
+        //             std::cout << "RIGHT CHECKING" << std::endl <<  "newX: " << x1 << "  right x: " << ox1 + right.boxes[k].x << std::endl;
+        //             if (x1 > ox1 + right.boxes[k].x)
+        //             {
+        //                 collisionX = true;
+        //                 break;
+        //             }
+        //         }
+        //     }
+        // }
 
     // check for Y collision
     // blabla
 
     if (!collisionX)
-        p.setX(newX);
+        p.setX(x0);
     if (!collisionY)
-        p.setY(newY);
+        p.setY(y0);
 }
 
 void
@@ -232,6 +247,7 @@ Phys::updatePlayer(Player &p, const Map& map)
     bool    moving;
     bool    turning;
 
+    std::cout << " x: " << p.x() << std::endl << "y:" << p.y() << std::endl;
     p.setOldDir();
     p.setOldStence();
     checkGrounded(p, map);
