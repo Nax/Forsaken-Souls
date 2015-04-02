@@ -5,6 +5,8 @@
 #include <fstream>
 #include <Lums/Lums.hpp>
 #include <Tile.hpp>
+#include <vector>
+#include <array>
 
 /*
  * Instantiatied by a Level object and holding values and pointers,
@@ -13,22 +15,28 @@
 
 class Map
 {
+	friend class Level;
+	typedef std::array<int, 4>		t_array4i;
 public:
 	Map(std::ifstream& file);
 	Map(const Map&) = delete;
 	Map(Map&& rhs);
-	Map&	operator=(const Map&) = delete;
-	uint32_t		width() const;
-	uint32_t		height() const;
-	const Tile&		at(int at) const;
-	const Tile&		at(int x, int y) const;
-	void			draw(lm::SpriteBatch& sb) const;
+	Map&							operator=(const Map&) = delete;
+	uint32_t						width() const;
+	uint32_t						height() const;
+	const Tile&						at(int at) const;
+	const Tile&						at(int x, int y) const;
+	void							draw(lm::SpriteBatch& sb) const;
+	const std::vector<t_array4i>&	links() const;
 	~Map();
 
 private:
-	uint32_t		_width;
-	uint32_t		_height;
-	uint8_t*		_tiles;
+	uint32_t				_width;
+	uint32_t				_height;
+	uint8_t*				_tiles;
+	std::vector<t_array4i>	_links;
+
+	void					setLinks(const std::vector<int32_t>& linkBuf, const int& mapNum);
 };
 
 #endif
