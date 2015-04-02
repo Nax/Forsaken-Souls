@@ -8,7 +8,7 @@ Player::Player()
 , _xp(0)
 {
     _x = 2;
-    _y = 7;
+    _y = 2;
     _dataId = 0;
     _sprite.setImage(ImageProvider::get().image(gEntityData[0].image));
     _sprite.setScale(2);
