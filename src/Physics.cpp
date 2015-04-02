@@ -102,13 +102,14 @@ Phys::updatePlayerSpeed(Player &p, bool moving)
     double      factor = (p.direction()) ? 1.0 : -1.0;
     Stence      stence = p.stence();
 
+    // This cannot work, as stences should not be used to predict speed.
+    // Only transition between stences should create speed.
+    // Also, the grounded property shoukd be unset every frame.
+
     // y speed
-    if (p.grounded())
+    if (p.grounded() && stence == Stence::Jump)
     {
-        if (stence == Stence::Jump)
-            p.setSpeed(p.speed().x, 1.0);
-        else
-            p.setSpeed(p.speed().x, 0.0);
+        p.setSpeed(p.speed().x, 1.0);
     }
     else
         p.setSpeed(p.speed().x, fmax((p.speed().y - 0.02), -2.0));
@@ -141,11 +142,15 @@ Phys::updatePlayerPosition(Player &p, const Map& map)
     float w = gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stence())][0];
     float h = gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stence())][1];
 
-    int x1 = ceil(p.x() + gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stence())][0]);
-    int y1 = ceil(p.y() + gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stence())][1]);
+    int x1 = floor(p.x() + w);
+    int y1 = floor(p.y() + h);
 
     //Check y collision
-    if (p.speed().y < 0.0)
+
+    //p.setGrounded(false);
+
+
+    if (p.speed().y <= 0.0)
     {
         for (int i = p.x(); i < x1; i++)
         {
@@ -166,6 +171,28 @@ Phys::updatePlayerPosition(Player &p, const Map& map)
                 }
             }
         }    
+    }
+    else
+    {
+        // Need refactor (probably)
+        for (int i = p.x(); i < x1; i++)
+        {
+            const TileBoundingBox& box = map.at(i, y1).boundingBoxes();
+            for (int j = 0; j < box.count; j++)
+            {
+                float   bx = i + box.boxes[j].x;
+                float   by = y1 + box.boxes[j].y;
+                float   bw = box.boxes[j].w;
+                float   bh = box.boxes[j].h;
+
+                if (p.x() + w > bx && p.x() < bx + bw && p.y() + h > by && p.y() < by + bh)
+                {
+                    // Collision
+                    p.setY(by - h);
+                    p.setSpeed(p.speed().x, 0);
+                }
+            }
+        }
     }
 }
 
