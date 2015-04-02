@@ -1,6 +1,7 @@
 #include <fstream>
 #include "Map.hpp"
 #include "ImageProvider.hpp"
+#include "Screen.hpp"
 
 Map::Map(std::ifstream& file)
 {
@@ -87,7 +88,7 @@ Map::draw(lm::SpriteBatch& sb) const
 	{
 		for (int i = 0; i < _width; i++)
 		{
-			sb.draw(img, i * 32, (_height - j - 1) * 32, _tiles[i + j * _width]);
+			sb.draw(img, i * 32, SCREEN_HEIGHT - (j + 1) * 32, _tiles[i + j * _width]);
 		}
 	}
 }
