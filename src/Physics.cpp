@@ -135,24 +135,35 @@ Phys::updatePlayerSpeed(Player &p, bool moving)
 void
 Phys::updatePlayerPosition(Player &p, const Map& map)
 {   
-    p.setX(p.x() + p.speedX() * 0.1);
-    p.setY(p.y() + p.speedY() * 0.1);
+    p.setX(p.x() + p.speed().x * 0.1);
+    p.setY(p.y() + p.speed().y * 0.1);
 
-    int x1 = ceil(p.x() + gEntityData[p.dataId()].boundingBox[p.stence()][0]);
-    int y1 = ceil(p.y() + gEntityData[p.dataId()].boundingBox[p.stence()][1]);
+    float w = gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stence())][0];
+    float h = gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stence())][1];
+
+    int x1 = ceil(p.x() + gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stence())][0]);
+    int y1 = ceil(p.y() + gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stence())][1]);
 
     //Check y collision
-    if (p.speedY() < 0.0)
+    if (p.speed().y < 0.0)
     {
         for (int i = p.x(); i < x1; i++)
         {
             const TileBoundingBox& box = map.at(i, p.y()).boundingBoxes();
-            for (int j = 0; j < box.count ; j++)
+            for (int j = 0; j < box.count; j++)
             {
                 float   bx = i + box.boxes[j].x;
-                float   by = p.y() + box.boxes[j].y;
+                float   by = floor(p.y()) + box.boxes[j].y;
                 float   bw = box.boxes[j].w;
                 float   bh = box.boxes[j].h;
+
+                if (p.x() + w > bx && p.x() < bx + bw && p.y() + h > by && p.y() < by + bh)
+                {
+                    // Collision
+                    p.setY(by + bh);
+                    p.setSpeed(p.speed().x, 0);
+                    p.setGrounded(true);
+                }
             }
         }    
     }
