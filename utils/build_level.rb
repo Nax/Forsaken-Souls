@@ -20,7 +20,8 @@ class Map
     w = map_json['width']
     h = map_json['height']
     data = map_json['layers'].first['data']
-	data.map! {|v| v - 1}
+	  data.map! {|v| v - 1}
+    data = data.each_slice(w).to_a.reverse.flatten
     header = [w, h].pack 'LL'
     bindata = data.pack 'C*'
     @maps << (header + bindata)

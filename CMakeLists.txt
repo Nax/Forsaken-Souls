@@ -17,7 +17,12 @@ target_link_libraries(forsaken_souls ${LUMS_LIBRARIES})
 
 # Build assets
 
-add_custom_command(TARGET forsaken_souls POST_BUILD
+add_custom_target(assets ALL DEPENDS "${CMAKE_BINARY_DIR}/Forsaken Souls.app/Contents/Resources")
+
+add_custom_command(
+	OUTPUT "${CMAKE_BINARY_DIR}/Forsaken Souls.app/Contents/Resources"
+	DEPENDS "${CMAKE_SOURCE_DIR}/assets"
 	COMMAND "cp" "-r" "${CMAKE_SOURCE_DIR}/assets" "${CMAKE_BINARY_DIR}/Forsaken Souls.app/Contents/Resources"
 )
 
+add_dependencies(forsaken_souls assets)
