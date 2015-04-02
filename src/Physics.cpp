@@ -161,15 +161,15 @@ Phys::updatePlayerSpeed(Player &p, bool moving)
 void
 Phys::updatePlayerPosition(Player &p, const Map& map)
 {   
-    double x0 = p.x() + p.speed().x * 0.1;;
-    // double x1 = newX + gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stence())][0];
+    double x0 = p.x() + p.speed().x * 0.1;
     double y0 = p.y() - p.speed().y * 0.1;
+    double x1 = x0 + gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stence())][0];
     double y1 = y0 - gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stence())][1];
 
-    int ox0 = static_cast<int>(x0);
-    // int ox1 = static_cast<int>(x1);
-    int oy0 = static_cast<int>(y0);
-    int oy1 = static_cast<int>(y1);
+    int ox0 = x0;
+    int ox1 = x1;
+    int oy0 = y0;
+    int oy1 = y1;
 
     // oy1 = (p.grounded()) ? oy1 + 1 : oy1;
 
@@ -177,6 +177,23 @@ Phys::updatePlayerPosition(Player &p, const Map& map)
 
     // check for X collision
     if (p.speed().x < 0.0)
+    {
+
+        std::cout << "oy0 = " << oy0 << std::endl;
+        std::cout << "ox0 = " << ox0 << std::endl;
+        for (int i = oy0; i >= oy1; i--)
+        {
+            const TileBoundingBox& left = map.at(ox0, i).boundingBoxes();
+            std::cout << "Boxes: " << left.count << std::endl;
+            std::cout << "Box y: " << i << std::endl << "Box x:" << ox0 << std::endl;
+            for (int j = 0 ; j < left.count; j++)
+            {
+                if (x0 < ox0 + left.boxes[j].w)
+                    collisionX = true;
+            }
+        }
+    }
+    if (p.speed().x > 0.0)
     {
 
         std::cout << "oy0 = " << oy0 << std::endl;
@@ -247,7 +264,6 @@ Phys::updatePlayer(Player &p, const Map& map)
     bool    moving;
     bool    turning;
 
-    std::cout << " x: " << p.x() << std::endl << "y:" << p.y() << std::endl;
     p.setOldDir();
     p.setOldStence();
     checkGrounded(p, map);
