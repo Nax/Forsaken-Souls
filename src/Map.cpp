@@ -1,5 +1,7 @@
+#include <iostream>
 #include "Map.hpp"
 #include "ImageProvider.hpp"
+#include "Screen.hpp"
 
 Map::Map(std::ifstream& file)
 {
@@ -17,6 +19,31 @@ Map::Map(Map&& rhs)
 	rhs._tiles = nullptr;
 }
 
+void
+Map::setLinks(const std::vector<int32_t>& linkBuf, const int& mapNum)
+{
+	if (linkBuf.size() == 0)
+		return;
+	if (linkBuf.size() % 4 != 0)
+	{
+		std::cerr << "Invalid linkBuf size % 4 : " << linkBuf.size() % 4 << std::endl;
+		return;
+	}
+	_links.clear();
+	for (int i = 0; i < linkBuf.size(); i += 4)
+	{
+		if (linkBuf[i] == mapNum)
+		{
+			_links.push_back({{	
+				linkBuf[i],
+				linkBuf[i + 1],
+				linkBuf[i + 2],
+				linkBuf[i + 3]
+				}});
+		}
+	}
+}
+
 uint32_t		
 Map::width() const
 {
@@ -27,6 +54,12 @@ uint32_t
 Map::height() const
 {
 	return _height;
+}
+
+const std::vector<Map::t_array4i>&
+Map::links() const
+{
+	return _links;
 }
 
 const Tile&

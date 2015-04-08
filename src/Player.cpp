@@ -1,5 +1,6 @@
 #include "Player.hpp"
 #include "Physics.hpp"
+#include "Level.hpp"
 
 
 Player::Player()
@@ -12,21 +13,21 @@ Player::Player()
     _dataId = 0;
     _sprite.setImage(ImageProvider::get().image(gEntityData[0].image));
     _sprite.scale = {2, 2};
-    _sprite.setAnimation(0, 6, 13);
-    grounded = true;
+    grounded = false;
     _transition = false;
     _animation = true;
-    _oldStence = Stence::Stand;
-    _stence = Stence::Stand;
+    _sprite.setAnimation(38, 1, 10);
+    _oldStence = Stence::Fall;
+    _stence = Stence::Fall;
     _oldDir= true;
     setDirection(true);
     std::fill(_keys.begin(), _keys.end(), false);
 }
 
 void
-Player::update()
+Player::update(const Map& map)
 {
-    Phys::updatePlayer(*this);
+    Phys::updatePlayer(*this, map);
     _sprite.update();
 }
 

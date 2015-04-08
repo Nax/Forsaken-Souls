@@ -2,16 +2,15 @@
 #define PHYSICS_HPP
 
 #include "Player.hpp"
+#include "Map.hpp"
 
 namespace Phys
 {
-    void    updatePlayer(Player& p);
-    void    checkGrounded(Player &p);
-    void    updatePlayerStence(Player &p);
-    void    setPlayerTransition(Player &p);
-    void    setPlayerAnimation(Player &p);
-    void    updatePlayerSpeed(Player &p, bool moving);
-    void    updatePlayerPosition(Player &p);
+    void    updatePlayer(Player& p, const Map& map);
+    void    updatePosition(Player& p);
+    void    applyGravity(Player& p);
+    void   checkCollisionX(Player& p, const Map& map);
+    void   checkCollisionY(Player& p, const Map& map);
 }
 
 #endif

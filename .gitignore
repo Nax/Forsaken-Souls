@@ -1,2 +1,4 @@
 .DS_Store
 /build
+/assets/levels
+/assets/level_links.bin

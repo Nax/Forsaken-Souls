@@ -1,10 +1,32 @@
+#include <iostream>
 #include "Game.hpp"
 
 using namespace lm;
 
 Game::Game()
 {
+	char const*				file = "level_links.bin";
+	int32_t					linkCount;
+	std::ifstream			stream(lm::resourcePath() + '/' + file, std::ios::binary);
 
+	if (!stream.good())
+	{
+		std::cerr << "Error opening " << file << std::endl;
+		return;
+	}
+	stream.read(reinterpret_cast<char*>(&linkCount), sizeof(linkCount));
+
+	Level::_totalLinks.resize(linkCount);
+	for (std::array<int, 6>& lkar : Level::_totalLinks)
+	{
+		for (int& linkPart : lkar)
+		{
+			int32_t linkDWord;
+
+			stream.read(reinterpret_cast<char*>(&linkDWord), sizeof(linkDWord));
+			linkPart = linkDWord;
+		}
+	}
 }
 
 void
@@ -16,7 +38,7 @@ Game::load()
 void
 Game::update()
 {
-    _player.update();
+    _player.update(_level.map());
 }
 
 void

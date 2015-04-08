@@ -3,6 +3,7 @@
 
 #include <array>
 #include "IEntity.hpp"
+#include "Map.hpp"
 
 enum class KeyId
 {
@@ -26,7 +27,7 @@ public:
     void    setFarWeaponId(int id)      { _farWeaponId = id; }
     void    setXp(int xp)               { _xp = xp; }
     void    setKey(KeyId id, bool b)    { _keys[static_cast<int>(id)] = b; }
-    void    update();
+    void    update(const Map& map);
     ~Player();
 
 private:

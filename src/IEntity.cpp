@@ -1,5 +1,5 @@
 #include "IEntity.hpp"
-#include <iostream>
+#include "Screen.hpp"
 
 IEntity::IEntity()
 : _mult(1.0f)
