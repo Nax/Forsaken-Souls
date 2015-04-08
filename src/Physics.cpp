@@ -3,156 +3,46 @@
 #include "Level.hpp"
 
 void
-Phys::updatePlayerStence(Player &p)
+Phys::updatePlayer(Player &p, const Map& map)
 {
-    switch (p.oldStence())
-    {
-        case Stence::Stand:
-        {
-            if (p.key(KeyId::Space))
-                p.setStence(Stence::Jump);
-            else if (p.key(KeyId::Left) || p.key(KeyId::Right))
-                p.setStence(Stence::Run);
-            else if (p.key(KeyId::Down))
-                p.setStence(Stence::Crouch);
-            else
-                p.setStence(Stence::Stand);
-            break;
-        }
-        case Stence::Run:
-        {
-            if (p.key(KeyId::Space))
-                p.setStence(Stence::Jump);
-            else if ((p.oldDir() == false && p.key(KeyId::Left) == false) || (p.oldDir() == true && p.key(KeyId::Right) == false))
-                p.setStence(Stence::Stand);
-            else if (p.key(KeyId::Down))
-                p.setStence(Stence::Crouch);
-            else
-                p.setStence(Stence::Run);
-            break;
-        }
-        case Stence::Crouch:
-        {
-            if (p.key(KeyId::Space))
-                p.setStence(Stence::Jump);
-            if (p.key(KeyId::Down) == false)
-                p.setStence(Stence::Stand);
-            else
-                p.setStence(Stence::Crouch);
-            break;
-        }
-        case Stence::Jump:
-        {
-            //
-            p.setGrounded(false);
-            //
-            if (p.speed().y < 0.0)
-                p.setStence(Stence::Fall);
-            else
-                p.setStence(Stence::Jump);
-            break;
-        }
-        case Stence::Fall:
-        {
-            if (p.grounded())
-                p.setStence(Stence::Stand);
-            else
-                p.setStence(Stence::Fall);
-            break;
-        }
-        case Stence::Secret:
-            break;
-        default:
-            break;
-    }
-    if (!p.grounded())
-    {
-        if (p.speed().y > 0)
-            p.setStence(Stence::Jump);
-        else
-            p.setStence(Stence::Fall);
-    }
+    p.setOldStence();
+    p.setOldDir();
+
+    // update player position
+    applyGravity(p);
+    updatePosition(p);
+
+    // correct player position/speed according to collisions
+    checkCollisionY(p, map);
+    checkCollisionX(p, map);
+
 }
 
 void
-Phys::setPlayerTransition(Player &p)
+Phys::updatePosition(Player& p)
 {
-    p.setAnimation(false);
-    p.setTransition(true);
-    int begin = gEntityData[p.dataId()].transitions[static_cast<int>(p.oldStence())][static_cast<int>(p.stence())].begin;
-    int length = gEntityData[p.dataId()].transitions[static_cast<int>(p.oldStence())][static_cast<int>(p.stence())].length;
-    int frames = gEntityData[p.dataId()].transitions[static_cast<int>(p.oldStence())][static_cast<int>(p.stence())].frames;
-    p.setAnimation(begin, length, frames, false);
-}
-
-void
-Phys::setPlayerAnimation(Player &p)
-{
-    p.setAnimation(true);
-    p.setTransition(false);
-    int begin = gEntityData[p.dataId()].animations[static_cast<int>(p.stence())].begin;
-    int length = gEntityData[p.dataId()].animations[static_cast<int>(p.stence())].length;
-    int frames = gEntityData[p.dataId()].animations[static_cast<int>(p.stence())].frames;
-    p.setAnimation(begin, length, frames);
-}
-
-void
-Phys::updatePlayerSpeed(Player &p, bool moving)
-{
-    double      factor = (p.direction()) ? 1.0 : -1.0;
-    Stence      stence = p.stence();
-
-    // This cannot work, as stences should not be used to predict speed.
-    // Only transition between stences should create speed.
-    // Also, the grounded property shoukd be unset every frame.
-
-    // y speed
-    if (p.grounded() && stence == Stence::Jump)
-    {
-        p.setSpeed(p.speed().x, 1.0);
-    }
-    else
-        p.setSpeed(p.speed().x, fmax((p.speed().y - 0.02), -2.0));
-
-    // x speed
-    if (p.grounded())
-    {
-        if (stence == Stence::Stand || stence == Stence::Crouch)
-            p.setSpeed(0.0, 0.0);
-        else if (stence == Stence::Run)
-            p.setSpeed(factor * 1.0, 0.0);
-        else
-            p.setSpeed(factor * 0.7, p.speed().y);
-    }
-    else
-    {
-        if (moving)
-            p.setSpeed(factor * 0.7, p.speed().y);
-        else
-            p.setSpeed(0.0, p.speed().y);
-    }
-}
-
-void
-Phys::updatePlayerPosition(Player &p, const Map& map)
-{   
     p.setX(p.x() + p.speed().x * 0.1);
     p.setY(p.y() + p.speed().y * 0.1);
+}
 
+void
+Phys::applyGravity(Player& p)
+{
+    p.setGrounded(false);
+    p.setSpeed(p.speed().x, fmax((p.speed().y - 0.02), -2.0));
+    p.setSpeed(0.4, p.speed().y);
+}
+
+void
+Phys::checkCollisionY(Player& p, const Map& map)
+{
     float w = gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stence())][0];
     float h = gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stence())][1];
 
-    int x1 = floor(p.x() + w);
-    int y1 = floor(p.y() + h);
-
-    //Check y collision
-
-    //p.setGrounded(false);
-
-
+    // check for downward collisions
     if (p.speed().y <= 0.0)
     {
-        for (int i = p.x(); i < x1; i++)
+        for (int i = p.x(); i < floor(p.x() + w); i++)
         {
             const TileBoundingBox& box = map.at(i, p.y()).boundingBoxes();
             for (int j = 0; j < box.count; j++)
@@ -165,29 +55,31 @@ Phys::updatePlayerPosition(Player &p, const Map& map)
                 if (p.x() + w > bx && p.x() < bx + bw && p.y() + h > by && p.y() < by + bh)
                 {
                     // Collision
+                    std::cout << "DOWN: " << by + bh << std::endl;
                     p.setY(by + bh);
                     p.setSpeed(p.speed().x, 0);
                     p.setGrounded(true);
                 }
             }
-        }    
+        }
     }
+    // check for upward collisions
     else
     {
-        // Need refactor (probably)
-        for (int i = p.x(); i < x1; i++)
+        for (int i = p.x(); i < floor(p.x() + w); i++)
         {
-            const TileBoundingBox& box = map.at(i, y1).boundingBoxes();
+            const TileBoundingBox& box = map.at(i, p.y() + h).boundingBoxes();
             for (int j = 0; j < box.count; j++)
             {
                 float   bx = i + box.boxes[j].x;
-                float   by = y1 + box.boxes[j].y;
+                float   by = floor(p.y() + h) + box.boxes[j].y;
                 float   bw = box.boxes[j].w;
                 float   bh = box.boxes[j].h;
 
                 if (p.x() + w > bx && p.x() < bx + bw && p.y() + h > by && p.y() < by + bh)
                 {
                     // Collision
+                    std::cout << "UP: " << by - h << std::endl;
                     p.setY(by - h);
                     p.setSpeed(p.speed().x, 0);
                 }
@@ -197,36 +89,55 @@ Phys::updatePlayerPosition(Player &p, const Map& map)
 }
 
 void
-Phys::updatePlayer(Player &p, const Map& map)
+Phys::checkCollisionX(Player& p, const Map& map)
 {
-    bool    moving;
-    bool    turning;
+    float w = gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stence())][0];
+    float h = gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stence())][1];
 
-    p.setOldDir();
-    p.setOldStence();
+    // check for left collisions
+    if (p.speed().x <= 0.0)
+    {
+        for (int i = p.y(); i < ceil(p.y() + h); i++)
+        {
+            const TileBoundingBox& box = map.at(p.x(), i).boundingBoxes();
+            for (int j = 0; j < box.count; j++)
+            {
+                float   bx = floor(p.x()) + box.boxes[j].x;
+                float   by = i + box.boxes[j].y;
+                float   bw = box.boxes[j].w;
+                float   bh = box.boxes[j].h;
 
-    // update direction
-    moving = (p.key(KeyId::Left) && !p.key(KeyId::Right)) || (p.key(KeyId::Right) && !p.key(KeyId::Left));
-    if (moving)
-        p.key(KeyId::Left) ? p.setDirection(false) : p.setDirection(true);
-    p.flipX(!p.direction());
+                if (p.y() + h > by && p.y() < by + bh && p.x() + w > bx && p.x() < bx + bw)
+                {
+                    // Collision
+                    std::cout << "LEFT: " << bx + bw << std::endl;
+                    p.setX(bx + bw);
+                    p.setSpeed(0, p.speed().y);
+                }
+            }
+        }
+    }
+    // check for right collisions
+    else
+    {
+        for (int i = p.y(); i < ceil(p.y() + h); i++)
+        {
+            const TileBoundingBox& box = map.at(p.x() + w, i).boundingBoxes();
+            for (int j = 0; j < box.count; j++)
+            {
+                float   bx = floor(p.x() + w) + box.boxes[j].x;
+                float   by = i + box.boxes[j].y;
+                float   bw = box.boxes[j].w;
+                float   bh = box.boxes[j].h;
 
-    // update stence
-    updatePlayerStence(p);
-    if (p.oldStence() != p.stence())
-        setPlayerTransition(p);
-    if (p.finished() && !p.animation())
-        setPlayerAnimation(p);
-
-    updatePlayerSpeed(p, moving);
-    updatePlayerPosition(p, map);
-
-    // Final goal :
-    //      Set new direction
-    //      Set new stence
-    //      Set new animation/transition if needed according to stence and direction
-    //      Set new speed vector
-    //      Set player position according to speed vector
-
-    // All new parameters can be the same as before.
+                if (p.y() + h > by && p.y() < by + bh && p.x() + w > bx && p.x() < bx + bw)
+                {
+                    // Collision
+                    std::cout << "RIGHT: " << p.x() + w << "     " << i << std::endl;
+                    p.setX(bx - w);
+                    p.setSpeed(0, p.speed().y);
+                }
+            }
+        }
+    }
 }

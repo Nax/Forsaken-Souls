@@ -99,7 +99,6 @@ protected:
     int             _id;
     double          _x;
     double          _y;
-    lm::Vector2d    _force;
     lm::Vector2d    _speed;
     lm::Sprite      _sprite;
     int             _hp;
