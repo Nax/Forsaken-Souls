@@ -7,8 +7,8 @@ Phys::checkGrounded(Player &p)
 
     // Get map portion just below the player.
     // Check collisions between p.boundingBox bottom side and tile bounding box.
-    // if collision -> p.setGrounded(true);
-    // else -> p.setGrounded(false);
+    // if collision -> p.grounded = true);
+    // else -> p.grounded = false);
 }
 
 void
@@ -53,9 +53,9 @@ Phys::updatePlayerStence(Player &p)
         case Stence::Jump:
         {
             //
-            p.setGrounded(false);
+            p.grounded = false;
             //
-            if (p.speed().y < 0.0)
+            if (p.speed.y < 0.0)
                 p.setStence(Stence::Fall);
             else
                 p.setStence(Stence::Jump);
@@ -63,7 +63,7 @@ Phys::updatePlayerStence(Player &p)
         }
         case Stence::Fall:
         {
-            if (p.grounded())
+            if (p.grounded)
                 p.setStence(Stence::Stand);
             else
                 p.setStence(Stence::Fall);
@@ -121,32 +121,32 @@ Phys::updatePlayerSpeed(Player &p, bool moving)
     Stence      stence = p.stence();
 
     // y speed
-    if (p.grounded())
+    if (p.grounded)
     {
         if (stence == Stence::Jump)
-            p.setSpeed(p.speed().x, 1.0);
+            p.speed.set(p.speed.x, 1.0);
         else
-            p.setSpeed(p.speed().x, 0.0);
+            p.speed.set(p.speed.x, 0.0);
     }
     else
-        p.setSpeed(p.speed().x, fmax((p.speed().y - 0.02), -2.0));
+        p.speed.set(p.speed.x, fmax((p.speed.y - 0.02), -2.0));
 
     // x speed
-    if (p.grounded())
+    if (p.grounded)
     {
         if (stence == Stence::Stand || stence == Stence::Crouch)
-            p.setSpeed(0.0, 0.0);
+            p.speed.set(0.0, 0.0);
         else if (stence == Stence::Run)
-            p.setSpeed(factor * 1.0, 0.0);
+            p.speed.set(factor * 1.0, 0.0);
         else
-            p.setSpeed(factor * 0.7, p.speed().y);
+            p.speed.set(factor * 0.7, p.speed.y);
     }
     else
     {
         if (moving)
-            p.setSpeed(factor * 0.7, p.speed().y);
+            p.speed.set(factor * 0.7, p.speed.y);
         else
-            p.setSpeed(0.0, p.speed().y);
+            p.speed.set(0.0, p.speed.y);
     }
 }
 
@@ -156,15 +156,15 @@ Phys::updatePlayerPosition(Player &p)
     double  x, y;
     bool    collisionX = false, collisionY = false;
 
-    x = p.x() + p.speed().x * 2.0;
-    y = p.y() - p.speed().y * 2.0;
+    x = p.position.x + p.speed.x * 2.0;
+    y = p.position.y - p.speed.y * 2.0;
 
 
     // checkForCollision();
     if (!collisionX)
-        p.setX(x);
+        p.position.x = x;
     if (!collisionY)
-        p.setY(y);
+        p.position.y = y;
 
 }
 
@@ -181,8 +181,8 @@ Phys::updatePlayer(Player &p)
     // update direction
     moving = (p.key(KeyId::Left) && !p.key(KeyId::Right)) || (p.key(KeyId::Right) && !p.key(KeyId::Left));
     if (moving)
-        p.key(KeyId::Left) ? p.setDirection(false) : p.setDirection(true);
-    p.flipX(!p.direction());
+        p.key(KeyId::Right) ? p.setDirection(false) : p.setDirection(true);
+	// p.setDirection(!p.direction());
 
     // update stence
     updatePlayerStence(p);

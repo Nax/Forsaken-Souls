@@ -26,8 +26,8 @@ Game::render() const
 
 	sb.begin();
 	_level.map().draw(sb);
+    _player.render(sb);
 	sb.end();
-    _player.render();
 }
 
 void

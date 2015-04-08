@@ -6,7 +6,7 @@
 
 enum class KeyId
 {
-    Up = 0,
+    Up,
     Down,
     Left,
     Right,

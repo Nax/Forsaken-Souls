@@ -55,7 +55,7 @@ Map::draw(lm::SpriteBatch& sb) const
 	{
 		for (int i = 0; i < _width; i++)
 		{
-			sb.draw(img, i * 32, j * 32, _tiles[i + j * _width]);
+			sb.draw(img, _tiles[i + j * _width], lm::Vector2f(i * 32, j * 32));
 		}
 	}
 }

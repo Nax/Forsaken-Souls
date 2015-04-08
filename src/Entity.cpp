@@ -1,10 +1,16 @@
 #include "Entity.hpp"
 
-Entity::Entity(int dataId, double x, double y, int level, double mult)
+Entity::Entity()
+: IEntity()
+{
+	
+}
+
+Entity::Entity(int dataId, float x, float y, int level, float mult)
+: IEntity()
 {
     _dataId = dataId;
-    _x = x;
-    _y = y;
+	position.set(x, y);
     _level = level;
     _mult = mult;
 }

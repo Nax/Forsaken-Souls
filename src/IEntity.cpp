@@ -1,6 +1,12 @@
 #include "IEntity.hpp"
 #include <iostream>
 
+IEntity::IEntity()
+: _mult(1.0f)
+{
+
+}
+
 void
 IEntity::setAnimation(int start, int end, int frames, bool loop)
 {
@@ -8,9 +14,9 @@ IEntity::setAnimation(int start, int end, int frames, bool loop)
 }
 
 void
-IEntity::render() const
+IEntity::render(lm::SpriteBatch& sb) const
 {
-	_sprite.draw(_x, _y);
+	sb.draw(_sprite);
 }
 
 void
