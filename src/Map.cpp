@@ -5,8 +5,8 @@
 
 Map::Map(std::ifstream& file)
 {
-	file.read(reinterpret_cast<char*>(&_width), 4);
-	file.read(reinterpret_cast<char*>(&_height), 4);
+	file.read(reinterpret_cast<char*>(&_width), sizeof(int32_t));
+	file.read(reinterpret_cast<char*>(&_height), sizeof(int32_t));
 	_tiles = new uint8_t[_width * _height];
 	file.read(reinterpret_cast<char*>(_tiles), _width * _height);
 }
@@ -88,7 +88,7 @@ Map::draw(lm::SpriteBatch& sb) const
 	{
 		for (int i = 0; i < _width; i++)
 		{
-			sb.draw(img, _tiles[i + j * _width], lm::Vector2f(i * 32, j * 32));
+			sb.draw(img, _tiles[i + j * _width], {i * 32.f, SCREEN_HEIGHT - (j + 1) * 32.f});
 		}
 	}
 }

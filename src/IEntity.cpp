@@ -2,7 +2,7 @@
 #include "Screen.hpp"
 
 IEntity::IEntity()
-: _mult(1.0f)
+: _mult(1.f)
 {
 
 }
@@ -16,6 +16,14 @@ IEntity::setAnimation(int start, int end, int frames, bool loop)
 void
 IEntity::render(lm::SpriteBatch& sb) const
 {
+	glBegin(GL_LINE_LOOP);
+	glColor3ub(0, 255, 0);
+	glVertex3i(position.x * 32, SCREEN_HEIGHT - position.y * 32, 0);
+	glVertex3i((position.x + gEntityData[_dataId].boundingBox[static_cast<int>(_stence)][0]) * 32, SCREEN_HEIGHT - position.y * 32, 0);
+	glVertex3i((position.x + gEntityData[_dataId].boundingBox[static_cast<int>(_stence)][0])* 32, SCREEN_HEIGHT - (position.y + gEntityData[_dataId].boundingBox[static_cast<int>(_stence)][1]) * 32, 0);
+	glVertex3i(position.x * 32, SCREEN_HEIGHT - (position.y + gEntityData[_dataId].boundingBox[static_cast<int>(_stence)][1]) * 32, 0);
+	glEnd();
+	glColor3ub(255, 255, 255);
 	sb.draw(_sprite);
 }
 

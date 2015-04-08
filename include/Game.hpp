@@ -21,6 +21,8 @@ public:
     ~Game();
 
 private:
+	typedef std::array<int, 6>		t_array6i;
+
     Player  _player;
     Level   _level;
 };

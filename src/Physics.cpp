@@ -21,8 +21,8 @@ Phys::updatePlayer(Player &p, const Map& map)
 void
 Phys::updatePosition(Player& p)
 {
-    p.position.x = p.position.x + p.speed.x * 0.1;
-    p.position.y = p.position.y + p.speed.y * 0.1;
+    p.position.x = p.position.x + p.speed.x * 0.1f;
+    p.position.y = p.position.y + p.speed.y * 0.1f;
 }
 
 void
@@ -30,7 +30,7 @@ Phys::applyGravity(Player& p)
 {
     p.grounded = false;
     p.speed = {p.speed.x, fmaxf((p.speed.y - 0.02f), -2.0f)};
-    p.speed = {0.4, p.speed.y};
+    p.speed = {0.4f, p.speed.y};
 }
 
 void
@@ -40,7 +40,7 @@ Phys::checkCollisionY(Player& p, const Map& map)
     float h = gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stence())][1];
 
     // check for downward collisions
-    if (p.speed.y <= 0.0)
+    if (p.speed.y <= 0.f)
     {
         for (int i = p.position.x; i < floor(p.position.x + w); i++)
         {
@@ -57,7 +57,7 @@ Phys::checkCollisionY(Player& p, const Map& map)
                     // Collision
                     std::cout << "DOWN: " << by + bh << std::endl;
                     p.position.y = by + bh;
-                    p.speed = {p.speed.x, 0};
+                    p.speed = {p.speed.x, 0.f};
                     p.grounded = true;
                 }
             }
@@ -81,7 +81,7 @@ Phys::checkCollisionY(Player& p, const Map& map)
                     // Collision
                     std::cout << "UP: " << by - h << std::endl;
                     p.position.y = by - h;
-                    p.speed = {p.speed.x, 0};
+                    p.speed = {p.speed.x, 0.f};
                 }
             }
         }
@@ -95,7 +95,7 @@ Phys::checkCollisionX(Player& p, const Map& map)
     float h = gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stence())][1];
 
     // check for left collisions
-    if (p.speed.x <= 0.0)
+    if (p.speed.x <= 0.f)
     {
         for (int i = p.position.y; i < ceil(p.position.y + h); i++)
         {
@@ -112,7 +112,7 @@ Phys::checkCollisionX(Player& p, const Map& map)
                     // Collision
                     std::cout << "LEFT: " << bx + bw << std::endl;
                     p.position.x = bx + bw;
-                    p.speed = {0, p.speed.y};
+                    p.speed = {0.f, p.speed.y};
                 }
             }
         }
@@ -135,7 +135,7 @@ Phys::checkCollisionX(Player& p, const Map& map)
                     // Collision
                     std::cout << "RIGHT: " << p.position.x + w << "     " << i << std::endl;
                     p.position.x = bx - w;
-                    p.speed = {0, p.speed.y};
+                    p.speed = {0.f, p.speed.y};
                 }
             }
         }

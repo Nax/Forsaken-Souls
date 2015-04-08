@@ -17,14 +17,14 @@ Game::Game()
 	stream.read(reinterpret_cast<char*>(&linkCount), sizeof(linkCount));
 
 	Level::_totalLinks.resize(linkCount);
-	for (std::array<int, 6>& lkar : Level::_totalLinks)
+	for (t_array6i& lnkAr : Level::_totalLinks)
 	{
-		for (int& linkPart : lkar)
+		for (int& linkPart : lnkAr)
 		{
 			int32_t linkDWord;
 
 			stream.read(reinterpret_cast<char*>(&linkDWord), sizeof(linkDWord));
-			linkPart = linkDWord;
+			linkPart = static_cast<int>(linkDWord);
 		}
 	}
 }
