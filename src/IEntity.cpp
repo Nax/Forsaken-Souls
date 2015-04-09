@@ -24,11 +24,16 @@ IEntity::render(lm::SpriteBatch& sb) const
 	glVertex3i(position.x * 32, SCREEN_HEIGHT - (position.y + gEntityData[_dataId].boundingBox[static_cast<int>(_stence)][1]) * 32, 0);
 	glEnd();
 	glColor3ub(255, 255, 255);
+
+	sb.begin();
 	sb.draw(_sprite);
+	sb.end();
 }
 
 void
 IEntity::update()
 {
 	_sprite.update();
+	_sprite.pos.x = position.x * 32;
+	_sprite.pos.y = SCREEN_HEIGHT - (position.y + 1) * 32 - _sprite.height();
 }

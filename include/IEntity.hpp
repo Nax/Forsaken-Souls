@@ -73,7 +73,7 @@ public:
     void        setHp(int hp)                   { _hp = hp; }
     void        setMp(int mp)                   { _mp = mp; }
     void        setLevel(int level)             { _level = level; }
-    void        setMult(float mult)            { _mult = mult; }
+    void        setMult(float mult)             { _mult = mult; }
     void        setStence(Stence stence)        { _stence = stence; }
     void        setOldStence()                  { _oldStence = _stence; }
     void        setHitState(HitState hitState)  { _hitState = hitState; }
@@ -84,11 +84,11 @@ public:
     void        setAnimation(int start, int end, int frames, bool loop = true);
 
     void        render(lm::SpriteBatch& sb) const;
-    void        update();
+    virtual void        update();
 
-	lm::Vector2f	position;
-    lm::Vector2f    speed;
-    bool            grounded;
+	lm::Vector2f	     position;
+    lm::Vector2f         speed;
+    bool                 grounded;
 
 protected:
     lm::Sprite      _sprite;
