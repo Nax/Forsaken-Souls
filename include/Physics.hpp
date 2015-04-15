@@ -11,8 +11,8 @@ namespace Phys
     void    updateStance(Player& p);
     void    updateSpeed(Player& p);
     void    applyGravity(Player& p);
-    void    checkCollisionY(Player& p, const Map& map, float* dy);
-    void    checkCollisionX(Player& p, const Map& map, float* dx);
+    void    checkCollisionX(Player& p, const Map& map);
+    void    checkCollisionY(Player& p, const Map& map);
 }
 
 #endif

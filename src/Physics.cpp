@@ -11,67 +11,16 @@ void
 Phys::updatePlayer(Player &p, const Map& map)
 {
     debugPhysics.clear();
-    std::cout << "===================" << std::endl;
 
     p.setOldStance();
     p.setOldDir();
-
-    // update player position
+    
+    p.position.x += p.speed.x * 0.2f;
+    checkCollisionX(p, map);
     applyGravity(p);
-    updatePosition(p);
-
-    // set player position/speed according to collisions
-    float dx = 0.0;
-    float dy = 0.0;
-    checkCollisionX(p, map, &dx);
-    checkCollisionY(p, map, &dy);
-
-    if (fabs(dy) < fabs(dx) && dy != 0.f)
-    {
-        std::cout << "Y" << std::endl;
-        
-        p.position.y += dy;
-        p.speed = {p.speed.x, 0.f};
-        if (dy > 0.f)
-            p.grounded = true;
-
-        checkCollisionX(p, map, &dx);
-        p.position.x += dx;
-        if (dx != 0.f)
-        {
-            std::cout << "X" << std::endl;
-            p.speed = {0.f, p.speed.y};
-        }
-    }
-    else if (dx != 0.f)
-    {
-        std::cout << "X" << std::endl;
-        
-        p.position.x += dx;
-        p.speed = {0.f, p.speed.y};
-
-        checkCollisionY(p, map, &dy);
-        p.position.y += dy;
-        if (dy != 0.f)
-        {
-            std::cout << "Y" << std::endl;
-            p.speed = {p.speed.x, 0.f};
-        }
-        if (dy > 0.f)
-            p.grounded = true;
-    }
-
+    p.position.y += p.speed.y * 0.2f;
+    checkCollisionY(p, map);
     updateSpeed(p);
-    updateStance(p);
-
-    std::cout << "===================" << std::endl;
-}
-
-void
-Phys::updatePosition(Player& p)
-{
-    p.position.x = p.position.x + p.speed.x * 0.1f;
-    p.position.y = p.position.y + p.speed.y * 0.1f;
 }
 
 void
@@ -140,149 +89,126 @@ Phys::applyGravity(Player& p)
     // p.speed = {0.4f, p.speed.y};
 }
 
+
 void
-Phys::checkCollisionY(Player& p, const Map& map, float* dy)
+Phys::checkCollisionX(Player& p, const Map& map)
 {
-    float w = gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stance())][0];
-    float h = gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stance())][1];
+    const float w = gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stance())][0];
+    const float h = gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stance())][1];
+    const float rangeX = std::ceil(p.position.x + w);
+    const float rangeY = std::ceil(p.position.y + h);
+    const bool faceRight = (p.speed.x > 0);
 
-    *dy = 0.f;
+    float dx = 0.0f;
 
-    // check for downward collisions
-    if (p.speed.y <= 0.f)
+    for (int j = p.position.y; j < rangeY; ++j)
     {
-        for (int i = p.position.x; i <= floor(p.position.x + w); i++)
+        for (int i = p.position.x; i < rangeX; ++i)
         {
-            const TileBoundingBox& box = map.at(i, p.position.y).boundingBoxes();
-            for (int j = 0; j < box.count; j++)
+            const TileBoundingBox& bb = map.at(i, j).boundingBoxes();
+
+            for (int b = 0; b < bb.count; ++b)
             {
-                float   bx = i + box.boxes[j].x;
-                float   by = floor(p.position.y) + box.boxes[j].y;
-                float   bw = box.boxes[j].w;
-                float   bh = box.boxes[j].h;
+                const float bx = i + bb.boxes[b].x;
+                const float by = j + bb.boxes[b].y;
+                const float bw = bb.boxes[b].w;
+                const float bh = bb.boxes[b].h;
+                float diff;
 
-                if (p.position.x + w > bx && p.position.x < bx + bw && p.position.y + h > by && p.position.y < by + bh)
+                if (bx + bw < p.position.x || bx > p.position.x + w || by + bh < p.position.y || by > p.position.y + h)
+                    continue;
+                if (faceRight)
                 {
-                    lm::VertexArrayc<4> v;
-
-                    v.push(bx * 32, SCREEN_HEIGHT - (by * 32), 1, 0, 0);
-                    v.push((bx + bw) * 32, SCREEN_HEIGHT - (by * 32), 1, 0, 0);
-                    v.push((bx + bw) * 32, SCREEN_HEIGHT - ((by + bh) * 32), 1, 0, 0);
-                    v.push(bx * 32, SCREEN_HEIGHT - ((by + bh) * 32), 1, 0, 0);
-                    debugPhysics.push_back(v);
-
-                    if (fabs((by + bh) - p.position.y) > fabs(*dy))
-                    {
-                        *dy = (by + bh) - p.position.y;
-                    }
+                    diff = p.position.x + w - bx;
+                    if (diff > dx)
+                        dx = diff;
+                }
+                else
+                {
+                    diff = p.position.x - (bx + bw);
+                    if (diff < dx)
+                        dx = diff;
                 }
             }
         }
     }
-    // check for upward collisions
-    else
+    if (dx != 0.0f)
     {
-        for (int i = p.position.x; i < ceil(p.position.x + w); i++)
-        {
-            const TileBoundingBox& box = map.at(i, p.position.y + h).boundingBoxes();
-            for (int j = 0; j < box.count; j++)
-            {
-                float   bx = i + box.boxes[j].x;
-                float   by = floor(p.position.y + h) + box.boxes[j].y;
-                float   bw = box.boxes[j].w;
-                float   bh = box.boxes[j].h;
-
-                if (p.position.x + w > bx && p.position.x < bx + bw && p.position.y + h > by && p.position.y < by + bh)
-                {
-                    lm::VertexArrayc<4> v;
-
-                    v.push(i * 32, SCREEN_HEIGHT - (p.position.y + h) * 32, 1, 0, 0);
-                    v.push((i + 1) * 32, SCREEN_HEIGHT - (p.position.y + h) * 32, 1, 0, 0);
-                    v.push((i + 1) * 32, SCREEN_HEIGHT - ((p.position.y + h) + 1) * 32, 1, 0, 0);
-                    v.push(i * 32, SCREEN_HEIGHT - ((p.position.y + h) + 1) * 32, 1, 0, 0);
-                    debugPhysics.push_back(v);
-
-                    if (fabs((by - h) - p.position.y) > fabs(*dy))
-                    {
-                        *dy = (by - h) - p.position.y;
-                    }
-                }
-            }
-        }
+        p.position.x -= dx;
+        p.speed.x = 0.0f;
     }
 }
 
 void
-Phys::checkCollisionX(Player& p, const Map& map, float* dx)
+Phys::checkCollisionY(Player& p, const Map& map)
 {
-    float w = gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stance())][0];
-    float h = gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stance())][1];
+    const float w = gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stance())][0];
+    const float h = gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stance())][1];
+    const float rangeX = std::ceil(p.position.x + w);
+    const float rangeY = std::ceil(p.position.y + h);
+    const bool faceUp = (p.speed.y > 0);
 
-    *dx = 0.f;
+    float dy = 0.0f;
 
-    // check for left collisions
-    if (p.speed.x <= 0.f)
+    for (int j = p.position.y; j < rangeY; ++j)
     {
-        for (int i = p.position.y; i < ceil(p.position.y + h); i++)
+        for (int i = p.position.x; i < rangeX; ++i)
         {
-            const TileBoundingBox& box = map.at(p.position.x, i).boundingBoxes();
-            for (int j = 0; j < box.count; j++)
+            const TileBoundingBox& bb = map.at(i, j).boundingBoxes();
+
+            for (int b = 0; b < bb.count; ++b)
             {
-                float   bx = floor(p.position.x) + box.boxes[j].x;
-                float   by = i + box.boxes[j].y;
-                float   bw = box.boxes[j].w;
-                float   bh = box.boxes[j].h;
+                const float bx = i + bb.boxes[b].x;
+                const float by = j + bb.boxes[b].y;
+                const float bw = bb.boxes[b].w;
+                const float bh = bb.boxes[b].h;
+                float diff;
 
-                if (p.position.y + h > by && p.position.y < by + bh && p.position.x + w > bx && p.position.x < bx + bw)
+                if (bx + bw < p.position.x || bx > p.position.x + w || by + bh < p.position.y || by > p.position.y + h)
+                    continue;
+                if (faceUp)
                 {
-                    lm::VertexArrayc<4> v;
-
-                    v.push(p.position.x * 32, SCREEN_HEIGHT - i * 32, 1, 1, 0);
-                    v.push((p.position.x - 1) * 32, SCREEN_HEIGHT - i * 32, 1, 1, 0);
-                    v.push((p.position.x - 1) * 32, SCREEN_HEIGHT - (i + 1) * 32, 1, 1, 0);
-                    v.push(p.position.x * 32, SCREEN_HEIGHT - (i + 1) * 32, 1, 1, 0);
-
-                    debugPhysics.push_back(v);
-
-                    if (fabs((bx + bw) - p.position.x) > fabs(*dx))
-                    {
-                        *dx = (bx + bw) - p.position.x;
-                    }
+                    diff = p.position.y + h - by;
+                    if (diff > dy)
+                        dy = diff;
+                }
+                else
+                {
+                    diff = p.position.y - (by + bh);
+                    if (diff < dy)
+                        dy = diff;
                 }
             }
         }
     }
-    // check for right collisions
-    else
+    if (dy != 0.0f)
     {
-        for (int i = p.position.y; i < ceil
-            (p.position.y + h); i++)
-        {
-            const TileBoundingBox& box = map.at(p.position.x + w, i).boundingBoxes();
-            for (int j = 0; j < box.count; j++)
-            {
-                float   bx = floor(p.position.x + w) + box.boxes[j].x;
-                float   by = i + box.boxes[j].y;
-                float   bw = box.boxes[j].w;
-                float   bh = box.boxes[j].h;
-
-                if (p.position.y + h > by && p.position.y < by + bh && p.position.x + w > bx && p.position.x < bx + bw)
-                {
-                    lm::VertexArrayc<4> v;
-
-                    v.push((p.position.x + w) * 32, SCREEN_HEIGHT - i * 32, 1, 1, 0);
-                    v.push(((p.position.x + w) + 1) * 32, SCREEN_HEIGHT - i * 32, 1, 1, 0);
-                    v.push(((p.position.x + w) + 1) * 32, SCREEN_HEIGHT - (i + 1) * 32, 1, 1, 0);
-                    v.push((p.position.x + w) * 32, SCREEN_HEIGHT - (i + 1) * 32, 1, 1, 0);
-
-                    debugPhysics.push_back(v);
-
-                    if (fabs((bx - w) - p.position.x) > fabs(*dx))
-                    {
-                        *dx = (bx - w) - p.position.x;
-                    }
-                }
-            }
-        }
+        p.position.y -= dy;
+        p.speed.y = 0.0f;
+        if (!faceUp)
+            p.grounded = true;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
