@@ -5,7 +5,7 @@
 #include <Lums/Lums.hpp>
 #include "ImageProvider.hpp"
 
-enum class Stence
+enum class Stance
 {
     Stand,
     Run,
@@ -61,8 +61,8 @@ public:
     int             dataId() const      { return _dataId; }
     int             level() const       { return _level; }
     float           mult() const        { return _mult; }
-    Stence          stence() const      { return _stence; }
-    Stence          oldStence() const   { return _oldStence; }
+    Stance          stance() const      { return _stance; }
+    Stance          oldStance() const   { return _oldStance; }
     HitState        hitState() const    { return _hitState; }
     bool            oldDir() const      { return _oldDir; }
     bool            direction() const   { return _direction; }
@@ -74,10 +74,10 @@ public:
     void            setMp(int mp)                   { _mp = mp; }
     void            setLevel(int level)             { _level = level; }
     void            setMult(float mult)             { _mult = mult; }
-    void            setStence(Stence stence)        { _stence = stence; }
-    void            setOldStence()                  { _oldStence = _stence; }
+    void            setStance(Stance stance)        { _stance = stance; }
+    void            setOldStance()                  { _oldStance = _stance; }
     void            setHitState(HitState hitState)  { _hitState = hitState; }
-    void            setDirection(bool direction)    { _direction = direction; _sprite.flip.x = direction; }
+    void            setDirection(bool direction)    { _direction = direction; _sprite.flip.x = !direction; }
     void            setOldDir()                     { _oldDir = _direction; }
     void            setTransition(bool transition)  { _transition = transition; }
     void            setAnimation(bool animation)    { _animation = animation; }
@@ -97,8 +97,8 @@ protected:
     int             _dataId;
     int             _level;
     float           _mult;
-    Stence          _oldStence;
-    Stence          _stence;
+    Stance          _oldStance;
+    Stance          _stance;
     HitState        _hitState;
     bool            _direction;
     bool            _oldDir;
