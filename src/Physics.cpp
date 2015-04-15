@@ -15,12 +15,13 @@ Phys::updatePlayer(Player &p, const Map& map)
     p.setOldStance();
     p.setOldDir();
     
-    p.position.x += p.speed.x * 0.2f;
+    p.position.x += p.speed.x * 0.15f;
     checkCollisionX(p, map);
     applyGravity(p);
-    p.position.y += p.speed.y * 0.2f;
+    p.position.y += p.speed.y * 0.17f;
     checkCollisionY(p, map);
     updateSpeed(p);
+    updateStance(p);
 }
 
 void
@@ -57,7 +58,12 @@ Phys::updateStance(Player& p)
 
     if (p.grounded)
     {
-        if (p.speed.x != 0.f)
+        if (p.key(KeyId::Down))
+        {
+            p.speed.x = 0.f;
+            p.setStance(Stance::Crouch);
+        }
+        else if (p.speed.x != 0.f)
             p.setStance(Stance::Run);
         else
             p.setStance(Stance::Stand);
@@ -85,8 +91,7 @@ void
 Phys::applyGravity(Player& p)
 {
     p.grounded = false;
-    p.speed = {p.speed.x, fmaxf((p.speed.y - 0.02f), -2.f)};
-    // p.speed = {0.4f, p.speed.y};
+    p.speed = {p.speed.x, fmaxf((p.speed.y - 0.015f), -1.5f)};
 }
 
 
@@ -97,7 +102,7 @@ Phys::checkCollisionX(Player& p, const Map& map)
     const float h = gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stance())][1];
     const float rangeX = std::ceil(p.position.x + w);
     const float rangeY = std::ceil(p.position.y + h);
-    const bool faceRight = (p.speed.x > 0);
+    const bool faceRight = (p.speed.x >= 0.0f);
 
     float dx = 0.0f;
 
