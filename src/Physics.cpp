@@ -9,13 +9,13 @@ Phys::updateEntity(IEntity &p, const Map& map)
     p.setOldStance();
     p.setOldDir();
     
+    updateSpeed(p);
+    updateStance(p);
     p.position.x += p.speed.x * 0.15f;
     checkCollisionX(p, map);
     applyGravity(p);
     p.position.y += p.speed.y * 0.17f;
     checkCollisionY(p, map);
-    updateSpeed(p);
-    updateStance(p);
 }
 
 void

@@ -4,4 +4,7 @@
 #define SCREEN_WIDTH	1024
 #define SCREEN_HEIGHT	768
 
+#define SCREEN_TILES_W	32
+#define SCREEN_TILES_H	24
+
 #endif

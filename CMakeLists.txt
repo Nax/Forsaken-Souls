@@ -20,6 +20,7 @@ target_link_libraries(forsaken_souls ${LUMS_LIBRARIES})
 add_custom_target(
 	assets ALL
 	WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+	COMMAND "rm" "-rf" "${CMAKE_BINARY_DIR}/Forsaken Souls.app/Contents/Resources"
 	COMMAND "ruby" "${CMAKE_SOURCE_DIR}/utils/build.rb"
 	COMMAND "cp" "-r" "${CMAKE_SOURCE_DIR}/assets" "${CMAKE_BINARY_DIR}/Forsaken Souls.app/Contents/Resources"
 )

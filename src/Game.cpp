@@ -39,6 +39,7 @@ void
 Game::update()
 {
     _player.update(_level.map());
+    _camera.update(_player);
 }
 
 void
@@ -47,8 +48,8 @@ Game::render() const
 	lm::SpriteBatch sb;
 
 	sb.begin();
-	_level.map().draw(sb);
-    _player.render(sb);
+	_level.map().draw(sb, _camera);
+    _player.render(sb, _camera);
 	sb.end();
 }
 

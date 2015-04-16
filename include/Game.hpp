@@ -6,6 +6,7 @@
 #include <Lums/Lums.hpp>
 #include "Player.hpp"
 #include "Level.hpp"
+#include "Camera.hpp"
 
 class Game : public lm::GameState
 {
@@ -25,6 +26,7 @@ private:
 
     Player  _player;
     Level   _level;
+    Camera  _camera;
 };
 
 #endif

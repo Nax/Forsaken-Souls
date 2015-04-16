@@ -4,6 +4,7 @@
 #include <string>
 #include <Lums/Lums.hpp>
 #include "ImageProvider.hpp"
+#include "Camera.hpp"
 
 enum class Stance
 {
@@ -94,7 +95,7 @@ public:
     void            setAnimation(int start, int end, int frames, bool loop = true);
     void            setKey(KeyId id, bool b)    { _keys[static_cast<int>(id)] = b; }
 
-    void            render(lm::SpriteBatch& sb) const;
+    void            render(lm::SpriteBatch& sb, const Camera& camera) const;
     virtual void    update();
 
 	lm::Vector2f	     position;
@@ -102,7 +103,7 @@ public:
     bool                 grounded;
 
 protected:
-    lm::Sprite              _sprite;
+    mutable lm::Sprite      _sprite;
     int                     _hp;
     int                     _mp;
     int                     _dataId;

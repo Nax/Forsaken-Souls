@@ -15,17 +15,22 @@ IEntity::setAnimation(int start, int end, int frames, bool loop)
 }
 
 void
-IEntity::render(lm::SpriteBatch& sb) const
+IEntity::render(lm::SpriteBatch& sb, const Camera& camera) const
 {
+	const lm::Vector2f& off = camera.offset();
+	const lm::Vector2f p = position - off;
+
 	glBegin(GL_LINE_LOOP);
 	glColor3ub(0, 255, 0);
-	glVertex3i(position.x * 32, SCREEN_HEIGHT - position.y * 32, 0);
-	glVertex3i((position.x + gEntityData[_dataId].boundingBox[static_cast<int>(_stance)][0]) * 32, SCREEN_HEIGHT - position.y * 32, 0);
-	glVertex3i((position.x + gEntityData[_dataId].boundingBox[static_cast<int>(_stance)][0])* 32, SCREEN_HEIGHT - (position.y + gEntityData[_dataId].boundingBox[static_cast<int>(_stance)][1]) * 32, 0);
-	glVertex3i(position.x * 32, SCREEN_HEIGHT - (position.y + gEntityData[_dataId].boundingBox[static_cast<int>(_stance)][1]) * 32, 0);
+	glVertex3i(p.x * 32, SCREEN_HEIGHT - p.y * 32, 0);
+	glVertex3i((p.x + gEntityData[_dataId].boundingBox[static_cast<int>(_stance)][0]) * 32, SCREEN_HEIGHT - p.y * 32, 0);
+	glVertex3i((p.x + gEntityData[_dataId].boundingBox[static_cast<int>(_stance)][0])* 32, SCREEN_HEIGHT - (p.y + gEntityData[_dataId].boundingBox[static_cast<int>(_stance)][1]) * 32, 0);
+	glVertex3i(p.x * 32, SCREEN_HEIGHT - (p.y + gEntityData[_dataId].boundingBox[static_cast<int>(_stance)][1]) * 32, 0);
 	glEnd();
 	glColor3ub(255, 255, 255);
 
+	_sprite.pos.x = p.x * 32.0f;
+	_sprite.pos.y = SCREEN_HEIGHT - (position.y - off.y) * 32.0f - _sprite.height();
 	sb.begin();
 	sb.draw(_sprite);
 	sb.end();

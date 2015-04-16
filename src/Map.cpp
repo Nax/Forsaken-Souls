@@ -80,15 +80,16 @@ Map::at(int x, int y) const
 }
 
 void
-Map::draw(lm::SpriteBatch& sb) const
+Map::draw(lm::SpriteBatch& sb, const Camera& camera) const
 {
 	lm::Image& img = ImageProvider::get().image(ImageId::Tileset);
+	const lm::Vector2f& off = camera.offset();
 
 	for (int j = 0; j < _height; j++)
 	{
 		for (int i = 0; i < _width; i++)
 		{
-			sb.draw(img, _tiles[i + j * _width], {i * 32.f, SCREEN_HEIGHT - (j + 1) * 32.f});
+			sb.draw(img, _tiles[i + j * _width], {(i - off.x) * 32.f, SCREEN_HEIGHT - ((j - off.y) + 1) * 32.f});
 		}
 	}
 }

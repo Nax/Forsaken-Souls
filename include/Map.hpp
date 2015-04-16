@@ -3,10 +3,11 @@
 
 #include <cstdint>
 #include <fstream>
-#include <Lums/Lums.hpp>
-#include <Tile.hpp>
 #include <vector>
 #include <array>
+#include <Lums/Lums.hpp>
+#include "Tile.hpp"
+#include "Camera.hpp"
 
 /*
  * Instantiatied by a Level object and holding values and pointers,
@@ -26,7 +27,7 @@ public:
 	uint32_t						height() const;
 	const Tile&						at(int at) const;
 	const Tile&						at(int x, int y) const;
-	void							draw(lm::SpriteBatch& sb) const;
+	void							draw(lm::SpriteBatch& sb, const Camera& camera) const;
 	const std::vector<t_array4i>&	links() const;
 	~Map();
 
