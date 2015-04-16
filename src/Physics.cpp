@@ -24,7 +24,7 @@ Phys::updateSpeed(IEntity& p)
     if (p.grounded)
     {
         if (p.key(KeyId::Space) && !p.key(KeyId::Down))
-            p.speed.y = 1.f;
+            p.speed.y = 1.2f;
         if (p.key(KeyId::Right) && !p.key(KeyId::Left))
             p.speed.x = 0.7f;
         if (p.key(KeyId::Left) && !p.key(KeyId::Right))
