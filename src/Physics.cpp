@@ -1,17 +1,11 @@
 #include <cmath>
-#include <iostream>
 #include "Physics.hpp"
 #include "Level.hpp"
 #include "Screen.hpp"
-#include <vector>
-
-std::vector<lm::VertexArrayc<4>> debugPhysics;
 
 void
-Phys::updatePlayer(Player &p, const Map& map)
+Phys::updateEntity(IEntity &p, const Map& map)
 {
-    debugPhysics.clear();
-
     p.setOldStance();
     p.setOldDir();
     
@@ -25,7 +19,7 @@ Phys::updatePlayer(Player &p, const Map& map)
 }
 
 void
-Phys::updateSpeed(Player& p)
+Phys::updateSpeed(IEntity& p)
 {
     if (p.grounded)
     {
@@ -49,7 +43,7 @@ Phys::updateSpeed(Player& p)
         p.speed.x = 0.f;
 }
 void
-Phys::updateStance(Player& p)
+Phys::updateStance(IEntity& p)
 {
     if (p.speed.x < 0)
         p.setDirection(false);
@@ -88,7 +82,7 @@ Phys::updateStance(Player& p)
 
 
 void
-Phys::applyGravity(Player& p)
+Phys::applyGravity(IEntity& p)
 {
     p.grounded = false;
     p.speed = {p.speed.x, fmaxf((p.speed.y - 0.015f), -1.5f)};
@@ -96,7 +90,7 @@ Phys::applyGravity(Player& p)
 
 
 void
-Phys::checkCollisionX(Player& p, const Map& map)
+Phys::checkCollisionX(IEntity& p, const Map& map)
 {
     const float w = gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stance())][0];
     const float h = gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stance())][1];
@@ -145,7 +139,7 @@ Phys::checkCollisionX(Player& p, const Map& map)
 }
 
 void
-Phys::checkCollisionY(Player& p, const Map& map)
+Phys::checkCollisionY(IEntity& p, const Map& map)
 {
     const float w = gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stance())][0];
     const float h = gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stance())][1];

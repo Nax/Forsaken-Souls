@@ -22,6 +22,14 @@ enum class HitState
     Hurt
 };
 
+enum class KeyId
+{
+    Up,
+    Down,
+    Left,
+    Right,
+    Space
+};
 
 struct  EntityData
 {
@@ -69,6 +77,8 @@ public:
     bool            transition() const  { return _transition; }
     bool            animation() const   { return _animation; }
     bool            finished()          { return _sprite.finished(); }
+    bool            key(KeyId id) const { return _keys[static_cast<int>(id)]; }
+
 
     void            setHp(int hp)                   { _hp = hp; }
     void            setMp(int mp)                   { _mp = mp; }
@@ -82,6 +92,7 @@ public:
     void            setTransition(bool transition)  { _transition = transition; }
     void            setAnimation(bool animation)    { _animation = animation; }
     void            setAnimation(int start, int end, int frames, bool loop = true);
+    void            setKey(KeyId id, bool b)    { _keys[static_cast<int>(id)] = b; }
 
     void            render(lm::SpriteBatch& sb) const;
     virtual void    update();
@@ -91,19 +102,20 @@ public:
     bool                 grounded;
 
 protected:
-    lm::Sprite      _sprite;
-    int             _hp;
-    int             _mp;
-    int             _dataId;
-    int             _level;
-    float           _mult;
-    Stance          _oldStance;
-    Stance          _stance;
-    HitState        _hitState;
-    bool            _direction;
-    bool            _oldDir;
-    bool            _transition;
-    bool            _animation;
+    lm::Sprite              _sprite;
+    int                     _hp;
+    int                     _mp;
+    int                     _dataId;
+    int                     _level;
+    float                   _mult;
+    Stance                  _oldStance;
+    Stance                  _stance;
+    HitState                _hitState;
+    bool                    _direction;
+    bool                    _oldDir;
+    bool                    _transition;
+    bool                    _animation;
+    std::array<bool, 5>     _keys;
 };
 
 extern const EntityData gEntityData[];

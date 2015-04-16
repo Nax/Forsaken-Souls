@@ -29,7 +29,7 @@ Player::Player()
 void
 Player::update(const Map& map)
 {
-    Phys::updatePlayer(*this, map);
+    Phys::updateEntity(*this, map);
 	IEntity::update();
 }
 
