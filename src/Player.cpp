@@ -10,18 +10,18 @@ Player::Player()
 , _farWeaponId(0)
 , _xp(0)
 {
-	position = {2.f, 2.f};
+	position = {2.f, 7.f};
     _dataId = 0;
     _oldStance = Stance::Stand;
     _stance = Stance::Stand;
     _sprite.setImage(ImageProvider::get().image(gEntityData[0].image));
-    _sprite.scale = {2.f, 2.f};
+    _sprite.setScale(0.75f);
 	_sprite.pos = {position.x * 32, SCREEN_HEIGHT - ((position.y + 1) * 32) - _sprite.height()};
     grounded = false;
     _transition = false;
     _animation = true;
     _sprite.setAnimation(38, 1, 10);
-    _oldDir= true;
+    _oldDir = true;
     setDirection(true);
     std::fill(_keys.begin(), _keys.end(), false);
 }

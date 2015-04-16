@@ -92,17 +92,18 @@ Phys::applyGravity(IEntity& p)
 void
 Phys::checkCollisionX(IEntity& p, const Map& map)
 {
-    const float w = gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stance())][0];
-    const float h = gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stance())][1];
-    const float rangeX = std::ceil(p.position.x + w);
-    const float rangeY = std::ceil(p.position.y + h);
+    const lm::Rect2f& bounding = p.boundingBox();
+    const float x = p.position.x + bounding.x;
+    const float y = p.position.y + bounding.y;
+    const float rangeX = std::ceil(x + bounding.w);
+    const float rangeY = std::ceil(y + bounding.h);
     const bool faceRight = (p.speed.x >= 0.0f);
 
     float dx = 0.0f;
 
-    for (int j = p.position.y; j < rangeY; ++j)
+    for (int j = y; j < rangeY; ++j)
     {
-        for (int i = p.position.x; i < rangeX; ++i)
+        for (int i = x; i < rangeX; ++i)
         {
             const TileBoundingBox& bb = map.at(i, j).boundingBoxes();
 
@@ -114,17 +115,17 @@ Phys::checkCollisionX(IEntity& p, const Map& map)
                 const float bh = bb.boxes[b].h;
                 float diff;
 
-                if (bx + bw < p.position.x || bx > p.position.x + w || by + bh < p.position.y || by > p.position.y + h)
+                if (bx + bw < x || bx > x + bounding.w || by + bh < y || by > y + bounding.h)
                     continue;
                 if (faceRight)
                 {
-                    diff = p.position.x + w - bx;
+                    diff = x + bounding.w - bx;
                     if (diff > dx)
                         dx = diff;
                 }
                 else
                 {
-                    diff = p.position.x - (bx + bw);
+                    diff = x - (bx + bw);
                     if (diff < dx)
                         dx = diff;
                 }
@@ -141,17 +142,18 @@ Phys::checkCollisionX(IEntity& p, const Map& map)
 void
 Phys::checkCollisionY(IEntity& p, const Map& map)
 {
-    const float w = gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stance())][0];
-    const float h = gEntityData[p.dataId()].boundingBox[static_cast<int>(p.stance())][1];
-    const float rangeX = std::ceil(p.position.x + w);
-    const float rangeY = std::ceil(p.position.y + h);
+    const lm::Rect2f& bounding = p.boundingBox();
+    const float x = p.position.x + bounding.x;
+    const float y = p.position.y + bounding.y;
+    const float rangeX = std::ceil(x + bounding.w);
+    const float rangeY = std::ceil(y + bounding.h);
     const bool faceUp = (p.speed.y > 0);
 
     float dy = 0.0f;
 
-    for (int j = p.position.y; j < rangeY; ++j)
+    for (int j = y; j < rangeY; ++j)
     {
-        for (int i = p.position.x; i < rangeX; ++i)
+        for (int i = x; i < rangeX; ++i)
         {
             const TileBoundingBox& bb = map.at(i, j).boundingBoxes();
 
@@ -163,17 +165,17 @@ Phys::checkCollisionY(IEntity& p, const Map& map)
                 const float bh = bb.boxes[b].h;
                 float diff;
 
-                if (bx + bw < p.position.x || bx > p.position.x + w || by + bh < p.position.y || by > p.position.y + h)
+                if (bx + bw < x || bx > x + bounding.w || by + bh < y || by > y + bounding.h)
                     continue;
                 if (faceUp)
                 {
-                    diff = p.position.y + h - by;
+                    diff = y + bounding.h - by;
                     if (diff > dy)
                         dy = diff;
                 }
                 else
                 {
-                    diff = p.position.y - (by + bh);
+                    diff = y - (by + bh);
                     if (diff < dy)
                         dy = diff;
                 }

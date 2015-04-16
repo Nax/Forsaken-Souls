@@ -1,18 +1,20 @@
 #include <algorithm>
 #include "ImageProvider.hpp"
 
+#define ARRAY_LEN(arr)		(sizeof(arr) / sizeof(*arr))
+
 using namespace lm;
 
 static ImageProvider provider;
 
-static const FrameDescriptori alucard[] = {
-	#include "Alucard.inc"
+static const FrameDescriptori commonBot[] = {
+	#include "CommonBot.inc"
 };
 
 static const ImageDescriptor descriptors[] =
 {
 	ImageDescriptor("images/tileset.png").linear(false).atlas(5, 3),
-	ImageDescriptor("images/alucard.png").linear(false).atlas(alucard, sizeof(alucard) / sizeof(*alucard))
+	ImageDescriptor("images/common_bot.png").atlas(/*commonBot, ARRAY_LEN(commonBot)*/12, 12)
 };
 
 ImageProvider::ImageProvider()
