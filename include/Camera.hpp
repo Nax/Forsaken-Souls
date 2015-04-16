@@ -4,13 +4,14 @@
 #include <Lums/Lums.hpp>
 
 class IEntity;
+class Map;
 
 class Camera
 {
 public:
 	Camera();
 	const lm::Vector2f&		offset() const;
-	void					update(IEntity& entity);
+	void					update(IEntity& entity, const Map& map);
 	~Camera();
 
 private:

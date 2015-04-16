@@ -1,6 +1,7 @@
 #include "Camera.hpp"
 #include "Screen.hpp"
 #include "IEntity.hpp"
+#include "Map.hpp"
 
 #define CAMERA_MIN_SPEED  (0.25f)
 
@@ -19,7 +20,7 @@ Camera::offset() const
 }
 
 void
-Camera::update(IEntity& entity)
+Camera::update(IEntity& entity, const Map& map)
 {
 	const lm::Vector2f screenPos = entity.position - _offset;
 
@@ -55,6 +56,11 @@ Camera::update(IEntity& entity)
 				_offset.x = 0.0f;
 				_movingX = false;
 			}
+			else if (_offset.x + SCREEN_TILES_W >= map.width())
+			{
+				_offset.x = map.width() - SCREEN_TILES_W;
+				_movingX = false;
+			}
 		}
 	}
 	if (_movingY)
@@ -72,6 +78,11 @@ Camera::update(IEntity& entity)
 			if (_offset.y < 0.0f)
 			{
 				_offset.y = 0.0f;
+				_movingY = false;
+			}
+			else if (_offset.y + SCREEN_TILES_H >= map.height())
+			{
+				_offset.y = map.height() - SCREEN_TILES_H;
 				_movingY = false;
 			}
 		}
