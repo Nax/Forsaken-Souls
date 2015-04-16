@@ -39,7 +39,7 @@ void
 Game::update()
 {
     _player.update(_level.map());
-    _camera.update(_player);
+    _camera.update(_player, _level.map());
 }
 
 void

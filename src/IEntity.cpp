@@ -20,6 +20,12 @@ IEntity::render(lm::SpriteBatch& sb, const Camera& camera) const
 	const lm::Vector2f& off = camera.offset();
 	const lm::Vector2f p = position - off;
 
+	_sprite.pos.x = p.x * 32.0f;
+	_sprite.pos.y = SCREEN_HEIGHT - (position.y - off.y) * 32.0f - _sprite.height();
+
+	sb.draw(_sprite);
+
+	glDisable(GL_TEXTURE_2D);
 	glBegin(GL_LINE_LOOP);
 	glColor3ub(0, 255, 0);
 	glVertex3i(p.x * 32, SCREEN_HEIGHT - p.y * 32, 0);
@@ -28,12 +34,6 @@ IEntity::render(lm::SpriteBatch& sb, const Camera& camera) const
 	glVertex3i(p.x * 32, SCREEN_HEIGHT - (p.y + gEntityData[_dataId].boundingBox[static_cast<int>(_stance)][1]) * 32, 0);
 	glEnd();
 	glColor3ub(255, 255, 255);
-
-	_sprite.pos.x = p.x * 32.0f;
-	_sprite.pos.y = SCREEN_HEIGHT - (position.y - off.y) * 32.0f - _sprite.height();
-	sb.begin();
-	sb.draw(_sprite);
-	sb.end();
 }
 
 void
