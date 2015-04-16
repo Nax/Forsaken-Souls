@@ -17,7 +17,6 @@ public:
 private:
 	lm::Vector2f	_offset;
 	lm::Vector2f	_speed;
-	float			_zoom;
 	bool			_movingX;
 	bool			_movingY;
 

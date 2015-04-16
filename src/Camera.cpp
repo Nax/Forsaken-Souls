@@ -6,8 +6,7 @@
 #define CAMERA_MIN_SPEED  (0.25f)
 
 Camera::Camera()
-: _zoom(1.0f)
-, _movingX(false)
+: _movingX(false)
 , _movingY(false)
 {
 
@@ -19,74 +18,56 @@ Camera::offset() const
 	return _offset;
 }
 
+static void
+moveCamera(bool& moving, int screenPos, int screenTiles, int mapSize, float& speed, float entitySpeed, float& offset)
+{
+	if (!moving)
+		return;
+	if (screenPos >= (screenTiles * 2.4f) / 5.0f && screenPos <= (screenTiles * 2.6f) / 5.0f)
+	{
+		moving = false;
+		return;
+	}
+	offset += speed * 0.15f;
+	speed = speed * 0.95f + entitySpeed * 0.05f;
+	if (speed > 0.0f && speed < CAMERA_MIN_SPEED)
+		speed = CAMERA_MIN_SPEED;
+	else if (speed < 0.0f && speed > -CAMERA_MIN_SPEED)
+		speed = -CAMERA_MIN_SPEED;
+	if (offset < 0.0f)
+	{
+		offset = 0.0f;
+		moving = false;
+	}
+	else if (offset + screenTiles >= mapSize)
+	{
+		offset = mapSize - screenTiles;
+		moving = false;
+	}
+}
+
+static void
+checkCamera(bool& moving, int screenPos, int screenTiles, float& speed, float entitySpeed)
+{
+	if (moving)
+		return;
+	if ((screenPos < screenTiles / 3.0f && entitySpeed < 0.0f)
+		|| (screenPos > (screenTiles * 2.0f) / 3.0f && entitySpeed > 0.0f))
+	{
+		moving = true;
+		speed = entitySpeed;
+	}
+}
+
 void
 Camera::update(IEntity& entity, const Map& map)
 {
 	const lm::Vector2f screenPos = entity.position - _offset;
 
-	if (!_movingX
-		&& ((screenPos.x < SCREEN_TILES_W / 3.0f && entity.speed.x < 0)
-		|| (screenPos.x > (SCREEN_TILES_W * 2.0f) / 3.0f && entity.speed.x > 0)))
-	{
-		_movingX = true;
-		_speed.x = entity.speed.x;
-	}
-	if (!_movingY
-		&& ((screenPos.y < SCREEN_TILES_H / 3.0f && entity.speed.y < 0)
-		|| (screenPos.y > (SCREEN_TILES_H * 2.0f) / 3.0f && entity.speed.y > 0)))
-	{
-		_movingY = true;
-		_speed.y = entity.speed.y;
-	}
-
-	if (_movingX)
-	{
-		if (screenPos.x >= (SCREEN_TILES_W * 2.4f) / 5.0f && screenPos.x <= (SCREEN_TILES_W * 2.6f) / 5.0f)
-			_movingX = false;
-		else
-		{
-			_offset.x += _speed.x * 0.15f;
-			_speed.x = _speed.x * 0.95f + entity.speed.x * 0.05f;
-			if (_speed.x > 0.0f && _speed.x < CAMERA_MIN_SPEED)
-				_speed.x = CAMERA_MIN_SPEED;
-			else if (_speed.x < 0.0f && _speed.x > -CAMERA_MIN_SPEED)
-				_speed.x = -CAMERA_MIN_SPEED;
-			if (_offset.x < 0.0f)
-			{
-				_offset.x = 0.0f;
-				_movingX = false;
-			}
-			else if (_offset.x + SCREEN_TILES_W >= map.width())
-			{
-				_offset.x = map.width() - SCREEN_TILES_W;
-				_movingX = false;
-			}
-		}
-	}
-	if (_movingY)
-	{
-		if (screenPos.y >= (SCREEN_TILES_H * 2.0f) / 5.0f && screenPos.y <= (SCREEN_TILES_H * 3.0f) / 5.0f)
-			_movingY = false;
-		else
-		{
-			_offset.y += _speed.y * 0.15f;
-			_speed.y = _speed.y * 0.95f + entity.speed.y * 0.05f;
-			if (_speed.y > 0.0f && _speed.y < CAMERA_MIN_SPEED)
-				_speed.y = CAMERA_MIN_SPEED;
-			else if (_speed.y < 0.0f && _speed.y > -CAMERA_MIN_SPEED)
-				_speed.y = -CAMERA_MIN_SPEED;
-			if (_offset.y < 0.0f)
-			{
-				_offset.y = 0.0f;
-				_movingY = false;
-			}
-			else if (_offset.y + SCREEN_TILES_H >= map.height())
-			{
-				_offset.y = map.height() - SCREEN_TILES_H;
-				_movingY = false;
-			}
-		}
-	}
+	checkCamera(_movingX, screenPos.x, SCREEN_TILES_W, _speed.x, entity.speed.x);
+	checkCamera(_movingY, screenPos.y, SCREEN_TILES_H, _speed.y, entity.speed.y);
+	moveCamera(_movingX, screenPos.x, SCREEN_TILES_W, map.width(), _speed.x, entity.speed.x, _offset.x);
+	moveCamera(_movingY, screenPos.y, SCREEN_TILES_H, map.height(), _speed.y, entity.speed.y, _offset.y);
 }
 
 Camera::~Camera()
