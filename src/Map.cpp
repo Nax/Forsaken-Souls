@@ -7,8 +7,8 @@ Map::Map(std::ifstream& file)
 {
 	file.read(reinterpret_cast<char*>(&_width), sizeof(int32_t));
 	file.read(reinterpret_cast<char*>(&_height), sizeof(int32_t));
-	_tiles = new uint8_t[_width * _height];
-	file.read(reinterpret_cast<char*>(_tiles), _width * _height);
+	_tiles = new uint8_t[_width * _height * MAP_DEPTH];
+	file.read(reinterpret_cast<char*>(_tiles), _width * _height * MAP_DEPTH);
 }
 
 Map::Map(Map&& rhs)
@@ -62,21 +62,23 @@ Map::links() const
 	return _links;
 }
 
+// Maybe we should deprecate this.
+// It's used 0 times.
 const Tile&
 Map::at(int at) const
 {
-	if (at < 0 || at >= _width * _height)
+	if (at < 0 || at >= _width * _height * MAP_DEPTH)
 		return Tile::fromId(0);
 	else
 		return Tile::fromId(_tiles[at]);
 }
 
 const Tile&
-Map::at(int x, int y) const
+Map::at(int x, int y, int z) const
 {
 	if (x < 0 || x >= _width || y < 0 || y >= _height)
 		return Tile::fromId(0);
-	return Tile::fromId(_tiles[x + y * _width]);
+	return Tile::fromId(_tiles[x + y * _width + z * _width * _height]);
 }
 
 void

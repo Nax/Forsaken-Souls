@@ -9,6 +9,8 @@
 #include "Tile.hpp"
 #include "Camera.hpp"
 
+#define MAP_DEPTH	5
+
 /*
  * Instantiatied by a Level object and holding values and pointers,
  * class Map is a flyweight to a parcel of a Level object's data.
@@ -26,7 +28,7 @@ public:
 	uint32_t						width() const;
 	uint32_t						height() const;
 	const Tile&						at(int at) const;
-	const Tile&						at(int x, int y) const;
+	const Tile&						at(int x, int y, int z) const;
 	void							draw(lm::SpriteBatch& sb, const Camera& camera) const;
 	const std::vector<t_array4i>&	links() const;
 	~Map();
