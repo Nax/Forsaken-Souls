@@ -10,12 +10,12 @@ Player::Player()
 , _farWeaponId(0)
 , _xp(0)
 {
-	position = {2.f, 7.f};
+	position = {5, 100};
     _dataId = 0;
     _oldStance = Stance::Stand;
     _stance = Stance::Stand;
     _sprite.setImage(ImageProvider::get().image(gEntityData[0].image));
-    _sprite.setScale(0.75f);
+    _sprite.scale = {1.f, 1.f};
 	_sprite.pos = {position.x * 32, SCREEN_HEIGHT - ((position.y + 1) * 32) - _sprite.height()};
     grounded = false;
     _transition = false;

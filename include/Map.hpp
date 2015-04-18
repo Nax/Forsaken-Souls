@@ -28,7 +28,7 @@ public:
 	uint32_t						width() const;
 	uint32_t						height() const;
 	const Tile&						at(int at) const;
-	const Tile&						at(int x, int y, int z) const;
+	const Tile&						at(int x, int y, int z = 2) const;
 	void							draw(lm::SpriteBatch& sb, const Camera& camera) const;
 	const std::vector<t_array4i>&	links() const;
 	~Map();

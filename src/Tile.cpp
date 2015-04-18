@@ -6,22 +6,16 @@ static const TileBoundingBox boxes[] = {
 	{1, {{0, 0, 1, 1}}}
 };
 
-static const Tile			tiles[] = {
-	{1},
-	{1},
-	{1},
-	{1},
+static const Tile			tiles[9] = {
+	{0},
+	{0},
 	{0},
 	{1},
 	{1},
 	{1},
 	{1},
-	{0},
 	{1},
-	{1},
-	{1},
-	{1},
-	{0}
+	{1}
 };
 
 Tile::Tile(int boundingType)

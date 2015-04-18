@@ -87,12 +87,20 @@ Map::draw(lm::SpriteBatch& sb, const Camera& camera) const
 	lm::Image& img = ImageProvider::get().image(ImageId::Tileset);
 	const lm::Vector2f& off = camera.offset();
 
-	for (int j = 0; j < _height; ++j)
-	{
-		for (int i = 0; i < _width; ++i)
+	for (int z = 0; z < MAP_DEPTH; ++z)
+	{	
+		z = 2; // HACK
+		for (int j = _height; j >= 0; --j)
 		{
-			sb.draw(img, _tiles[i + j * _width], {(i - off.x) * 32.f, SCREEN_HEIGHT - ((j - off.y) + 1) * 32.f});
+			for (int i = 0; i < _width; ++i)
+			{
+				const uint8_t tileId = _tiles[i + j * _width + z * _width * _height];
+	
+				if (tileId != 0) // HACK: no empty at #0
+					sb.draw(img, tileId - 1, {(i - off.x) * 32.f, SCREEN_HEIGHT - ((j - off.y) + 1) * 32.f}, {0.25f, 0.25f});
+			}
 		}
+		break ; //HACK
 	}
 }
 
