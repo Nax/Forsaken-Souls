@@ -19,7 +19,7 @@ class Map
     map_json = JSON.parse(File.read m)
     w = map_json['width']
     h = map_json['height']
-    data = map_json['layers'].map{|d| d['data']}.flatten
+    data = map_json['layers'].map{|d| d['data'].each_slice(w).to_a.reverse }.flatten
     header = [w, h].pack 'LL'
     bindata = data.pack 'C*'
     @maps << (header + bindata)
