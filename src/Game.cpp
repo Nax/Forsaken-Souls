@@ -4,15 +4,6 @@
 
 using namespace lm;
 
-static void
-updateScreen(bool large)
-{
-    int w = large ? 1920 : SCREEN_WIDTH;
-    int h = large ? 1080 : SCREEN_HEIGHT;
-
-    Core::get().window().resize(w, h, large);
-}
-
 Game::Game()
 : _large(false)
 {
@@ -96,12 +87,6 @@ Game::handleEvent(const Event& event)
                 break;
             case Key::Space:
                 _player.setKey(KeyId::Space, down);
-                break;
-            case Key::V:
-                if (!down)
-                    break;
-                _large = !_large;
-                updateScreen(_large);
                 break;
             default:
                 break;
