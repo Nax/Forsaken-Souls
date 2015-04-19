@@ -15,7 +15,7 @@ Player::Player()
     _oldStance = Stance::Stand;
     _stance = Stance::Stand;
     _sprite.setImage(ImageProvider::get().image(gEntityData[0].image));
-    _sprite.setScale(0.75f);
+    _sprite.setScale(0.5f);
 	_sprite.pos = {position.x * 32, SCREEN_HEIGHT - ((position.y + 1) * 32) - _sprite.height()};
     grounded = false;
     _transition = false;

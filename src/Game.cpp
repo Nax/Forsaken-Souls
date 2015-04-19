@@ -1,9 +1,20 @@
 #include <iostream>
 #include "Game.hpp"
+#include "Screen.hpp"
 
 using namespace lm;
 
+static void
+updateScreen(bool large)
+{
+    int w = large ? 1920 : SCREEN_WIDTH;
+    int h = large ? 1080 : SCREEN_HEIGHT;
+
+    Core::get().window().resize(w, h, large);
+}
+
 Game::Game()
+: _large(false)
 {
 	char const*				file = "level_links.bin";
 	int32_t					linkCount;
@@ -46,10 +57,15 @@ void
 Game::render() const
 {
 	lm::SpriteBatch sb;
+    const Map& m = _level.map();
 
 	sb.begin();
-	_level.map().draw(sb, _camera);
+	m.draw(sb, _camera, 0);
+    m.draw(sb, _camera, 1);
+    m.draw(sb, _camera, 2);
     _player.render(sb, _camera);
+    m.draw(sb, _camera, 3);
+    m.draw(sb, _camera, 4);
 	sb.end();
 }
 
@@ -80,6 +96,12 @@ Game::handleEvent(const Event& event)
                 break;
             case Key::Space:
                 _player.setKey(KeyId::Space, down);
+                break;
+            case Key::V:
+                if (!down)
+                    break;
+                _large = !_large;
+                updateScreen(_large);
                 break;
             default:
                 break;

@@ -10,8 +10,8 @@ main()
     glMatrixMode(GL_PROJECTION);
     glOrtho(0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, -1, 1);
     glMatrixMode(GL_MODELVIEW);
-    glEnable (GL_BLEND);
-    glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     core.push<Game>();
     core.start();
 

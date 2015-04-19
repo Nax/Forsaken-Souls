@@ -28,8 +28,8 @@ public:
 	uint32_t						width() const;
 	uint32_t						height() const;
 	const Tile&						at(int at) const;
-	const Tile&						at(int x, int y, int z = 2) const;
-	void							draw(lm::SpriteBatch& sb, const Camera& camera) const;
+	const Tile&						at(int x, int y, int z = 2) const; // z should not be defaulted to 2, we need to track calls and change them.
+	void							draw(lm::SpriteBatch& sb, const Camera& camera, int z) const;
 	const std::vector<t_array4i>&	links() const;
 	~Map();
 

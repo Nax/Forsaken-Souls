@@ -27,6 +27,7 @@ private:
     Player  _player;
     Level   _level;
     Camera  _camera;
+    bool    _large;
 };
 
 #endif
