@@ -1,8 +1,9 @@
-
 #ifndef TILE_HPP
 #define TILE_HPP
 
 #include <Lums/Lums.hpp>
+
+#define TILE_SIZE	64
 
 struct TileBoundingBox
 {

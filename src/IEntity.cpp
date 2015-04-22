@@ -1,5 +1,6 @@
 #include "IEntity.hpp"
 #include "Screen.hpp"
+#include "Tile.hpp"
 #include <vector>
 
 IEntity::IEntity()
@@ -21,18 +22,18 @@ IEntity::render(lm::SpriteBatch& sb, const Camera& camera) const
 	const lm::Vector2f p = position - off;
 	const lm::Vector2f bpp = { boundingBox().x + position.x - off.x, boundingBox().y + position.y - off.y };
 
-	_sprite.pos.x = p.x * 32.0f;
-	_sprite.pos.y = SCREEN_HEIGHT - (position.y - off.y) * 32.0f - _sprite.height();
+	_sprite.pos.x = p.x * TILE_SIZE;
+	_sprite.pos.y = SCREEN_HEIGHT - (position.y - off.y) * TILE_SIZE - _sprite.height();
 
 	sb.draw(_sprite);
 
 	glDisable(GL_TEXTURE_2D);
 	lm::VertexArray<4>	bb;
 	glColor3ub(0, 255, 0);
-	bb.push(bpp.x * 32, SCREEN_HEIGHT - bpp.y * 32);
-	bb.push((bpp.x + boundingBox().w) * 32, SCREEN_HEIGHT - bpp.y * 32);
-	bb.push((bpp.x + boundingBox().w) * 32, SCREEN_HEIGHT - (bpp.y + boundingBox().h) * 32);
-	bb.push(bpp.x * 32, SCREEN_HEIGHT - (bpp.y + boundingBox().h) * 32);
+	bb.push(bpp.x * TILE_SIZE, SCREEN_HEIGHT - bpp.y * TILE_SIZE);
+	bb.push((bpp.x + boundingBox().w) * TILE_SIZE, SCREEN_HEIGHT - bpp.y * TILE_SIZE);
+	bb.push((bpp.x + boundingBox().w) * TILE_SIZE, SCREEN_HEIGHT - (bpp.y + boundingBox().h) * TILE_SIZE);
+	bb.push(bpp.x * TILE_SIZE, SCREEN_HEIGHT - (bpp.y + boundingBox().h) * TILE_SIZE);
 	bb.draw(GL_LINE_LOOP);
 
 	lm::VertexArray<4>	va;
@@ -49,6 +50,6 @@ void
 IEntity::update()
 {
 	_sprite.update();
-	_sprite.pos.x = position.x * 32;
-	_sprite.pos.y = SCREEN_HEIGHT - (position.y + 1) * 32 - _sprite.height();
+	_sprite.pos.x = position.x * TILE_SIZE;
+	_sprite.pos.y = SCREEN_HEIGHT - (position.y + 1) * TILE_SIZE - _sprite.height();
 }

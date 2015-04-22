@@ -3,7 +3,7 @@
 #include "IEntity.hpp"
 #include "Map.hpp"
 
-#define CAMERA_MIN_SPEED  (0.25f)
+#define CAMERA_MIN_SPEED  (0.20f)
 
 Camera::Camera()
 : _movingX(false)
@@ -62,7 +62,8 @@ checkCamera(bool& moving, int screenPos, int screenTiles, float& speed, float en
 void
 Camera::update(IEntity& entity, const Map& map)
 {
-	const lm::Vector2f screenPos = entity.position - _offset;
+	const auto& bb = entity.boundingBox();
+	const lm::Vector2f screenPos = entity.position - _offset + lm::Vector2f(bb.x, bb.y) + lm::Vector2f(bb.w / 2, bb.h / 2);
 
 	checkCamera(_movingX, screenPos.x, SCREEN_TILES_W, _speed.x, entity.speed.x);
 	checkCamera(_movingY, screenPos.y, SCREEN_TILES_H, _speed.y, entity.speed.y);

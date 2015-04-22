@@ -1,10 +1,12 @@
 #ifndef SCREEN_HPP
 #define SCREEN_HPP
 
-#define SCREEN_WIDTH	1024
-#define SCREEN_HEIGHT	768
+#include "Tile.hpp"
 
-#define SCREEN_TILES_W	32
-#define SCREEN_TILES_H	24
+#define SCREEN_WIDTH	1920
+#define SCREEN_HEIGHT	1080
+
+#define SCREEN_TILES_W	(SCREEN_WIDTH  / float(TILE_SIZE))
+#define SCREEN_TILES_H	(SCREEN_HEIGHT / float(TILE_SIZE))
 
 #endif

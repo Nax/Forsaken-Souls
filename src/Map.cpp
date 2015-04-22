@@ -95,7 +95,7 @@ Map::draw(lm::SpriteBatch& sb, const Camera& camera, int z) const
 			const uint8_t tileId = _tiles[i + j * _width + z * _width * _height];
 
 			if (tileId != 0)
-				sb.draw(img, tileId - 1, {(i - off.x) * 32.f, SCREEN_HEIGHT - ((j - off.y) + 1) * 32.f}, {0.25f, 0.25f});
+				sb.draw(img, tileId - 1, {(i - off.x) * TILE_SIZE, SCREEN_HEIGHT - ((j - off.y) + 1) * TILE_SIZE}, {0.5, 0.5});
 		}
 	}
 }
