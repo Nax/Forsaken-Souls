@@ -2,10 +2,14 @@
 #include "Game.hpp"
 #include "Screen.hpp"
 #include "Hud.hpp"
+#include "GameOver.hpp"
 
 using namespace lm;
 
+bool debugMode = true;
+
 Game::Game()
+: _gameOverTicks(0)
 {
 	char const*				file = "level_links.bin";
 	int32_t					linkCount;
@@ -42,6 +46,10 @@ Game::update()
 {
     _player.update(_level.map());
     _camera.update(_player, _level.map());
+    if (_player.dead())
+        _gameOverTicks++;
+    if (_gameOverTicks > 500)
+        Core::get().transition<GameOver>();
 }
 
 void
@@ -59,6 +67,17 @@ Game::render() const
     m.draw(sb, _camera, 4);
 	sb.end();
     hud::draw(_player);
+    if (_gameOverTicks > 240)
+    {
+        const float alpha = 0.005f * (_gameOverTicks - 240);
+        glColor4f(0, 0, 0, alpha);
+        glBegin(GL_QUADS);
+        glVertex2f(0, 0);
+        glVertex2f(SCREEN_WIDTH, 0);
+        glVertex2f(SCREEN_WIDTH, SCREEN_HEIGHT);
+        glVertex2f(0, SCREEN_HEIGHT);
+        glEnd();
+    }
 }
 
 void
@@ -88,6 +107,13 @@ Game::handleEvent(const Event& event)
                 break;
             case Key::Space:
                 _player.setKey(KeyId::Space, down);
+                break;
+            case Key::D:
+                if (down)
+                    debugMode = !debugMode;
+                break;
+            case Key::X:
+                _player.die();
                 break;
             default:
                 break;

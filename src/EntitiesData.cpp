@@ -96,8 +96,8 @@ const EntityData gEntityData[] =
             {67, 12, 5},
             // Fall
             {67, 12, 5},
-            // Secret
-            {0, 1, 1}
+            // Dead
+            {24, 43, 4}
         }
     }
 };

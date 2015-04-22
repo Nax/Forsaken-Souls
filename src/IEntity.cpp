@@ -3,9 +3,12 @@
 #include "Tile.hpp"
 #include <vector>
 
+extern bool debugMode;
+
 IEntity::IEntity(int dataId)
 : _dataId(dataId)
 , _hp(hpMax())
+, _dead(false)
 {
 
 }
@@ -28,23 +31,26 @@ IEntity::render(lm::SpriteBatch& sb, const Camera& camera) const
 
 	sb.draw(_sprite);
 
-	glDisable(GL_TEXTURE_2D);
-	lm::VertexArray<4>	bb;
-	glColor3ub(0, 255, 0);
-	bb.push(bpp.x * TILE_SIZE, SCREEN_HEIGHT - bpp.y * TILE_SIZE);
-	bb.push((bpp.x + boundingBox().w) * TILE_SIZE, SCREEN_HEIGHT - bpp.y * TILE_SIZE);
-	bb.push((bpp.x + boundingBox().w) * TILE_SIZE, SCREEN_HEIGHT - (bpp.y + boundingBox().h) * TILE_SIZE);
-	bb.push(bpp.x * TILE_SIZE, SCREEN_HEIGHT - (bpp.y + boundingBox().h) * TILE_SIZE);
-	bb.draw(GL_LINE_LOOP);
+	if (debugMode)
+	{
+		glDisable(GL_TEXTURE_2D);
+		lm::VertexArray<4>	bb;
+		glColor3ub(0, 255, 0);
+		bb.push(bpp.x * TILE_SIZE, SCREEN_HEIGHT - bpp.y * TILE_SIZE);
+		bb.push((bpp.x + boundingBox().w) * TILE_SIZE, SCREEN_HEIGHT - bpp.y * TILE_SIZE);
+		bb.push((bpp.x + boundingBox().w) * TILE_SIZE, SCREEN_HEIGHT - (bpp.y + boundingBox().h) * TILE_SIZE);
+		bb.push(bpp.x * TILE_SIZE, SCREEN_HEIGHT - (bpp.y + boundingBox().h) * TILE_SIZE);
+		bb.draw(GL_LINE_LOOP);
 
-	lm::VertexArray<4>	va;
-	glColor3ub(255, 0, 0);
-	va.push(_sprite.pos.x, _sprite.pos.y);
-	va.push(_sprite.pos.x + _sprite.width(), _sprite.pos.y);
-	va.push(_sprite.pos.x + _sprite.width(), _sprite.pos.y + _sprite.height());
-	va.push(_sprite.pos.x, _sprite.pos.y + _sprite.height());
-	va.draw(GL_LINE_LOOP);
-	glColor3ub(255, 255, 255);
+		lm::VertexArray<4>	va;
+		glColor3ub(255, 0, 0);
+		va.push(_sprite.pos.x, _sprite.pos.y);
+		va.push(_sprite.pos.x + _sprite.width(), _sprite.pos.y);
+		va.push(_sprite.pos.x + _sprite.width(), _sprite.pos.y + _sprite.height());
+		va.push(_sprite.pos.x, _sprite.pos.y + _sprite.height());
+		va.draw(GL_LINE_LOOP);
+		glColor3ub(255, 255, 255);
+	}
 }
 
 void
@@ -65,5 +71,6 @@ void
 IEntity::die()
 {
 	_hp = 0;
+	_dead = true;
 }
 

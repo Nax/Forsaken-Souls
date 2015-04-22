@@ -7,23 +7,6 @@
 #include "Camera.hpp"
 #include "Map.hpp"
 
-enum class Stance
-{
-    Stand,
-    Run,
-    Crouch,
-    Jump,
-    Fall,
-    Secret
-};
-
-enum class HitState
-{
-    None,
-    Attack,
-    Hurt
-};
-
 enum class KeyId
 {
     Up,
@@ -62,9 +45,19 @@ struct  EntityData
 
 extern const EntityData gEntityData[];
 
-class   IEntity
+class IEntity
 {
 public:
+
+    enum Stance
+    {
+        Stand,
+        Run,
+        Crouch,
+        Jump,
+        Fall,
+        Dead
+    };
 
 	IEntity(int dataId);
 
@@ -76,14 +69,14 @@ public:
     float               mult() const        { return _mult; }
     Stance              stance() const      { return _stance; }
     Stance              oldStance() const   { return _oldStance; }
-    HitState            hitState() const    { return _hitState; }
     bool                oldDir() const      { return _oldDir; }
     bool                direction() const   { return _direction; }
     bool                transition() const  { return _transition; }
     bool                animation() const   { return _animation; }
     bool                finished()          { return _sprite.finished(); }
     bool                key(KeyId id) const { return _keys[static_cast<int>(id)]; }
-    const lm::Rect2f&   boundingBox() const { return gEntityData[_dataId].boundingBox[static_cast<int>(_stance)]; }
+    const lm::Rect2f&   boundingBox() const { return gEntityData[_dataId].boundingBox[_stance]; }
+    bool                dead() const        { return _dead; }
 
     void            setHp(int hp)                   { _hp = hp; }
     void            setMp(int mp)                   { _mp = mp; }
@@ -91,7 +84,6 @@ public:
     void            setMult(float mult)             { _mult = mult; }
     void            setStance(Stance stance)        { _stance = stance; }
     void            setOldStance()                  { _oldStance = _stance; }
-    void            setHitState(HitState hitState)  { _hitState = hitState; }
     void            setDirection(bool direction)    { _direction = direction; _sprite.flip.x = direction; }
     void            setOldDir()                     { _oldDir = _direction; }
     void            setTransition(bool transition)  { _transition = transition; }
@@ -117,11 +109,11 @@ protected:
     float                   _mult;
     Stance                  _oldStance;
     Stance                  _stance;
-    HitState                _hitState;
     bool                    _direction;
     bool                    _oldDir;
     bool                    _transition;
     bool                    _animation;
+    bool                    _dead;
     std::array<bool, 5>     _keys;
 };
 

@@ -7,7 +7,8 @@
 enum class ImageId
 {
 	Tileset,
-	Cross
+	Cross,
+	GameOver
 };
 
 class ImageProvider

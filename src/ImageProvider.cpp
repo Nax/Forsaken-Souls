@@ -10,7 +10,8 @@ static ImageProvider provider;
 static const ImageDescriptor descriptors[] =
 {
 	ImageDescriptor("images/tileset.png").atlas(8, 16),
-	ImageDescriptor("images/common_bot.png").atlas(12, 12)
+	ImageDescriptor("images/common_bot.png").atlas(12, 12),
+	ImageDescriptor("images/gameover.png")
 };
 
 ImageProvider::ImageProvider()

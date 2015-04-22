@@ -21,7 +21,12 @@ Phys::updateEntity(IEntity &p, const Map& map)
 void
 Phys::updateSpeed(IEntity& p)
 {
-    if (p.grounded)
+    if (p.dead())
+    {
+        if (p.grounded)
+            p.speed.x *= 0.95f;
+    }
+    else if (p.grounded)
     {
         if (p.key(KeyId::Space) && !p.key(KeyId::Down))
             p.speed.y = 1.2f;
@@ -39,35 +44,40 @@ Phys::updateSpeed(IEntity& p)
         if (p.key(KeyId::Left) && !p.key(KeyId::Right))
             p.speed.x = -0.5f;
     }
-    if (p.speed.x != 0.f && !p.key(KeyId::Right) && !p.key(KeyId::Left))
+    if (!p.dead() && p.speed.x != 0.f && !p.key(KeyId::Right) && !p.key(KeyId::Left))
         p.speed.x = 0.f;
 }
 void
 Phys::updateStance(IEntity& p)
 {
-    if (p.speed.x < 0)
-        p.setDirection(false);
-    else if (p.speed.x > 0)
-        p.setDirection(true);
-
-    if (p.grounded)
-    {
-        if (p.key(KeyId::Down))
-        {
-            p.speed.x = 0.f;
-            p.setStance(Stance::Crouch);
-        }
-        else if (p.speed.x != 0.f)
-            p.setStance(Stance::Run);
-        else
-            p.setStance(Stance::Stand);
-    }
+    if (p.dead())
+        p.setStance(IEntity::Stance::Dead);
     else
     {
-        if (p.speed.y > 0.f)
-            p.setStance(Stance::Jump);
+        if (p.speed.x < 0)
+            p.setDirection(false);
+        else if (p.speed.x > 0)
+            p.setDirection(true);
+
+        if (p.grounded)
+        {
+            if (p.key(KeyId::Down))
+            {
+                p.speed.x = 0.f;
+                p.setStance(IEntity::Stance::Crouch);
+            }
+            else if (p.speed.x != 0.f)
+                p.setStance(IEntity::Stance::Run);
+            else
+                p.setStance(IEntity::Stance::Stand);
+        }
         else
-            p.setStance(Stance::Fall);
+        {
+            if (p.speed.y > 0.f)
+                p.setStance(IEntity::Stance::Jump);
+            else
+                p.setStance(IEntity::Stance::Fall);
+        }
     }
 
     p.setAnimation(true);
@@ -77,7 +87,7 @@ Phys::updateStance(IEntity& p)
     int frames = gEntityData[p.dataId()].animations[static_cast<int>(p.stance())].frames;
 
     if (p.oldStance() != p.stance())
-        p.setAnimation(begin, length, frames);
+        p.setAnimation(begin, length, frames, !p.dead());
 }
 
 
