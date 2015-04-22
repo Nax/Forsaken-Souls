@@ -6,13 +6,12 @@
 
 
 Player::Player()
-: IEntity()
+: IEntity(0)
 , _closeWeaponId(0)
 , _farWeaponId(0)
 , _xp(0)
 {
 	position = {5, 5};
-    _dataId = 0;
     _oldStance = Stance::Stand;
     _stance = Stance::Stand;
     _sprite.setImage(ImageProvider::get().image(gEntityData[0].image));
@@ -31,7 +30,7 @@ void
 Player::update(const Map& map)
 {
     Phys::updateEntity(*this, map);
-	IEntity::update();
+	IEntity::update(map);
 }
 
 Player::~Player()

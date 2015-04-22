@@ -3,10 +3,10 @@
 
 #include "IEntity.hpp"
 
-class   Entity : public IEntity
+class Entity : public IEntity
 {
 public:
-	Entity();
+	Entity(int dataId);
     Entity(int dataId, float x, float y, int level, float mult = 1);
     ~Entity();
 

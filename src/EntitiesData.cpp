@@ -7,7 +7,7 @@ const EntityData gEntityData[] =
     {
         "Cross",
         ImageId::Cross,
-        42,
+        100,
         21,
         1.0,
         100,

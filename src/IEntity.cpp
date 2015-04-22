@@ -3,8 +3,9 @@
 #include "Tile.hpp"
 #include <vector>
 
-IEntity::IEntity()
-: _mult(1.f)
+IEntity::IEntity(int dataId)
+: _dataId(dataId)
+, _hp(hpMax())
 {
 
 }
@@ -47,9 +48,22 @@ IEntity::render(lm::SpriteBatch& sb, const Camera& camera) const
 }
 
 void
-IEntity::update()
+IEntity::update(const Map& map)
 {
+	auto& bb = boundingBox();
+
+	if (position.y + bb.y + bb.h < -10)
+		_hp -= ceil(hpMax() / 50.0f);
+	if (_hp <= 0)
+		die();
 	_sprite.update();
 	_sprite.pos.x = position.x * TILE_SIZE;
 	_sprite.pos.y = SCREEN_HEIGHT - (position.y + 1) * TILE_SIZE - _sprite.height();
 }
+
+void
+IEntity::die()
+{
+	_hp = 0;
+}
+

@@ -1,11 +1,11 @@
 #include <iostream>
 #include "Game.hpp"
 #include "Screen.hpp"
+#include "Hud.hpp"
 
 using namespace lm;
 
 Game::Game()
-: _large(false)
 {
 	char const*				file = "level_links.bin";
 	int32_t					linkCount;
@@ -58,6 +58,7 @@ Game::render() const
     m.draw(sb, _camera, 3);
     m.draw(sb, _camera, 4);
 	sb.end();
+    hud::draw(_player);
 }
 
 void

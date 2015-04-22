@@ -5,6 +5,7 @@
 #include <Lums/Lums.hpp>
 #include "ImageProvider.hpp"
 #include "Camera.hpp"
+#include "Map.hpp"
 
 enum class Stance
 {
@@ -65,10 +66,11 @@ class   IEntity
 {
 public:
 
-	IEntity();
+	IEntity(int dataId);
 
     int                 hp() const          { return _hp; }
     int                 mp() const          { return _mp; }
+    int                 hpMax() const       { return gEntityData[_dataId].hp; }
     int                 dataId() const      { return _dataId; }
     int                 level() const       { return _level; }
     float               mult() const        { return _mult; }
@@ -98,17 +100,19 @@ public:
     void            setKey(KeyId id, bool b)    { _keys[static_cast<int>(id)] = b; }
 
     void            render(lm::SpriteBatch& sb, const Camera& camera) const;
-    virtual void    update();
+    virtual void    update(const Map& map);
+
+    void            die();
 
 	lm::Vector2f	     position;
     lm::Vector2f         speed;
     bool                 grounded;
 
 protected:
+    int                     _dataId;
     mutable lm::Sprite      _sprite;
     int                     _hp;
     int                     _mp;
-    int                     _dataId;
     int                     _level;
     float                   _mult;
     Stance                  _oldStance;

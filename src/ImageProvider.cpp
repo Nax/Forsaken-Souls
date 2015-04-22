@@ -7,10 +7,6 @@ using namespace lm;
 
 static ImageProvider provider;
 
-static const FrameDescriptori commonBot[] = {
-	#include "CommonBot.inc"
-};
-
 static const ImageDescriptor descriptors[] =
 {
 	ImageDescriptor("images/tileset.png").atlas(8, 16),
