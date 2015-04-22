@@ -6,8 +6,7 @@
 class Entity : public IEntity
 {
 public:
-	Entity(int dataId);
-    Entity(int dataId, float x, float y, int level, float mult = 1);
+	Entity(int dataId, float x, float y);
     ~Entity();
 
 private:

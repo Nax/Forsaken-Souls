@@ -59,7 +59,7 @@ public:
         Dead
     };
 
-	IEntity(int dataId);
+	IEntity(int dataId, float x, float y);
 
     int                 hp() const          { return _hp; }
     int                 mp() const          { return _mp; }

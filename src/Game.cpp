@@ -33,6 +33,7 @@ Game::Game()
 			linkPart = static_cast<int>(linkDWord);
 		}
 	}
+    _entities.push_back(new Entity(0, 7, 6));
 }
 
 void
@@ -44,6 +45,8 @@ Game::load()
 void
 Game::update()
 {
+    for (auto e : _entities)
+        e->update(_level.map());
     _player.update(_level.map());
     _camera.update(_player, _level.map());
     if (_player.dead())
@@ -62,6 +65,8 @@ Game::render() const
 	m.draw(sb, _camera, 0);
     m.draw(sb, _camera, 1);
     m.draw(sb, _camera, 2);
+    for (auto e : _entities)
+        e->render(sb, _camera);
     _player.render(sb, _camera);
     m.draw(sb, _camera, 3);
     m.draw(sb, _camera, 4);

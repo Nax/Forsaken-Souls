@@ -7,6 +7,9 @@
 #include "Player.hpp"
 #include "Level.hpp"
 #include "Camera.hpp"
+#include "Entity.hpp"
+
+typedef std::vector<Entity*> EntityVector;
 
 class Game : public lm::GameState
 {
@@ -24,10 +27,11 @@ public:
 private:
 	typedef std::array<int, 6>		t_array6i;
 
-    Player  _player;
-    Level   _level;
-    Camera  _camera;
-    int     _gameOverTicks;
+    Player          _player;
+    Level           _level;
+    Camera          _camera;
+    int             _gameOverTicks;
+    EntityVector    _entities;
 };
 
 #endif

@@ -1,16 +1,25 @@
 #include "IEntity.hpp"
 #include "Screen.hpp"
 #include "Tile.hpp"
+#include "Physics.hpp"
 #include <vector>
 
 extern bool debugMode;
 
-IEntity::IEntity(int dataId)
+IEntity::IEntity(int dataId, float x, float y)
 : _dataId(dataId)
 , _hp(hpMax())
 , _dead(false)
 {
-
+	position = {x, y};
+	_sprite.setImage(ImageProvider::get().image(gEntityData[_dataId].image));
+	_sprite.pos = {position.x * TILE_SIZE, SCREEN_HEIGHT - ((position.y + 1) * TILE_SIZE) - _sprite.height()};
+    _sprite.setScale(0.5f);
+	_oldStance = Stance::Stand;
+    _stance = Stance::Stand;
+    grounded = false;
+    _oldDir = true;
+    setDirection(true);
 }
 
 void
@@ -56,6 +65,7 @@ IEntity::render(lm::SpriteBatch& sb, const Camera& camera) const
 void
 IEntity::update(const Map& map)
 {
+	Phys::updateEntity(*this, map);
 	auto& bb = boundingBox();
 
 	if (position.y + bb.y + bb.h < -10)
