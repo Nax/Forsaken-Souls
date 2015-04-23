@@ -8,7 +8,8 @@ enum class ImageId
 {
 	Tileset,
 	CommonBot,
-	GameOver
+	GameOver,
+	Background
 };
 
 class ImageProvider

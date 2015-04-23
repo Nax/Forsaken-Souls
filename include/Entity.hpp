@@ -7,10 +7,8 @@ class Entity : public IEntity
 {
 public:
 	Entity(int dataId, float x, float y);
+	AI::function	ai() const { return gEntityData[_dataId].ai; }
     ~Entity();
-
-private:
-    // todo: AI   _ai
 };
 
 #endif

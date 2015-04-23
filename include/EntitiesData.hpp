@@ -3,6 +3,8 @@
 
 #define MAX_STATES 256
 
+#include "AI.hpp"
+
 struct  EntityData
 {
     const char*         name;
@@ -19,6 +21,7 @@ struct  EntityData
         bool			repeat;
     }                   animations[MAX_STATES];
     lm::Rect2f			speed[MAX_STATES];
+    AI::function		ai;
 };
 
 extern const EntityData gEntityData[];

@@ -13,6 +13,15 @@ class IEntity
 public:
     enum Aim { Left, Right, None };
 
+    enum class Key
+    {
+        Left,
+        Down,
+        Right,
+        Space,
+        A
+    };
+
 	IEntity(int dataId, float x, float y);
 
     int                 hp() const                  { return _hp; }
@@ -32,6 +41,18 @@ public:
     virtual void        update(const Map& map);
     void                aim(Aim aim);
 
+    void
+    setKey(Key key, bool value)
+    {
+        _keys[int(key)] = value;
+    }
+    
+    bool
+    key(Key key) const
+    {
+        return _keys[int(key)];
+    }
+
     virtual             ~IEntity();
 
 	lm::Vector2f	     position;
@@ -47,6 +68,7 @@ protected:
     bool                    _direction;
     Aim                     _aim;
     bool                    _dead;
+    std::bitset<5>          _keys;
 };
 
 #endif
