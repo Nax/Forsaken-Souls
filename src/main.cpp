@@ -1,6 +1,7 @@
 #include <Lums/Lums.hpp>
 #include "Game.hpp"
 #include "Screen.hpp"
+#include <cstdlib>
 
 int
 main()
@@ -14,6 +15,8 @@ main()
     // sp.attach(lm::Shader::vertex());
     // sp.link();
     // sp.use();
+
+    srand(time(nullptr));
 
     glMatrixMode(GL_PROJECTION);
     glOrtho(0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, -1, 1);

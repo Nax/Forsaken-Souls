@@ -10,6 +10,7 @@ namespace Phys
     void    applyGravity(IEntity& e);
     void    checkCollisionX(IEntity& e, const Map& map);
     void    checkCollisionY(IEntity& e, const Map& map);
+    void	checkDamages(IEntity& attacker, IEntity& target);
 }
 
 #endif

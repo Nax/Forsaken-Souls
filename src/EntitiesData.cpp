@@ -18,7 +18,19 @@ const EntityData gEntityData[] =
             {1.4f,  0.23f, 1.1f, 3.5f},
             {1.4f,  0.23f, 1.1f, 3.5f},
             {1.4f,  0.23f, 1.1f, 3.5f},
+            {1.4f,  0.23f, 1.1f, 3.5f},
             {1.4f,  0.23f, 1.1f, 3.5f}
+        },
+        // Hitbox
+        {
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {0.5f, 0, 1.0f, 3.5f},
+            {}
         },
         // Animations
         {
@@ -35,7 +47,9 @@ const EntityData gEntityData[] =
             // Dead
             {24, 43, 4, false},
             // Attack
-            {0, 24, 2, false}
+            {0, 24, 2, false},
+            // Hit
+            {80, 12, 3, false}
         },
         // Speed
         {
@@ -44,6 +58,7 @@ const EntityData gEntityData[] =
             {0.0f, 0.0f},
             {0.5f, 1.0f},
             {0.5f, 0.0f},
+            {0.0f, 0.0f},
             {0.0f, 0.0f},
             {0.0f, 0.0f}
         },

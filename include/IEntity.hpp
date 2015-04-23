@@ -31,8 +31,11 @@ public:
     bool                direction() const           { return _direction; }
     bool                finished() const            { return _sprite.finished(); }
     const lm::Rect2f&   boundingBox() const         { return gEntityData[_dataId].boundingBox[_state]; }
+    lm::Rect2f          hitBox() const;
     bool                dead() const                { return _dead; }
     void                die();
+    int                 damage() const              { return gEntityData[_dataId].damage; }
+    bool                invincible() const           { return _invFrames > 0; }
 
     void                setState(int stance);
     void                setDirection(bool direction){ _direction = direction; _sprite.flip.x = direction; }
@@ -40,6 +43,7 @@ public:
     void                render(lm::SpriteBatch& sb, const Camera& camera) const;
     virtual void        update(const Map& map);
     void                aim(Aim aim);
+    void                hurt(int damage);
 
     void
     setKey(Key key, bool value)
@@ -68,6 +72,8 @@ protected:
     bool                    _direction;
     Aim                     _aim;
     bool                    _dead;
+    int                     _invFrames;
+    bool                    _hit;
     std::bitset<5>          _keys;
 };
 

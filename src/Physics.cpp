@@ -124,7 +124,26 @@ Phys::checkCollisionY(IEntity& p, const Map& map)
 }
 
 
+void
+Phys::checkDamages(IEntity& attacker, IEntity& target)
+{
+    lm::Rect2f hitbox = attacker.hitBox();
+    lm::Rect2f boundingBox = target.boundingBox();
 
+    boundingBox.x += target.position.x;
+    boundingBox.y += target.position.y;
+
+    if (target.invincible())
+        return;
+
+    if (hitbox.x + hitbox.w > boundingBox.x
+        && hitbox.x < boundingBox.x + boundingBox.w
+        && hitbox.y + hitbox.h > boundingBox.y
+        && hitbox.y < boundingBox.y + boundingBox.h)
+    {
+        target.hurt(attacker.damage());
+    }
+}
 
 
 

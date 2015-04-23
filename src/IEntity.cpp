@@ -3,6 +3,7 @@
 #include "Tile.hpp"
 #include "Physics.hpp"
 #include <vector>
+#include <iostream>
 
 extern bool debugMode;
 
@@ -13,6 +14,8 @@ IEntity::IEntity(int dataId, float x, float y)
 , _hp(hpMax())
 , _state(-1)
 , _dead(false)
+, _invFrames(0)
+, _hit(false)
 {
 	_sprite.setImage(ImageProvider::get().image(gEntityData[_dataId].image));
 	_sprite.pos = {position.x * TILE_SIZE, SCREEN_HEIGHT - ((position.y + 1) * TILE_SIZE) - _sprite.height()};
@@ -28,6 +31,11 @@ IEntity::render(lm::SpriteBatch& sb, const Camera& camera) const
 	const lm::Vector2f& off = camera.offset();
 	const lm::Vector2f p = position - off;
 	const lm::Vector2f bpp = { boundingBox().x + position.x - off.x, boundingBox().y + position.y - off.y };
+	lm::Rect2f hb = hitBox();
+	bool hit = hb.w != 0.0f;
+
+	hb.x -= off.x;
+	hb.y -= off.y;
 
 	_sprite.pos.x = p.x * TILE_SIZE;
 	_sprite.pos.y = SCREEN_HEIGHT - (position.y - off.y) * TILE_SIZE - _sprite.height();
@@ -36,7 +44,6 @@ IEntity::render(lm::SpriteBatch& sb, const Camera& camera) const
 
 	if (debugMode)
 	{
-		glDisable(GL_TEXTURE_2D);
 		lm::VertexArray<4>	bb;
 		glColor3ub(0, 255, 0);
 		bb.push(bpp.x * TILE_SIZE, SCREEN_HEIGHT - bpp.y * TILE_SIZE);
@@ -52,6 +59,18 @@ IEntity::render(lm::SpriteBatch& sb, const Camera& camera) const
 		va.push(_sprite.pos.x + _sprite.width(), _sprite.pos.y + _sprite.height());
 		va.push(_sprite.pos.x, _sprite.pos.y + _sprite.height());
 		va.draw(GL_LINE_LOOP);
+
+		if (hit)
+		{
+			lm::VertexArray<4>	va2;
+			glColor3ub(255, 255, 0);
+			va2.push(hb.x * TILE_SIZE, SCREEN_HEIGHT - hb.y * TILE_SIZE);
+			va2.push((hb.x + hb.w) * TILE_SIZE, SCREEN_HEIGHT - hb.y * TILE_SIZE);
+			va2.push((hb.x + hb.w) * TILE_SIZE, SCREEN_HEIGHT - (hb.y + hb.h) * TILE_SIZE);
+			va2.push(hb.x * TILE_SIZE, SCREEN_HEIGHT - (hb.y + hb.h) * TILE_SIZE);
+			va2.draw(GL_LINE_LOOP);
+		}
+
 		glColor3ub(255, 255, 255);
 	}
 }
@@ -59,6 +78,8 @@ IEntity::render(lm::SpriteBatch& sb, const Camera& camera) const
 void
 IEntity::update(const Map& map)
 {
+	if (_invFrames)
+		_invFrames--;
 	int a = 0;
 	const bool jump = key(Key::Space);
 	const bool attack = key(Key::A);
@@ -88,7 +109,16 @@ IEntity::update(const Map& map)
 		setState(5);
 	else
 	{
-		if (_state == 6)
+		if (_hit)
+		{
+			setState(7);
+		}
+		else if (_state == 7)
+		{
+			if (_sprite.finished())
+				setState(0);
+		}
+		else if (_state == 6)
 		{
 			if (_sprite.finished())
 				setState(0);
@@ -123,6 +153,27 @@ IEntity::update(const Map& map)
 	_sprite.update();
 	_sprite.pos.x = position.x * TILE_SIZE;
 	_sprite.pos.y = SCREEN_HEIGHT - (position.y + 1) * TILE_SIZE - _sprite.height();
+	_hit = false;
+}
+
+lm::Rect2f
+IEntity::hitBox() const
+{
+	lm::Rect2f bb = boundingBox();
+	lm::Rect2f hitbox = gEntityData[_dataId].hitBox[_state];
+
+	if (hitbox.w == 0.0f)
+		return {};
+
+	lm::Vector2f center = position + lm::Vector2f(bb.x, bb.y) + lm::Vector2f(bb.w / 2.0f, 0);
+	if (_direction)
+	{
+		return {center.x + hitbox.x, center.y + hitbox.y, hitbox.w, hitbox.h};
+	}
+	else
+	{
+		return {center.x - hitbox.x - hitbox.w, center.y + hitbox.y, hitbox.w, hitbox.h};
+	}
 }
 
 void
@@ -148,6 +199,16 @@ IEntity::die()
 {
 	_hp = 0;
 	_dead = true;
+}
+
+void
+IEntity::hurt(int damage)
+{
+	_hp -= damage;
+	_invFrames = 60;
+	_hit = true;
+	if (_hp <= 0)
+		die();
 }
 
 void

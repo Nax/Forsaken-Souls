@@ -4,6 +4,8 @@
 #include "Hud.hpp"
 #include "GameOver.hpp"
 #include "Player.hpp"
+#include "Physics.hpp"
+#include <cstdlib>
 
 using namespace lm;
 
@@ -34,7 +36,8 @@ Game::Game()
 			linkPart = static_cast<int>(linkDWord);
 		}
 	}
-    _entities.push_back(new Entity(0, 7, 6));
+    for (int i = 0; i < 100; ++i)
+        _entities.push_back(new Entity(0, rand() % 4000 / 100.0f, rand() % 4000 / 100.0f));
 }
 
 void
@@ -53,6 +56,11 @@ Game::update()
     }
     _player.update(_level.map());
     _camera.update(_player, _level.map());
+    for (auto e : _entities)
+    {
+        Phys::checkDamages(_player, *e);
+        Phys::checkDamages(*e, _player);
+    }
     if (_player.dead())
         _gameOverTicks++;
     if (_gameOverTicks > 500)
@@ -64,7 +72,7 @@ Game::render() const
 {
 	lm::SpriteBatch sb;
     const Map& m = _level.map();
-    lm::Vector2f parallax = -_camera.offset() * TILE_SIZE * 0.2f;
+    lm::Vector2f parallax = -_camera.offset() * TILE_SIZE * 0.4f;
     const lm::Image& bg = ImageProvider::get().image(ImageId::Background);
 
 	sb.begin();

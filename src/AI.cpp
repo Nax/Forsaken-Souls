@@ -11,6 +11,9 @@ AI::basic(Entity& entity, Player& player, const Map& map)
 	entity.setKey(Entity::Key::Right, false);
 	entity.setKey(Entity::Key::Space, false);
 
+	if (player.dead())
+		return;
+
 	if (entity.position.x < player.position.x - 1)
 	{
 		entity.setKey(Entity::Key::Right, true);
@@ -19,7 +22,7 @@ AI::basic(Entity& entity, Player& player, const Map& map)
 	{
 		entity.setKey(Entity::Key::Left, true);
 	}
-	if (entity.position.dist(player.position) < 2)
+	if (entity.position.dist(player.position) < 2 && entity.grounded)
 	{
 		if (entity.position.x < player.position.x)
 			entity.setKey(Entity::Key::Right, true);
