@@ -5,91 +5,13 @@
 
 void
 Phys::updateEntity(IEntity &p, const Map& map)
-{
-    p.setOldStance();
-    p.setOldDir();
-    
-    updateSpeed(p);
-    updateStance(p);
+{    
     p.position.x += p.speed.x * 0.15f;
     checkCollisionX(p, map);
     applyGravity(p);
     p.position.y += p.speed.y * 0.17f;
     checkCollisionY(p, map);
 }
-
-void
-Phys::updateSpeed(IEntity& p)
-{
-    if (p.dead())
-    {
-        if (p.grounded)
-            p.speed.x *= 0.95f;
-    }
-    else if (p.grounded)
-    {
-        if (p.key(KeyId::Space) && !p.key(KeyId::Down))
-            p.speed.y = 1.2f;
-        if (p.key(KeyId::Right) && !p.key(KeyId::Left))
-            p.speed.x = 0.7f;
-        if (p.key(KeyId::Left) && !p.key(KeyId::Right))
-            p.speed.x = -0.7f;
-        if (p.key(KeyId::Down))
-            p.speed.x = 0.f;
-    }
-    else
-    {
-        if (p.key(KeyId::Right) && !p.key(KeyId::Left))
-            p.speed.x = 0.5f;
-        if (p.key(KeyId::Left) && !p.key(KeyId::Right))
-            p.speed.x = -0.5f;
-    }
-    if (!p.dead() && p.speed.x != 0.f && !p.key(KeyId::Right) && !p.key(KeyId::Left))
-        p.speed.x = 0.f;
-}
-void
-Phys::updateStance(IEntity& p)
-{
-    if (p.dead())
-        p.setStance(IEntity::Stance::Dead);
-    else
-    {
-        if (p.speed.x < 0)
-            p.setDirection(false);
-        else if (p.speed.x > 0)
-            p.setDirection(true);
-
-        if (p.grounded)
-        {
-            if (p.key(KeyId::Down))
-            {
-                p.speed.x = 0.f;
-                p.setStance(IEntity::Stance::Crouch);
-            }
-            else if (p.speed.x != 0.f)
-                p.setStance(IEntity::Stance::Run);
-            else
-                p.setStance(IEntity::Stance::Stand);
-        }
-        else
-        {
-            if (p.speed.y > 0.f)
-                p.setStance(IEntity::Stance::Jump);
-            else
-                p.setStance(IEntity::Stance::Fall);
-        }
-    }
-
-    p.setAnimation(true);
-    p.setTransition(false);
-    int begin = gEntityData[p.dataId()].animations[static_cast<int>(p.stance())].begin;
-    int length = gEntityData[p.dataId()].animations[static_cast<int>(p.stance())].length;
-    int frames = gEntityData[p.dataId()].animations[static_cast<int>(p.stance())].frames;
-
-    if (p.oldStance() != p.stance())
-        p.setAnimation(begin, length, frames, !p.dead());
-}
-
 
 void
 Phys::applyGravity(IEntity& p)

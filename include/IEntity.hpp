@@ -6,95 +6,33 @@
 #include "ImageProvider.hpp"
 #include "Camera.hpp"
 #include "Map.hpp"
-
-enum class KeyId
-{
-    Up,
-    Down,
-    Left,
-    Right,
-    Space
-};
-
-struct  EntityData
-{
-    const char*         name;
-    ImageId             image;
-    int                 hp;
-    int                 mp;
-    float               speed;
-    float               width;  
-    float               height;
-    int                 xp;
-    int                 damage;
-    int                 armor;
-    lm::Rect2f          boundingBox[6];
-    struct
-    {
-        int             begin;
-        int             length;
-        int             frames;
-    }                   transitions[6][6];
-    struct
-    {
-        int             begin;
-        int             length;
-        int             frames;
-    }                   animations[6];
-};
-
-extern const EntityData gEntityData[];
+#include "EntitiesData.hpp"
 
 class IEntity
 {
 public:
-
-    enum Stance
-    {
-        Stand,
-        Run,
-        Crouch,
-        Jump,
-        Fall,
-        Dead
-    };
+    enum Aim { Left, Right, None };
 
 	IEntity(int dataId, float x, float y);
 
-    int                 hp() const          { return _hp; }
-    int                 mp() const          { return _mp; }
-    int                 hpMax() const       { return gEntityData[_dataId].hp; }
-    int                 dataId() const      { return _dataId; }
-    int                 level() const       { return _level; }
-    float               mult() const        { return _mult; }
-    Stance              stance() const      { return _stance; }
-    Stance              oldStance() const   { return _oldStance; }
-    bool                oldDir() const      { return _oldDir; }
-    bool                direction() const   { return _direction; }
-    bool                transition() const  { return _transition; }
-    bool                animation() const   { return _animation; }
-    bool                finished()          { return _sprite.finished(); }
-    bool                key(KeyId id) const { return _keys[static_cast<int>(id)]; }
-    const lm::Rect2f&   boundingBox() const { return gEntityData[_dataId].boundingBox[_stance]; }
-    bool                dead() const        { return _dead; }
+    int                 hp() const                  { return _hp; }
+    int                 mp() const                  { return _mp; }
+    int                 hpMax() const               { return gEntityData[_dataId].hp; }
+    int                 dataId() const              { return _dataId; }
+    bool                direction() const           { return _direction; }
+    bool                finished() const            { return _sprite.finished(); }
+    const lm::Rect2f&   boundingBox() const         { return gEntityData[_dataId].boundingBox[_state]; }
+    bool                dead() const                { return _dead; }
+    void                die();
 
-    void            setHp(int hp)                   { _hp = hp; }
-    void            setMp(int mp)                   { _mp = mp; }
-    void            setLevel(int level)             { _level = level; }
-    void            setMult(float mult)             { _mult = mult; }
-    void            setStance(Stance stance)        { _stance = stance; }
-    void            setOldStance()                  { _oldStance = _stance; }
-    void            setDirection(bool direction)    { _direction = direction; _sprite.flip.x = direction; }
-    void            setOldDir()                     { _oldDir = _direction; }
-    void            setTransition(bool transition)  { _transition = transition; }
-    void            setAnimation(bool animation)    { _animation = animation; }
-    void            setAnimation(int start, int end, int frames, bool loop = true);
-    void            setKey(KeyId id, bool b)    { _keys[static_cast<int>(id)] = b; }
+    void                setState(int stance);
+    void                setDirection(bool direction){ _direction = direction; _sprite.flip.x = direction; }
 
-    void            render(lm::SpriteBatch& sb, const Camera& camera) const;
-    virtual void    update(const Map& map);
+    void                render(lm::SpriteBatch& sb, const Camera& camera) const;
+    virtual void        update(const Map& map);
+    void                aim(Aim aim);
 
-    void            die();
+    virtual             ~IEntity();
 
 	lm::Vector2f	     position;
     lm::Vector2f         speed;
@@ -105,16 +43,10 @@ protected:
     mutable lm::Sprite      _sprite;
     int                     _hp;
     int                     _mp;
-    int                     _level;
-    float                   _mult;
-    Stance                  _oldStance;
-    Stance                  _stance;
+    int                     _state;
     bool                    _direction;
-    bool                    _oldDir;
-    bool                    _transition;
-    bool                    _animation;
+    Aim                     _aim;
     bool                    _dead;
-    std::array<bool, 5>     _keys;
 };
 
 #endif

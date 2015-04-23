@@ -1,7 +1,7 @@
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 
-#include <array>
+#include <bitset>
 #include "IEntity.hpp"
 #include "Map.hpp"
 
@@ -9,21 +9,34 @@
 class Player : public IEntity
 {
 public:
-    Player();
-    int     closeWeaponId() const   { return _closeWeaponId; }
-    int     farWeaponId() const     { return _farWeaponId; }
-    double  xp() const              { return _xp; }
+    enum Key
+    {
+        Left,
+        Down,
+        Right,
+        Space,
+        A
+    };
 
-    void    setCloseWeaponId(int id)    { _closeWeaponId = id; }
-    void    setFarWeaponId(int id)      { _farWeaponId = id; }
-    void    setXp(int xp)               { _xp = xp; }
+    Player();
     void    update(const Map& map);
+    
+    void
+    setKey(Key key, bool value)
+    {
+        _keys[key] = value;
+    }
+    
+    bool
+    key(Key key) const
+    {
+        return _keys[key];
+    }
+
     ~Player();
 
 private:
-    int                 _closeWeaponId;
-    int                 _farWeaponId;
-    int                 _xp;
+    std::bitset<5>          _keys;
 };
 
 #endif

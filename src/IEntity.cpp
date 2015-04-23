@@ -7,25 +7,19 @@
 extern bool debugMode;
 
 IEntity::IEntity(int dataId, float x, float y)
-: _dataId(dataId)
+: position(x, y)
+, grounded(false)
+, _dataId(dataId)
 , _hp(hpMax())
+, _state(-1)
 , _dead(false)
 {
-	position = {x, y};
 	_sprite.setImage(ImageProvider::get().image(gEntityData[_dataId].image));
 	_sprite.pos = {position.x * TILE_SIZE, SCREEN_HEIGHT - ((position.y + 1) * TILE_SIZE) - _sprite.height()};
     _sprite.setScale(0.5f);
-	_oldStance = Stance::Stand;
-    _stance = Stance::Stand;
-    grounded = false;
-    _oldDir = true;
+    setState(0);
+    aim(Aim::None);
     setDirection(true);
-}
-
-void
-IEntity::setAnimation(int start, int end, int frames, bool loop)
-{
-	_sprite.setAnimation(start, end, frames, loop);
 }
 
 void
@@ -78,9 +72,43 @@ IEntity::update(const Map& map)
 }
 
 void
+IEntity::aim(Aim aim)
+{
+	_aim = aim;
+	if (aim == Aim::Left)
+	{
+		setDirection(false);
+		speed.x = -gEntityData[_dataId].speed[_state].x;
+	}
+	else if (aim == Aim::Right)
+	{
+		setDirection(true);
+		speed.x = gEntityData[_dataId].speed[_state].x;
+	}
+	else
+		speed.x = 0;
+}
+
+void
 IEntity::die()
 {
 	_hp = 0;
 	_dead = true;
 }
 
+void
+IEntity::setState(int state)
+{
+	if (_state == state)
+		return;
+	_state = state;
+	auto& anim = gEntityData[_dataId].animations[state];
+	_sprite.setAnimation(anim.begin, anim.length, anim.speed, anim.repeat);
+	aim(_aim);
+	speed.y = gEntityData[_dataId].speed[state].y;
+}
+
+IEntity::~IEntity()
+{
+
+}

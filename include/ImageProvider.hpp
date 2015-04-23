@@ -7,7 +7,7 @@
 enum class ImageId
 {
 	Tileset,
-	Cross,
+	CommonBot,
 	GameOver
 };
 

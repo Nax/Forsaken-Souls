@@ -3,6 +3,7 @@
 #include "Screen.hpp"
 #include "Hud.hpp"
 #include "GameOver.hpp"
+#include "Player.hpp"
 
 using namespace lm;
 
@@ -99,19 +100,16 @@ Game::handleEvent(const Event& event)
                 Core::get().stop();
                 break;
             case Key::Right:
-                _player.setKey(KeyId::Right, down);
+                _player.setKey(Player::Key::Right, down);
                 break;
             case Key::Left:
-                _player.setKey(KeyId::Left, down);
-                break;
-            case Key::Up:
-                _player.setKey(KeyId::Up, down);
+                _player.setKey(Player::Key::Left, down);
                 break;
             case Key::Down:
-                _player.setKey(KeyId::Down, down);
+                _player.setKey(Player::Key::Down, down);
                 break;
             case Key::Space:
-                _player.setKey(KeyId::Space, down);
+                _player.setKey(Player::Key::Space, down);
                 break;
             case Key::D:
                 if (down)
@@ -119,6 +117,9 @@ Game::handleEvent(const Event& event)
                 break;
             case Key::X:
                 _player.die();
+                break;
+            case Key::A:
+                _player.setKey(Player::Key::A, down);
                 break;
             default:
                 break;
