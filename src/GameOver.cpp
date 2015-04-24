@@ -10,10 +10,16 @@ GameOver::GameOver()
 void
 GameOver::handleEvent(const lm::Event& event)
 {
+
 	if (event.type == lm::Event::Type::KeyDown)
 	{
 		if (event.key == lm::Key::Return)
 			lm::Core::get().transition<Game>();
+	}
+	if (event.type == lm::Event::Type::ButtonDown)
+    {
+    	if (event.gamepad.button == 10)
+    		lm::Core::get().transition<Game>();
 	}
 }
 

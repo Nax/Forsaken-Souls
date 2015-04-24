@@ -36,14 +36,14 @@ Game::Game()
 			linkPart = static_cast<int>(linkDWord);
 		}
 	}
-    for (int i = 0; i < 100; ++i)
-        _entities.push_back(new Entity(0, rand() % 4000 / 100.0f, rand() % 4000 / 100.0f));
+    // for (int i = 0; i < 1500; ++i)
+        // _entities.push_back(new Entity(0, rand() % 4000 / 100.0f, rand() % 4000 / 100.0f));
 }
 
 void
 Game::load()
 {
-    _level.load(0);
+    _level.load(1);
 }
 
 void
@@ -142,6 +142,49 @@ Game::handleEvent(const Event& event)
             default:
                 break;
         }
+    }
+    if (event.type == Event::Type::ButtonDown
+        || event.type == Event::Type::ButtonUp)
+    {
+        bool down = (event.type == Event::Type::ButtonDown);
+        switch (event.gamepad.button)
+        {
+            case 1:
+                _player.setKey(Player::Key::Space, down);
+                break;
+            case 3:
+                _player.setKey(Player::Key::A, down);
+                break;
+            case 4:
+                _player.die();
+                break;
+            case 9:
+                Core::get().stop();
+                break;
+            case 10:
+                if (down)
+                    debugMode = !debugMode;
+                break;
+            case 14:
+                _player.setKey(Player::Key::Left, down);
+                break;
+            case 15:
+                _player.setKey(Player::Key::Right, down);
+                break;
+            default:
+                break;
+        }
+    }
+    if (event.type == lm::Event::Type::LeftStick)
+    {
+        if (event.gamepad.stick.x < -0.9f)
+            _player.setKey(Player::Key::Left, true);
+        else
+            _player.setKey(Player::Key::Left, false);
+        if (event.gamepad.stick.x > 0.1f)
+            _player.setKey(Player::Key::Right, true);
+        else
+            _player.setKey(Player::Key::Right, false);
     }
 }
 

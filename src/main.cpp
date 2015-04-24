@@ -24,8 +24,8 @@ main()
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     core.push<Game>();
+    // core.window().resize(1280, 800, true);
     core.window().resize(2560, 1440, true);
-    //core.window().resize(3840, 2160, true);
     core.start();
 
     return 0;
