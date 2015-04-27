@@ -5,7 +5,7 @@
 
 
 Player::Player()
-: IEntity(0, 20, 20)
+: IEntity(0, 5, 8)
 {
 
 }

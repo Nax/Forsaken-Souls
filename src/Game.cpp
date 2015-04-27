@@ -3,6 +3,7 @@
 #include "Screen.hpp"
 #include "Hud.hpp"
 #include "GameOver.hpp"
+#include "PauseState.hpp"
 #include "Player.hpp"
 #include "Physics.hpp"
 #include <cstdlib>
@@ -139,6 +140,10 @@ Game::handleEvent(const Event& event)
                 break;
             case Key::A:
                 _player.setKey(Player::Key::A, down);
+                break;
+            case Key::P:
+                if (down)
+                    lm::Core::get().push<PauseState>();
                 break;
             default:
                 break;
