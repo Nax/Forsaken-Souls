@@ -12,6 +12,16 @@ Camera::Camera()
 
 }
 
+void
+Camera::focus(IEntity& entity, const Map& map)
+{
+	_movingY = true;
+	_movingX = true;
+	_offset.x = entity.position.x - SCREEN_TILES_W / 2.0f;
+	_offset.y = entity.position.y - SCREEN_TILES_H / 2.0f;
+	update(entity, map);
+}
+
 const lm::Vector2f&
 Camera::offset() const
 {

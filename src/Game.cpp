@@ -36,14 +36,15 @@ Game::Game()
 			linkPart = static_cast<int>(linkDWord);
 		}
 	}
-    // for (int i = 0; i < 1500; ++i)
-        // _entities.push_back(new Entity(0, rand() % 4000 / 100.0f, rand() % 4000 / 100.0f));
+    for (int i = 0; i < 4; ++i)
+        _entities.push_back(new Entity(0, rand() % 4000 / 100.0f, rand() % 4000 / 100.0f));
 }
 
 void
 Game::load()
 {
-    _level.load(1);
+    _level.load(0);
+    _camera.focus(_player, _level.map());
 }
 
 void

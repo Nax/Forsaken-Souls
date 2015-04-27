@@ -10,6 +10,7 @@ class Camera
 {
 public:
 	Camera();
+	void					focus(IEntity& entity, const Map& map);
 	const lm::Vector2f&		offset() const;
 	void					update(IEntity& entity, const Map& map);
 	~Camera();
