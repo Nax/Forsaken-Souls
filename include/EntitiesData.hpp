@@ -21,7 +21,7 @@ struct  EntityData
         int             speed;
         bool			repeat;
     }                   animations[MAX_STATES];
-    lm::Rect2f			speed[MAX_STATES];
+    lm::Vector2f		speed[MAX_STATES];
     AI::function		ai;
 };
 

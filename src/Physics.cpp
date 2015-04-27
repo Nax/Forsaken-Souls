@@ -25,10 +25,10 @@ void
 Phys::checkCollisionX(IEntity& p, const Map& map)
 {
     const lm::Rect2f& bounding = p.boundingBox();
-    const float x = p.position.x + bounding.x;
-    const float y = p.position.y + bounding.y;
-    const float rangeX = std::ceil(x + bounding.w);
-    const float rangeY = std::ceil(y + bounding.h);
+    const float x = p.position.x + bounding.pos.x;
+    const float y = p.position.y + bounding.pos.y;
+    const float rangeX = std::ceil(x + bounding.size.x);
+    const float rangeY = std::ceil(y + bounding.size.y);
     const bool faceRight = (p.speed.x >= 0.0f);
 
     float dx = 0.0f;
@@ -41,17 +41,17 @@ Phys::checkCollisionX(IEntity& p, const Map& map)
 
             for (int b = 0; b < bb.count; ++b)
             {
-                const float bx = i + bb.boxes[b].x;
-                const float by = j + bb.boxes[b].y;
-                const float bw = bb.boxes[b].w;
-                const float bh = bb.boxes[b].h;
+                const float bx = i + bb.boxes[b].pos.x;
+                const float by = j + bb.boxes[b].pos.y;
+                const float bw = bb.boxes[b].size.x;
+                const float bh = bb.boxes[b].size.y;
                 float diff;
 
-                if (bx + bw < x || bx > x + bounding.w || by + bh < y || by > y + bounding.h)
+                if (bx + bw < x || bx > x + bounding.size.x || by + bh < y || by > y + bounding.size.y)
                     continue;
                 if (faceRight)
                 {
-                    diff = x + bounding.w - bx;
+                    diff = x + bounding.size.x - bx;
                     if (diff > dx)
                         dx = diff;
                 }
@@ -75,10 +75,10 @@ void
 Phys::checkCollisionY(IEntity& p, const Map& map)
 {
     const lm::Rect2f& bounding = p.boundingBox();
-    const float x = p.position.x + bounding.x;
-    const float y = p.position.y + bounding.y;
-    const float rangeX = std::ceil(x + bounding.w);
-    const float rangeY = std::ceil(y + bounding.h);
+    const float x = p.position.x + bounding.pos.x;
+    const float y = p.position.y + bounding.pos.y;
+    const float rangeX = std::ceil(x + bounding.size.x);
+    const float rangeY = std::ceil(y + bounding.size.y);
     const bool faceUp = (p.speed.y > 0);
 
     float dy = 0.0f;
@@ -91,17 +91,17 @@ Phys::checkCollisionY(IEntity& p, const Map& map)
 
             for (int b = 0; b < bb.count; ++b)
             {
-                const float bx = i + bb.boxes[b].x;
-                const float by = j + bb.boxes[b].y;
-                const float bw = bb.boxes[b].w;
-                const float bh = bb.boxes[b].h;
+                const float bx = i + bb.boxes[b].pos.x;
+                const float by = j + bb.boxes[b].pos.y;
+                const float bw = bb.boxes[b].size.x;
+                const float bh = bb.boxes[b].size.y;
                 float diff;
 
-                if (bx + bw < x || bx > x + bounding.w || by + bh < y || by > y + bounding.h)
+                if (bx + bw < x || bx > x + bounding.size.x || by + bh < y || by > y + bounding.size.y)
                     continue;
                 if (faceUp)
                 {
-                    diff = y + bounding.h - by;
+                    diff = y + bounding.size.y - by;
                     if (diff > dy)
                         dy = diff;
                 }
@@ -130,16 +130,16 @@ Phys::checkDamages(IEntity& attacker, IEntity& target)
     lm::Rect2f hitbox = attacker.hitBox();
     lm::Rect2f boundingBox = target.boundingBox();
 
-    boundingBox.x += target.position.x;
-    boundingBox.y += target.position.y;
+    boundingBox.pos.x += target.position.x;
+    boundingBox.pos.y += target.position.y;
 
     if (target.invincible())
         return;
 
-    if (hitbox.x + hitbox.w > boundingBox.x
-        && hitbox.x < boundingBox.x + boundingBox.w
-        && hitbox.y + hitbox.h > boundingBox.y
-        && hitbox.y < boundingBox.y + boundingBox.h)
+    if (hitbox.pos.x + hitbox.size.x > boundingBox.pos.x
+        && hitbox.pos.x < boundingBox.pos.x + boundingBox.size.x
+        && hitbox.pos.y + hitbox.size.y > boundingBox.pos.y
+        && hitbox.pos.y < boundingBox.pos.y + boundingBox.size.y)
     {
         target.hurt(attacker.damage());
     }

@@ -30,7 +30,7 @@ GameOver::update()
 }
 
 void
-GameOver::render() const
+GameOver::render()
 {
 	lm::SpriteBatch sb;
 	const lm::Image& go = ImageProvider::get().image(ImageId::GameOver);

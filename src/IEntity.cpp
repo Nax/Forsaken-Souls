@@ -30,12 +30,12 @@ IEntity::render(lm::SpriteBatch& sb, const Camera& camera) const
 {
 	const lm::Vector2f& off = camera.offset();
 	const lm::Vector2f p = position - off;
-	const lm::Vector2f bpp = { boundingBox().x + position.x - off.x, boundingBox().y + position.y - off.y };
+	const lm::Vector2f bpp = { boundingBox().pos.x + position.x - off.x, boundingBox().pos.y + position.y - off.y };
 	lm::Rect2f hb = hitBox();
-	bool hit = hb.w != 0.0f;
+	bool hit = hb.size.x != 0.0f;
 
-	hb.x -= off.x;
-	hb.y -= off.y;
+	hb.pos.x -= off.x;
+	hb.pos.y -= off.y;
 
 	_sprite.pos.x = p.x * TILE_SIZE;
 	_sprite.pos.y = SCREEN_HEIGHT - (position.y - off.y) * TILE_SIZE - _sprite.height();
@@ -44,12 +44,12 @@ IEntity::render(lm::SpriteBatch& sb, const Camera& camera) const
 
 	if (debugMode)
 	{
-		lm::VertexArray<4>	bb;
+		lm::VertexArray<12> bb;
 		glColor3ub(0, 255, 0);
 		bb.push(bpp.x * TILE_SIZE, SCREEN_HEIGHT - bpp.y * TILE_SIZE);
-		bb.push((bpp.x + boundingBox().w) * TILE_SIZE, SCREEN_HEIGHT - bpp.y * TILE_SIZE);
-		bb.push((bpp.x + boundingBox().w) * TILE_SIZE, SCREEN_HEIGHT - (bpp.y + boundingBox().h) * TILE_SIZE);
-		bb.push(bpp.x * TILE_SIZE, SCREEN_HEIGHT - (bpp.y + boundingBox().h) * TILE_SIZE);
+		bb.push((bpp.x + boundingBox().size.x) * TILE_SIZE, SCREEN_HEIGHT - bpp.y * TILE_SIZE);
+		bb.push((bpp.x + boundingBox().size.x) * TILE_SIZE, SCREEN_HEIGHT - (bpp.y + boundingBox().size.y) * TILE_SIZE);
+		bb.push(bpp.x * TILE_SIZE, SCREEN_HEIGHT - (bpp.y + boundingBox().size.y) * TILE_SIZE);
 		bb.draw(GL_LINE_LOOP);
 
 		lm::VertexArray<4>	va;
@@ -64,10 +64,10 @@ IEntity::render(lm::SpriteBatch& sb, const Camera& camera) const
 		{
 			lm::VertexArray<4>	va2;
 			glColor3ub(255, 255, 0);
-			va2.push(hb.x * TILE_SIZE, SCREEN_HEIGHT - hb.y * TILE_SIZE);
-			va2.push((hb.x + hb.w) * TILE_SIZE, SCREEN_HEIGHT - hb.y * TILE_SIZE);
-			va2.push((hb.x + hb.w) * TILE_SIZE, SCREEN_HEIGHT - (hb.y + hb.h) * TILE_SIZE);
-			va2.push(hb.x * TILE_SIZE, SCREEN_HEIGHT - (hb.y + hb.h) * TILE_SIZE);
+			va2.push(hb.pos.x * TILE_SIZE, SCREEN_HEIGHT - hb.pos.y * TILE_SIZE);
+			va2.push((hb.pos.x + hb.size.x) * TILE_SIZE, SCREEN_HEIGHT - hb.pos.y * TILE_SIZE);
+			va2.push((hb.pos.x + hb.size.x) * TILE_SIZE, SCREEN_HEIGHT - (hb.pos.y + hb.size.y) * TILE_SIZE);
+			va2.push(hb.pos.x * TILE_SIZE, SCREEN_HEIGHT - (hb.pos.y + hb.size.y) * TILE_SIZE);
 			va2.draw(GL_LINE_LOOP);
 		}
 
@@ -146,7 +146,7 @@ IEntity::update(const Map& map)
 	Phys::updateEntity(*this, map);
 	auto& bb = boundingBox();
 
-	if (position.y + bb.y + bb.h < -10)
+	if (position.y + bb.pos.y + bb.size.y < -10)
 		_hp -= ceil(hpMax() / 50.0f);
 	if (_hp <= 0)
 		die();
@@ -162,17 +162,17 @@ IEntity::hitBox() const
 	lm::Rect2f bb = boundingBox();
 	lm::Rect2f hitbox = gEntityData[_dataId].hitBox[_state];
 
-	if (hitbox.w == 0.0f)
+	if (hitbox.size.x == 0.0f)
 		return {};
 
-	lm::Vector2f center = position + lm::Vector2f(bb.x, bb.y) + lm::Vector2f(bb.w / 2.0f, 0);
+	lm::Vector2f center = position + bb.pos + lm::Vector2f(bb.size.x / 2.0f, 0);
 	if (_direction)
 	{
-		return {center.x + hitbox.x, center.y + hitbox.y, hitbox.w, hitbox.h};
+		return {{center.x + hitbox.pos.x, center.y + hitbox.pos.y}, {hitbox.size.x, hitbox.size.y}};
 	}
 	else
 	{
-		return {center.x - hitbox.x - hitbox.w, center.y + hitbox.y, hitbox.w, hitbox.h};
+		return {{center.x - hitbox.pos.x - hitbox.size.x, center.y + hitbox.pos.y}, {hitbox.size.x, hitbox.size.y}};
 	}
 }
 

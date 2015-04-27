@@ -9,7 +9,7 @@
 
 using namespace lm;
 
-bool debugMode = true;
+bool debugMode = false;
 
 Game::Game()
 : _gameOverTicks(0)
@@ -68,7 +68,7 @@ Game::update()
 }
 
 void
-Game::render() const
+Game::render()
 {
 	lm::SpriteBatch sb;
     const Map& m = _level.map();

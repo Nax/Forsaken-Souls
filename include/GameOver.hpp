@@ -9,7 +9,7 @@ public:
 	GameOver();
 	void	handleEvent(const lm::Event& event);
 	void	update();
-	void	render() const;
+	void	render();
 	~GameOver();
 
 private:

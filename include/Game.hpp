@@ -19,7 +19,7 @@ public:
     void load();
     void handleEvent(const lm::Event& event);
     void update();
-    void render() const;
+    void render();
     void unload();
 
     ~Game();

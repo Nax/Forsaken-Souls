@@ -63,7 +63,7 @@ void
 Camera::update(IEntity& entity, const Map& map)
 {
 	const auto& bb = entity.boundingBox();
-	const lm::Vector2f screenPos = entity.position - _offset + lm::Vector2f(bb.x, bb.y) + lm::Vector2f(bb.w / 2, bb.h / 2);
+	const lm::Vector2f screenPos = entity.position - _offset + lm::Vector2f(bb.pos.x, bb.pos.y) + lm::Vector2f(bb.size.x / 2, bb.size.y / 2);
 
 	checkCamera(_movingX, screenPos.x, SCREEN_TILES_W, _speed.x, entity.speed.x);
 	checkCamera(_movingY, screenPos.y, SCREEN_TILES_H, _speed.y, entity.speed.y);
