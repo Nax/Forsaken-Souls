@@ -1,5 +1,5 @@
 #include <Lums/Lums.hpp>
-#include "Game.hpp"
+#include "MainMenu.hpp"
 #include "Screen.hpp"
 #include <cstdlib>
 
@@ -23,7 +23,8 @@ main()
     glMatrixMode(GL_MODELVIEW);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    core.push<Game>();
+    core.push<MainMenu>();
+    // core.push<Game>();
     core.window().resize(2560 / 2, 1600 / 2, true);
     // core.window().resize(2560, 1440, true);
     core.start();

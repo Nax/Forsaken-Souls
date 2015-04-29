@@ -9,7 +9,10 @@ enum class ImageId
 	Tileset,
 	CommonBot,
 	GameOver,
-	Background
+	Background,
+	NewGame,
+	Quit,
+	MenuCursor
 };
 
 class ImageProvider
