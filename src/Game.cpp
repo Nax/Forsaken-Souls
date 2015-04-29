@@ -117,7 +117,8 @@ Game::handleEvent(const Event& event)
         switch (event.key)
         {
             case Key::Escape:
-                Core::get().stop();
+                if (down)
+                    Core::get().stop();
                 break;
             case Key::Right:
                 _player.setKey(Player::Key::Right, down);
