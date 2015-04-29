@@ -47,6 +47,12 @@ PauseState::forwardRender() const
 	return true;
 }
 
+bool
+PauseState::forwardEvent(const lm::Event& event) const
+{
+    return true;
+}
+
 PauseState::~PauseState()
 {
 

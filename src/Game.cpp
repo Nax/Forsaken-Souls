@@ -37,13 +37,14 @@ Game::Game()
 			linkPart = static_cast<int>(linkDWord);
 		}
 	}
-    // for (int i = 0; i < 4; ++i)
-    //     _entities.push_back(new Entity(0, rand() % 4000 / 100.0f, rand() % 4000 / 100.0f));
+    for (int i = 0; i < 20; ++i)
+        _entities.push_back(new Entity(0, rand() % 8000 / 100.0f + 2.0f, rand() % 4000 / 100.0f + 10.0f));
 }
 
 void
 Game::load()
 {
+    _player = Player();
     _level.load(2);
     _camera.focus(_player, _level.map());
 }
@@ -119,6 +120,9 @@ Game::handleEvent(const Event& event)
             case Key::Escape:
                 if (down)
                     Core::get().stop();
+                break;
+            case Key::R:
+                reload();
                 break;
             case Key::Right:
                 _player.setKey(Player::Key::Right, down);
