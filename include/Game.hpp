@@ -27,6 +27,8 @@ public:
 private:
 	typedef std::array<int, 6>		t_array6i;
 
+    void            drawBackground(lm::SpriteBatch& sb) const;
+
     Player          _player;
     Level           _level;
     Camera          _camera;

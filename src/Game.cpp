@@ -69,19 +69,27 @@ Game::update()
 }
 
 void
-Game::render()
+Game::drawBackground(lm::SpriteBatch& sb) const
 {
-	lm::SpriteBatch sb;
     const Map& m = _level.map();
     lm::Vector2f parallax = -_camera.offset() * TILE_SIZE * 0.4f;
     const lm::Image& bg = ImageProvider::get().image(ImageId::Background);
 
-	sb.begin();
-    for (int i = 0; i <= ceil(_level.map().width() * TILE_SIZE / (bg.width() / 2)); ++i)
+    for (int i = 0; i <= ceil(m.width() * TILE_SIZE / (bg.width() / 2)); ++i)
     {
-        for (int j = 0; j <= ceil(_level.map().height() * TILE_SIZE / (bg.height() / 2)); ++j)
-            sb.draw(bg, 0, Vector2f(i * bg.width() / 2.0f + parallax.x, float(SCREEN_HEIGHT) - _level.map().height() * TILE_SIZE + j * bg.height() / 2 - parallax.y), {0.5f, 0.5f});
+        for (int j = 0; j <= ceil(m.height() * TILE_SIZE / (bg.height() / 2)); ++j)
+            sb.draw(bg, 0, Vector2f(i * bg.width() / 2.0f + parallax.x, float(SCREEN_HEIGHT) - m.height() * TILE_SIZE + j * bg.height() / 2 - parallax.y), {0.5f, 0.5f});
     }
+}
+
+void
+Game::render()
+{
+	lm::SpriteBatch sb;
+    const Map& m = _level.map();
+    
+	sb.begin();
+    drawBackground(sb);
 	m.draw(sb, _camera, 0);
     m.draw(sb, _camera, 1);
     m.draw(sb, _camera, 2);
