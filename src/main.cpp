@@ -24,7 +24,7 @@ main()
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     core.push<MainMenu>();
-    core.window().resize(2560 / 2, 1600 / 2, true);
+    core.window().resize(1280, 800, true);
     // core.window().resize(2560, 1440, true);
     core.start();
 
