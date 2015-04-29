@@ -68,17 +68,27 @@ Game::update()
         Core::get().transition<GameOver>();
 }
 
+static int
+perlin(int x,int y)
+{
+    int n = x + y * 57;
+    n = (n << 13) ^ n;
+    int nn = (n * (n * n * 60493 + 19990303) + 1376312589) & 0x7fffffff;
+    return nn;
+}
+
 void
 Game::drawBackground(lm::SpriteBatch& sb) const
 {
     const Map& m = _level.map();
     lm::Vector2f parallax = -_camera.offset() * TILE_SIZE * 0.4f;
     const lm::Image& bg = ImageProvider::get().image(ImageId::Background);
+    const lm::Vector2f bgDim = { bg.width() / 3.f, bg.height() / 2.f };
 
-    for (int i = 0; i <= ceil(m.width() * TILE_SIZE / (bg.width() / 2)); ++i)
+    for (int i = 0; i <= ceil(m.width() * TILE_SIZE / (bgDim.x / 2.f)); ++i)
     {
-        for (int j = 0; j <= ceil(m.height() * TILE_SIZE / (bg.height() / 2)); ++j)
-            sb.draw(bg, 0, Vector2f(i * bg.width() / 2.0f + parallax.x, float(SCREEN_HEIGHT) - m.height() * TILE_SIZE + j * bg.height() / 2 - parallax.y), {0.5f, 0.5f});
+        for (int j = 0; j <= ceil(m.height() * TILE_SIZE / (bgDim.y / 2.f)); ++j)
+            sb.draw(bg, perlin(i, j) % 5, Vector2f(i * bgDim.x / 2.0f + parallax.x, float(SCREEN_HEIGHT) - m.height() * TILE_SIZE + j * bgDim.y / 2.f - parallax.y), {0.5f, 0.5f});
     }
 }
 
