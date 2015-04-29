@@ -19,7 +19,7 @@ public:
 
 	const TileBoundingBox&		boundingBoxes() const;
 
-	static const Tile&			fromId(uint8_t id);
+	static const Tile&			fromId(uint16_t id);
 
 private:
 

@@ -36,7 +36,7 @@ public:
 private:
 	uint32_t				_width;
 	uint32_t				_height;
-	uint8_t*				_tiles;
+	uint16_t*				_tiles;
 	std::vector<t_array4i>	_links;
 
 	void					setLinks(const std::vector<int32_t>& linkBuf, const int& mapNum);

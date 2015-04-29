@@ -7,8 +7,8 @@ Map::Map(std::ifstream& file)
 {
 	file.read(reinterpret_cast<char*>(&_width), sizeof(int32_t));
 	file.read(reinterpret_cast<char*>(&_height), sizeof(int32_t));
-	_tiles = new uint8_t[_width * _height * MAP_DEPTH];
-	file.read(reinterpret_cast<char*>(_tiles), _width * _height * MAP_DEPTH);
+	_tiles = new uint16_t[_width * _height * MAP_DEPTH];
+	file.read(reinterpret_cast<char*>(_tiles), _width * _height * MAP_DEPTH * 2);
 }
 
 Map::Map(Map&& rhs)
