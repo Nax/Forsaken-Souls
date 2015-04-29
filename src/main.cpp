@@ -8,8 +8,8 @@ main()
     lm::Core core(SCREEN_WIDTH, SCREEN_HEIGHT, "Forsaken Souls");
     lm::ShaderProgram sp;
 
-    sp.attach(lm::Shader("shaders/frag.glsl", lm::Shader::Type::Fragment));
-    sp.attach(lm::Shader("shaders/vert.glsl", lm::Shader::Type::Vertex));
+    sp.attach(lm::Shader("shaders/lightFrag.glsl", lm::Shader::Type::Fragment));
+    sp.attach(lm::Shader("shaders/lightVert.glsl", lm::Shader::Type::Vertex));
     sp.attach(lm::Shader::fragment());
     sp.attach(lm::Shader::vertex());
     sp.link();
