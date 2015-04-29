@@ -11,6 +11,7 @@ public:
 	void	handleEvent(const lm::Event& event);
 	void	render();
 	bool	forwardRender() const;
+    bool    forwardEvent(const lm::Event& event) const;
 	~PauseState();
 };
 

@@ -19,6 +19,7 @@ Camera::focus(IEntity& entity, const Map& map)
 	_movingX = true;
 	_offset.x = entity.position.x - SCREEN_TILES_W / 2.0f;
 	_offset.y = entity.position.y - SCREEN_TILES_H / 2.0f;
+    _speed = {0, 0};
 	update(entity, map);
 }
 
@@ -54,6 +55,8 @@ moveCamera(bool& moving, int screenPos, int screenTiles, int mapSize, float& spe
 		offset = mapSize - screenTiles;
 		moving = false;
 	}
+    if (speed == 0.0f)
+        moving = false;
 }
 
 static void
