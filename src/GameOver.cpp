@@ -18,7 +18,7 @@ GameOver::handleEvent(const lm::Event& event)
 	}
 	if (event.type == lm::Event::Type::ButtonDown)
     {
-    	if (event.gamepad.button == 10)
+    	if (event.gamepad.button == 9)
     		lm::Core::get().transition<Game>();
 	}
 }

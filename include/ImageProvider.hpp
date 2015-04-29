@@ -12,7 +12,8 @@ enum class ImageId
 	Background,
 	NewGame,
 	Quit,
-	MenuCursor
+	MenuCursor,
+	Pause
 };
 
 class ImageProvider
