@@ -32,6 +32,7 @@ public:
     bool                finished() const            { return _sprite.finished(); }
     const lm::Rect2f&   boundingBox() const         { return gEntityData[_dataId].boundingBox[_state]; }
     lm::Rect2f          hitBox() const;
+    lm::Vector2f        center() const;
     bool                dead() const                { return _dead; }
     void                die();
     int                 damage() const              { return gEntityData[_dataId].damage; }
@@ -44,6 +45,7 @@ public:
     virtual void        update(const Map& map);
     void                aim(Aim aim);
     void                hurt(int damage);
+    void                heal(int heal);
 
     void
     setKey(Key key, bool value)

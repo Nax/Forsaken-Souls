@@ -13,7 +13,6 @@ using namespace lm;
 bool debugMode = false;
 
 Game::Game()
-: _gameOverTicks(0)
 {
 	char const*				file = "level_links.bin";
 	int32_t					linkCount;
@@ -37,16 +36,18 @@ Game::Game()
 			linkPart = static_cast<int>(linkDWord);
 		}
 	}
-    for (int i = 0; i < 20; ++i)
-        _entities.push_back(new Entity(0, rand() % 8000 / 100.0f + 2.0f, rand() % 4000 / 100.0f + 10.0f));
 }
 
 void
 Game::load()
 {
+    _gameOverTicks = 0;
+    _healTicks = 0;
     _player = Player();
     _level.load(2);
     _camera.focus(_player, _level.map());
+    for (int i = 0; i < 10; ++i)
+        _entities.push_back(new Entity(0, rand() % 32000 / 100.0f + 2.0f, rand() % 1000 / 100.0f + 10.0f));
 }
 
 void
@@ -68,6 +69,12 @@ Game::update()
         _gameOverTicks++;
     if (_gameOverTicks > 500)
         Core::get().transition<GameOver>();
+    _healTicks++;
+    if (_healTicks > 30)
+    {
+        _player.heal(1);
+        _healTicks = 0;
+    }
 }
 
 void
@@ -122,7 +129,8 @@ Game::handleEvent(const Event& event)
                     Core::get().stop();
                 break;
             case Key::R:
-                reload();
+                if (down)
+                    reload();
                 break;
             case Key::Right:
                 _player.setKey(Player::Key::Right, down);
@@ -202,7 +210,9 @@ Game::handleEvent(const Event& event)
 void
 Game::unload()
 {
-
+    for (auto e : _entities)
+        delete e;
+    _entities.clear();
 }
 
 Game::~Game()

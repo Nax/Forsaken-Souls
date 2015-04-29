@@ -31,6 +31,7 @@ private:
     Level           _level;
     Camera          _camera;
     int             _gameOverTicks;
+    int             _healTicks;
     EntityVector    _entities;
 };
 
