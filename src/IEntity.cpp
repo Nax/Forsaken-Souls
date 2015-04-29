@@ -176,6 +176,17 @@ IEntity::hitBox() const
 	}
 }
 
+lm::Vector2f
+IEntity::center() const
+{
+    lm::Vector2f c = position;
+    lm::Rect2f bb = boundingBox();
+
+    c += bb.pos;
+    c += bb.size / 2.0f;
+    return c;
+}
+
 void
 IEntity::aim(Aim aim)
 {
@@ -209,6 +220,14 @@ IEntity::hurt(int damage)
 	_hit = true;
 	if (_hp <= 0)
 		die();
+}
+
+void
+IEntity::heal(int heal)
+{
+    _hp += heal;
+    if (_hp > hpMax())
+        _hp = hpMax();
 }
 
 void
