@@ -196,7 +196,8 @@ Game::handleEvent(const Event& event)
                 _player.die();
                 break;
             case 9:
-                Core::get().stop();
+                if (down)
+                    lm::Core::get().push<PauseState>();
                 break;
             case 10:
                 if (down)
