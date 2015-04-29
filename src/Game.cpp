@@ -37,8 +37,6 @@ Game::Game()
 			linkPart = static_cast<int>(linkDWord);
 		}
 	}
-    for (int i = 0; i < 20; ++i)
-        _entities.push_back(new Entity(0, rand() % 8000 / 100.0f + 2.0f, rand() % 4000 / 100.0f + 10.0f));
 }
 
 void
