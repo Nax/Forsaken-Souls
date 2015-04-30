@@ -36,7 +36,7 @@ AI::basic(Entity& entity, Player& player, const Map& map)
 
 	if (entity.position.x < player.position.x - 1)
 	{
-        if (abyssLen(center.x + 1, center.y, map) <= 7 || !entity.grounded)
+        if (abyssLen(center.x + 1, center.y, map) <= 9 || !entity.grounded)
         {
             if (entity.hp() > 20)
                 entity.setKey(Entity::Key::Right, true);
@@ -70,5 +70,37 @@ AI::basic(Entity& entity, Player& player, const Map& map)
              && std::rand() % 30 == 0)
     {
         entity.setKey(Entity::Key::Space, true);
+    }
+}
+
+void
+AI::boss(Entity& entity, Player& player, const Map& map)
+{
+    lm::Vector2f center = entity.center();
+    
+    entity.setKey(Entity::Key::A, false);
+    entity.setKey(Entity::Key::Left, false);
+    entity.setKey(Entity::Key::Right, false);
+
+    if (lm::dist(player.position, entity.position) > 12.0f || player.dead())
+        return;
+    if (entity.position.x < player.position.x - 1)
+    {
+        if (abyssLen(center.x + 1, center.y, map) <= 9)
+            entity.setKey(Entity::Key::Right, true);
+    }
+    else if (entity.position.x > player.position.x + 1)
+    {
+        if (abyssLen(center.x, center.y, map) <= 9)
+            entity.setKey(Entity::Key::Left, true);
+    }
+    if (lm::dist(entity.position, player.position) < 2
+        /*&& std::rand() % 32 == 0*/)
+    {
+        if (entity.position.x < player.position.x)
+            entity.setKey(Entity::Key::Right, true);
+        else
+            entity.setKey(Entity::Key::Left, true);
+        entity.setKey(Entity::Key::A, true);
     }
 }

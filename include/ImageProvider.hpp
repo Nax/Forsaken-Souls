@@ -13,7 +13,8 @@ enum class ImageId
 	NewGame,
 	Quit,
 	MenuCursor,
-	Pause
+	Pause,
+    CommonBoss
 };
 
 class ImageProvider
