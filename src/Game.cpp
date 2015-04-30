@@ -71,7 +71,7 @@ Game::update()
     _healTicks++;
     if (_healTicks > 30)
     {
-        _player.heal(1);
+        //_player.heal(1);
         _healTicks = 0;
     }
     //std::cout << _player.position.x << " " << _player.position.y << std::endl;

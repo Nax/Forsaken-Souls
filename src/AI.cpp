@@ -54,7 +54,8 @@ AI::basic(Entity& entity, Player& player, const Map& map)
                 entity.setKey(Entity::Key::Right, true);
         }
 	}
-	if (lm::dist(entity.position, player.position) < 2 
+	if (std::abs(entity.position.x - player.position.x) < 1.5f
+        && std::abs(entity.position.y - player.position.y) <= 3.0f 
         && entity.grounded
         && std::rand() % 32 == 0)
 	{
@@ -94,8 +95,8 @@ AI::boss(Entity& entity, Player& player, const Map& map)
         if (abyssLen(center.x, center.y, map) <= 9)
             entity.setKey(Entity::Key::Left, true);
     }
-    if (lm::dist(entity.position, player.position) < 2
-        /*&& std::rand() % 32 == 0*/)
+    if (std::abs(entity.position.x - player.position.x) < 1.5f
+        && std::abs(entity.position.y - player.position.y) <= 3.0f)
     {
         if (entity.position.x < player.position.x)
             entity.setKey(Entity::Key::Right, true);
