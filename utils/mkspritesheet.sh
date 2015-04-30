@@ -12,7 +12,7 @@ mkdir /tmp/line;
 num=0;
 
 for file in $1/Anim*/*.png; do
-	convert $file -resize $2x$2 /tmp/mini/img`printf '%08d' $num`.png;
+	convert $file -resize $2 /tmp/mini/img`printf '%08d' $num`.png;
 	num=`expr $num + 1`;
 done;
 

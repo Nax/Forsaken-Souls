@@ -13,7 +13,12 @@ struct  EntityData
     int                 mp;
     int                 damage;
     lm::Rect2f          boundingBox[MAX_STATES];
-    lm::Rect2f			hitBox[MAX_STATES];
+    struct
+    {
+        lm::Rect2f		box;
+        int             begin;
+        int             len;
+    }                   hitBox[MAX_STATES];
     struct
     {
         int             begin;

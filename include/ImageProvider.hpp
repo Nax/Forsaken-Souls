@@ -14,7 +14,8 @@ enum class ImageId
 	Quit,
 	MenuCursor,
 	Pause,
-    CommonBoss
+    CommonBoss,
+    Yseult
 };
 
 class ImageProvider

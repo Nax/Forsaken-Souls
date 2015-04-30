@@ -160,10 +160,15 @@ lm::Rect2f
 IEntity::hitBox() const
 {
 	lm::Rect2f bb = boundingBox();
-	lm::Rect2f hitbox = gEntityData[_dataId].hitBox[_state];
+	auto boxState = gEntityData[_dataId].hitBox[_state];
+    auto hitbox = boxState.box;
+    int begin = boxState.begin;
+    int len = boxState.len;
 
 	if (hitbox.size.x == 0.0f)
 		return {};
+    if (_sprite.frame() < begin || _sprite.frame() >= begin + len)
+        return {};
 
 	lm::Vector2f center = position + bb.pos + lm::Vector2f(bb.size.x / 2.0f, 0);
 	if (_direction)

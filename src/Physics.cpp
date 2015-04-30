@@ -3,6 +3,8 @@
 #include "Level.hpp"
 #include "Screen.hpp"
 
+#include <iostream>
+
 void
 Phys::updateEntity(IEntity &p, const Map& map)
 {    
@@ -24,14 +26,13 @@ Phys::applyGravity(IEntity& p)
 void
 Phys::checkCollisionX(IEntity& p, const Map& map)
 {
+    redo:
     const lm::Rect2f& bounding = p.boundingBox();
     const float x = p.position.x + bounding.pos.x;
     const float y = p.position.y + bounding.pos.y;
     const float rangeX = std::ceil(x + bounding.size.x);
     const float rangeY = std::ceil(y + bounding.size.y);
     const bool faceRight = (p.speed.x >= 0.0f);
-
-    float dx = 0.0f;
 
     for (int j = y; j < rangeY; ++j)
     {
@@ -50,24 +51,14 @@ Phys::checkCollisionX(IEntity& p, const Map& map)
                 if (bx + bw < x || bx > x + bounding.size.x || by + bh < y || by > y + bounding.size.y)
                     continue;
                 if (faceRight)
-                {
                     diff = x + bounding.size.x - bx;
-                    if (diff > dx)
-                        dx = diff;
-                }
                 else
-                {
                     diff = x - (bx + bw);
-                    if (diff < dx)
-                        dx = diff;
-                }
+                p.position.x -= diff;
+                p.speed.x = 0.0f;
+                goto redo;
             }
         }
-    }
-    if (dx != 0.0f)
-    {
-        p.position.x -= dx;
-        p.speed.x = 0.0f;
     }
 }
 
