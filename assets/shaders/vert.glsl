@@ -1,5 +1,12 @@
 uniform vec2 size;
+uniform int lightCount;
+uniform vec2 lights[4];
+uniform vec2 off;
+
 varying vec2 s;
+varying float lCount;
+varying vec2 l[4];
+varying vec2 offset;
 
 vec4 lm_position();
 vec4 lm_texCoord();
@@ -10,4 +17,12 @@ void main() {
 	gl_TexCoord[0] = lm_texCoord();
 	gl_FrontColor = lm_frontColor();
 	s = size;
+	lCount = float(lightCount);
+	offset = off;
+	int i = 0;
+	while (i < lightCount)
+	{
+		l[i] = lights[i];
+		i++;
+	}
 }

@@ -36,6 +36,16 @@ Game::Game()
 			linkPart = static_cast<int>(linkDWord);
 		}
 	}
+
+    sp.attach(lm::Shader("shaders/frag.glsl", lm::Shader::Type::Fragment));
+    sp.attach(lm::Shader("shaders/vert.glsl", lm::Shader::Type::Vertex));
+    sp.attach(lm::Shader::fragment());
+    sp.attach(lm::Shader::vertex());
+    sp.link();
+    sp.use();
+
+    int loc = glGetUniformLocation(sp.program(), "size");
+    glUniform2f(loc, 1280.0, 800.0);
 }
 
 void
@@ -61,6 +71,17 @@ Game::update()
     }
     _player.update(_level.map());
     _camera.update(_player, _level.map());
+
+    float lights[8] = {7.5, 23.5,  20.0, 10.0,  40.0, 10.0,  60.0, 10.0};
+
+    int loc = glGetUniformLocation(sp.program(), "lightCount");
+    glUniform1i(loc, 1);
+    loc = glGetUniformLocation(sp.program(), "lights");
+    glUniform2fv(loc, 4, lights);
+    loc = glGetUniformLocation(sp.program(), "off");
+    glUniform2f(loc, _camera.offset().x, _camera.offset().y);
+
+
     for (auto e : _entities)
     {
         Phys::checkDamages(_player, *e);
@@ -106,9 +127,6 @@ Game::drawBackground(lm::SpriteBatch& sb) const
 void
 Game::render()
 {
-    // glUniform1f(0, lm::Core::get().window().width());
-    // glUniform1f(0, lm::Core::get().window().height());
-
 	lm::SpriteBatch sb;
     const Map& m = _level.map();
     

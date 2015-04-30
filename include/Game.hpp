@@ -24,8 +24,10 @@ public:
 
     ~Game();
 
+    lm::ShaderProgram   sp;
+
 private:
-	typedef std::array<int, 6>		t_array6i;
+    typedef std::array<int, 6>      t_array6i;
 
     void            drawBackground(lm::SpriteBatch& sb) const;
 
