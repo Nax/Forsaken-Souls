@@ -38,7 +38,7 @@ AI::basic(Entity& entity, Player& player, const Map& map)
 	{
         if (abyssLen(center.x + 1, center.y, map) <= 9 || !entity.grounded)
         {
-            if (entity.hp() > 20)
+            if (entity.hp() > 10)
                 entity.setKey(Entity::Key::Right, true);
             else
                 entity.setKey(Entity::Key::Left, true);
@@ -48,7 +48,7 @@ AI::basic(Entity& entity, Player& player, const Map& map)
 	{
         if (abyssLen(center.x, center.y, map) <= 9 || !entity.grounded)
         {
-            if (entity.hp() > 20)
+            if (entity.hp() > 10)
                 entity.setKey(Entity::Key::Left, true);
             else
                 entity.setKey(Entity::Key::Right, true);
