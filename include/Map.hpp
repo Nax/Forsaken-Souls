@@ -34,6 +34,7 @@ public:
 	void							draw(lm::SpriteBatch& sb, const Camera& camera, int z) const;
 	const std::vector<t_array4i>&	links() const;
     void                            spawn(std::vector<Entity*>& entities) const;
+    void                            enlight(lm::ShaderProgram& sp, Camera& camera) const;
 	~Map();
 
 private:
@@ -44,11 +45,12 @@ private:
         uint32_t id;
     };
 
-	uint32_t				_width;
-	uint32_t				_height;
-	uint16_t*				_tiles;
-	std::vector<t_array4i>	_links;
-    std::vector<Spawn>      _spawns;
+	uint32_t				   _width;
+	uint32_t				   _height;
+	uint16_t*                  _tiles;
+	std::vector<t_array4i>     _links;
+    std::vector<Spawn>         _spawns;
+    std::vector<float>         _lights;
 
 	void					setLinks(const std::vector<int32_t>& linkBuf, const int& mapNum);
 };

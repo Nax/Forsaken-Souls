@@ -23,7 +23,13 @@ class Map
     objects = map_json['layers'][5]['objects']
     spawns = []
     objects.each do |o|
+      next if o['type'] != 'spawn'
       spawns << {x: o['x'].to_i / 128, y: h - o['y'].to_i / 128, id: o['properties']['enemyID'].to_i}
+    end
+    lights = []
+    objects.each do |o|
+      next if o['type'] != 'light'
+      lights << {x: o['x'].to_f / 128.0, y: h.to_f - o['y'].to_f / 128.0}
     end
     header = [w, h].pack 'LL'
     bindata = data.pack 'S*'
@@ -31,7 +37,11 @@ class Map
     spawns.each do |s|
       spawndata += [s[:x], s[:y], s[:id]].pack 'LLL'
     end
-    @maps << (header + bindata + spawndata)
+    lightdata = [lights.length].pack 'L'
+    lights.each do |s|
+      lightdata += [s[:x], s[:y]].pack 'FF'
+    end
+    @maps << (header + bindata + spawndata + lightdata)
   end
 
   def parse_links links

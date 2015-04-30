@@ -14,7 +14,15 @@ bool debugMode = false;
 
 Game::Game()
 {
+    sp.attach(lm::Shader("shaders/frag.glsl", lm::Shader::Type::Fragment));
+    sp.attach(lm::Shader("shaders/vert.glsl", lm::Shader::Type::Vertex));
+    sp.attach(lm::Shader::fragment());
+    sp.attach(lm::Shader::vertex());
+    sp.link();
+    sp.use();
 
+    int loc = glGetUniformLocation(sp.program(), "size");
+    glUniform2f(loc, 1280.0, 800.0);
 }
 
 void
@@ -26,6 +34,7 @@ Game::load()
     _level.load(2);
     _camera.focus(_player, _level.map());
     _level.map().spawn(_entities);
+    _level.map().enlight(sp, _camera);
 }
 
 void
@@ -38,6 +47,8 @@ Game::update()
     }
     _player.update(_level.map());
     _camera.update(_player, _level.map());
+    _level.map().enlight(sp, _camera);
+
     for (auto e : _entities)
     {
         Phys::checkDamages(_player, *e);
@@ -83,9 +94,6 @@ Game::drawBackground(lm::SpriteBatch& sb) const
 void
 Game::render()
 {
-    // glUniform1f(0, lm::Core::get().window().width());
-    // glUniform1f(0, lm::Core::get().window().height());
-
 	lm::SpriteBatch sb;
     const Map& m = _level.map();
     

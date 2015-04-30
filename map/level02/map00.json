@@ -315,6 +315,66 @@
                  "width":128,
                  "x":40192,
                  "y":7936
+                }, 
+                {
+                 "height":128,
+                 "id":32,
+                 "name":"Light",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":-0.358124091395875,
+                 "type":"light",
+                 "visible":true,
+                 "width":128,
+                 "x":886.909090909091,
+                 "y":7130.90909090909
+                }, 
+                {
+                 "height":128,
+                 "id":34,
+                 "name":"Light",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":-0.358124,
+                 "type":"light",
+                 "visible":true,
+                 "width":128,
+                 "x":19454.1818181818,
+                 "y":5857.21212121212
+                }, 
+                {
+                 "height":128,
+                 "id":35,
+                 "name":"Light",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":-0.358124,
+                 "type":"light",
+                 "visible":true,
+                 "width":128,
+                 "x":5884.48484848485,
+                 "y":5472.36363636364
+                }, 
+                {
+                 "height":128,
+                 "id":36,
+                 "name":"Light",
+                 "properties":
+                    {
+
+                    },
+                 "rotation":-0.358124,
+                 "type":"light",
+                 "visible":true,
+                 "width":128,
+                 "x":3323.87878787879,
+                 "y":5463.27272727273
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -323,7 +383,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":32,
+ "nextobjectid":37,
  "orientation":"orthogonal",
  "properties":
     {

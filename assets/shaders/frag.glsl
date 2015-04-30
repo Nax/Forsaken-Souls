@@ -1,4 +1,7 @@
 varying vec2 s;
+varying float lCount;
+varying vec2 l[16];
+varying vec2 offset;
 
 vec4 lm_fragColor();
 
@@ -11,5 +14,27 @@ void main() {
 	vec4 c = lm_fragColor();
 	vec4 ll = vec4(0.0, 0.0, 0.0, c.a);
 	vec4 cc = mix(c, ll, 0.7 * dist);
+
+	int i = 0;
+	int count = int(lCount);
+	c = cc;
+	max = 200.0;
+	vec2 light;
+	while (i < count)
+	{
+		light.x = (l[i].x - offset.x) * 42.667;
+        light.y = (l[i].y - offset.y) * 47.407;
+		d = gl_FragCoord.xy - light.xy;
+		dist = sqrt(d.x * d.x + d.y * d.y);
+		if (dist < 200.0)
+		{
+			c.r = min(c.r + (1.0 - (dist / max)) * 0.5, 1.0);
+			c.g = min(c.g + (1.0 - (dist / max)) * 0.5, 1.0);
+			c.b = min(c.b + (1.0 - (dist / max)) * 0.5, 1.0);
+		}
+		i++;
+	}
+
+	cc = c;
 	gl_FragColor = cc;
 }

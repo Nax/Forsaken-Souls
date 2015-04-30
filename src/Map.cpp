@@ -12,6 +12,7 @@ Map::Map(std::ifstream& file)
 	file.read(reinterpret_cast<char*>(_tiles), _width * _height * MAP_DEPTH * 2);
 
     uint32_t spawnCount;
+    uint32_t lightCount;
 
     file.read(reinterpret_cast<char*>(&spawnCount), 4);
     for (uint32_t i = 0; i < spawnCount; ++i)
@@ -21,6 +22,18 @@ Map::Map(std::ifstream& file)
         file.read(reinterpret_cast<char*>(&s.y), 4);
         file.read(reinterpret_cast<char*>(&s.id), 4);
         _spawns.push_back(s);
+    }
+
+    file.read(reinterpret_cast<char*>(&lightCount), 4);
+    for (uint32_t i = 0; i < lightCount; ++i)
+    {
+        float x;
+        float y;
+
+        file.read(reinterpret_cast<char*>(&x), 4);
+        file.read(reinterpret_cast<char*>(&y), 4);
+        _lights.push_back(x);
+        _lights.push_back(y);
     }
 }
 
@@ -52,7 +65,7 @@ Map::setLinks(const std::vector<int32_t>& linkBuf, const int& mapNum)
 				linkBuf[i + 1],
 				linkBuf[i + 2],
 				linkBuf[i + 3]
-				}});
+			}});
 		}
 	}
 }
@@ -116,6 +129,17 @@ Map::spawn(std::vector<Entity*>& entities) const
 {
     for (auto s : _spawns)
         entities.push_back(new Entity(s.id, s.x, s.y));
+}
+
+void
+Map::enlight(lm::ShaderProgram& sp, Camera& camera) const
+{
+    int loc = glGetUniformLocation(sp.program(), "lightCount");
+    glUniform1i(loc, _lights.size() / 2);
+    loc = glGetUniformLocation(sp.program(), "lights");
+    glUniform2fv(loc, _lights.size() / 2, _lights.data());
+    loc = glGetUniformLocation(sp.program(), "off");
+    glUniform2f(loc, camera.offset().x, camera.offset().y);
 }
 
 Map::~Map()
