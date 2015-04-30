@@ -89,7 +89,7 @@ const EntityData gEntityData[] =
             {},
             {},
             {},
-            {{0.5f, 1.5f}, {1.2f, 1.5f}},
+            {{0.5f, 1.5f}, {1.2f, 2.0f}},
             {}
         },
         // Animations
@@ -149,7 +149,7 @@ const EntityData gEntityData[] =
             {},
             {},
             {},
-            {{0.5f, 1.5f}, {1.2f, 1.5f}},
+            {{0.5f, 1.5f}, {1.2f, 2.0f}},
         },
         // Animations
         {
