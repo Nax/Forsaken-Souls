@@ -14,28 +14,7 @@ bool debugMode = false;
 
 Game::Game()
 {
-	char const*				file = "level_links.bin";
-	int32_t					linkCount;
-	std::ifstream			stream(lm::resourcePath() + '/' + file, std::ios::binary);
 
-	if (!stream.good())
-	{
-		std::cerr << "Error opening " << file << std::endl;
-		return;
-	}
-	stream.read(reinterpret_cast<char*>(&linkCount), sizeof(linkCount));
-
-	Level::_totalLinks.resize(linkCount);
-	for (t_array6i& lnkAr : Level::_totalLinks)
-	{
-		for (int& linkPart : lnkAr)
-		{
-			int32_t linkDWord;
-
-			stream.read(reinterpret_cast<char*>(&linkDWord), sizeof(linkDWord));
-			linkPart = static_cast<int>(linkDWord);
-		}
-	}
 }
 
 void
