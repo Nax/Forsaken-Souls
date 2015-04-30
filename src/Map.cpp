@@ -2,6 +2,7 @@
 #include "Map.hpp"
 #include "ImageProvider.hpp"
 #include "Screen.hpp"
+#include "Entity.hpp"
 
 Map::Map(std::ifstream& file)
 {
@@ -9,6 +10,18 @@ Map::Map(std::ifstream& file)
 	file.read(reinterpret_cast<char*>(&_height), sizeof(int32_t));
 	_tiles = new uint16_t[_width * _height * MAP_DEPTH];
 	file.read(reinterpret_cast<char*>(_tiles), _width * _height * MAP_DEPTH * 2);
+
+    uint32_t spawnCount;
+
+    file.read(reinterpret_cast<char*>(&spawnCount), 4);
+    for (uint32_t i = 0; i < spawnCount; ++i)
+    {
+        Spawn s;
+        file.read(reinterpret_cast<char*>(&s.x), 4);
+        file.read(reinterpret_cast<char*>(&s.y), 4);
+        file.read(reinterpret_cast<char*>(&s.id), 4);
+        _spawns.push_back(s);
+    }
 }
 
 Map::Map(Map&& rhs)
@@ -96,6 +109,13 @@ Map::draw(lm::SpriteBatch& sb, const Camera& camera, int z) const
 				sb.draw(img, tileId - 1, {(i - off.x) * TILE_SIZE, SCREEN_HEIGHT - ((j - off.y) + 1) * TILE_SIZE}, {0.5, 0.5});
 		}
 	}
+}
+
+void
+Map::spawn(std::vector<Entity*>& entities) const
+{
+    for (auto s : _spawns)
+        entities.push_back(new Entity(s.id, s.x, s.y));
 }
 
 Map::~Map()
