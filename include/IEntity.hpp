@@ -36,7 +36,7 @@ public:
     bool                dead() const                { return _dead; }
     void                die();
     int                 damage() const              { return gEntityData[_dataId].damage; }
-    bool                invincible() const           { return _invFrames > 0; }
+    bool                invincible() const          { return _invFrames > 0; }
 
     void                setState(int stance);
     void                setDirection(bool direction){ _direction = direction; _sprite.flip.x = direction; }
