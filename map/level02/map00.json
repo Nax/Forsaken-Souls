@@ -67,7 +67,7 @@
                  "name":"CommonBot",
                  "properties":
                     {
-                     "enemyID":"0"
+                     "enemyID":"1"
                     },
                  "rotation":0,
                  "type":"spawn",
@@ -82,7 +82,7 @@
                  "name":"CommonBot",
                  "properties":
                     {
-                     "enemyID":"0"
+                     "enemyID":"1"
                     },
                  "rotation":0,
                  "type":"spawn",
@@ -97,7 +97,7 @@
                  "name":"CommonBot",
                  "properties":
                     {
-                     "enemyID":"0"
+                     "enemyID":"1"
                     },
                  "rotation":0,
                  "type":"spawn",
@@ -112,7 +112,7 @@
                  "name":"CommonBot",
                  "properties":
                     {
-                     "enemyID":"0"
+                     "enemyID":"1"
                     },
                  "rotation":0,
                  "type":"spawn",
@@ -127,7 +127,7 @@
                  "name":"CommonBot",
                  "properties":
                     {
-                     "enemyID":"0"
+                     "enemyID":"1"
                     },
                  "rotation":0,
                  "type":"spawn",
@@ -142,7 +142,7 @@
                  "name":"CommonBot",
                  "properties":
                     {
-                     "enemyID":"0"
+                     "enemyID":"1"
                     },
                  "rotation":0,
                  "type":"spawn",
@@ -157,7 +157,7 @@
                  "name":"CommonBot",
                  "properties":
                     {
-                     "enemyID":"0"
+                     "enemyID":"1"
                     },
                  "rotation":0,
                  "type":"spawn",
@@ -172,7 +172,7 @@
                  "name":"CommonBot",
                  "properties":
                     {
-                     "enemyID":"0"
+                     "enemyID":"1"
                     },
                  "rotation":0,
                  "type":"spawn",
@@ -187,7 +187,7 @@
                  "name":"CommonBot",
                  "properties":
                     {
-                     "enemyID":"0"
+                     "enemyID":"1"
                     },
                  "rotation":0,
                  "type":"spawn",
@@ -202,7 +202,7 @@
                  "name":"CommonBot",
                  "properties":
                     {
-                     "enemyID":"0"
+                     "enemyID":"1"
                     },
                  "rotation":0,
                  "type":"spawn",
@@ -217,7 +217,7 @@
                  "name":"CommonBot",
                  "properties":
                     {
-                     "enemyID":"0"
+                     "enemyID":"1"
                     },
                  "rotation":0,
                  "type":"spawn",
@@ -232,7 +232,7 @@
                  "name":"CommonBot",
                  "properties":
                     {
-                     "enemyID":"0"
+                     "enemyID":"1"
                     },
                  "rotation":0,
                  "type":"spawn",
@@ -247,7 +247,7 @@
                  "name":"CommonBot",
                  "properties":
                     {
-                     "enemyID":"0"
+                     "enemyID":"1"
                     },
                  "rotation":0,
                  "type":"spawn",
@@ -262,7 +262,7 @@
                  "name":"CommonBot",
                  "properties":
                     {
-                     "enemyID":"0"
+                     "enemyID":"1"
                     },
                  "rotation":0,
                  "type":"spawn",
@@ -277,7 +277,7 @@
                  "name":"CommonBot",
                  "properties":
                     {
-                     "enemyID":"0"
+                     "enemyID":"1"
                     },
                  "rotation":0,
                  "type":"spawn",
@@ -292,7 +292,7 @@
                  "name":"CommonBot",
                  "properties":
                     {
-                     "enemyID":"0"
+                     "enemyID":"1"
                     },
                  "rotation":0,
                  "type":"spawn",
@@ -307,7 +307,7 @@
                  "name":"CommonBoss",
                  "properties":
                     {
-                     "enemyID":"1"
+                     "enemyID":"2"
                     },
                  "rotation":0,
                  "type":"spawn",
