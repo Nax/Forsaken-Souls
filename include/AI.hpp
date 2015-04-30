@@ -10,6 +10,7 @@ namespace AI
 	typedef void (*function)(Entity& entity, Player& player, const Map& map);
 
 	void	basic(Entity& entity, Player& player, const Map& map);
+    void    boss(Entity& entity, Player& player, const Map& map);
 }
 
 #endif

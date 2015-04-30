@@ -225,6 +225,8 @@ IEntity::hurt(int damage)
 void
 IEntity::heal(int heal)
 {
+    if (_dead)
+        return;
     _hp += heal;
     if (_hp > hpMax())
         _hp = hpMax();
