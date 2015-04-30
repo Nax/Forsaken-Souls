@@ -3,6 +3,8 @@
 #include "Screen.hpp"
 #include <cstdlib>
 
+#include <iostream>
+
 int
 main()
 {
@@ -17,6 +19,9 @@ main()
     sp.attach(lm::Shader::vertex());
     sp.link();
     sp.use();
+
+    int loc1 = glGetUniformLocation(sp.program(), "size");
+    glUniform2f(loc1, 1280.0, 800.0);
 
     glMatrixMode(GL_PROJECTION);
     glOrtho(0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, -1, 1);

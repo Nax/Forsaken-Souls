@@ -106,8 +106,6 @@ Game::drawBackground(lm::SpriteBatch& sb) const
 void
 Game::render()
 {
-    glUniform1f(0, 1280.0);
-    glUniform1f(1, 800.0);
     // glUniform1f(0, lm::Core::get().window().width());
     // glUniform1f(0, lm::Core::get().window().height());
 

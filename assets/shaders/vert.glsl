@@ -1,8 +1,5 @@
-// uniform float width;
-// uniform float height;
-
-// varying float w;
-// varying float h;
+uniform vec2 size;
+varying vec2 s;
 
 vec4 lm_position();
 vec4 lm_texCoord();
@@ -12,6 +9,5 @@ void main() {
 	gl_Position = lm_position();
 	gl_TexCoord[0] = lm_texCoord();
 	gl_FrontColor = lm_frontColor();
-	// w = width;
-	// h = height;
+	s = size;
 }
