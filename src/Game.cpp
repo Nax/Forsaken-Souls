@@ -104,6 +104,9 @@ Game::drawBackground(lm::SpriteBatch& sb) const
 void
 Game::render()
 {
+    // glUniform1f(0, lm::Core::get().window().width());
+    // glUniform1f(0, lm::Core::get().window().height());
+
 	lm::SpriteBatch sb;
     const Map& m = _level.map();
     
