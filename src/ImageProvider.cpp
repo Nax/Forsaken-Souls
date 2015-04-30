@@ -11,7 +11,7 @@ static const ImageDescriptor descriptors[] =
 {
 	ImageDescriptor("images/tileset.png").atlas(8, 52),
 	ImageDescriptor("images/common_bot.png").atlas(12, 12),
-	ImageDescriptor("images/gameover.png"),
+	ImageDescriptor("images/game_over.png"),
 	ImageDescriptor("images/backgrounds.png").atlas(3, 2),
 	ImageDescriptor("images/new_game.png"),
 	ImageDescriptor("images/quit.png"),

@@ -31,10 +31,9 @@ MainMenu::handleEvent(const lm::Event& event)
         {
             case Key::Return:
                 if (!_cursor)
-                    lm::Core::get().push<Game>(); // TO DO TRANSITION
+                    lm::Core::get().transition<Game>();
                 else
                     Core::get().stop();
-                // lm::Core::get().transition<Game>();
                 break;
             case Key::Up:
                 setCursor(_cursor, -1);
@@ -98,13 +97,13 @@ MainMenu::render()
     sb.draw(quit, 0, qPos, {0.5, 0.5f});
     if (!_cursor)
     {
-        sb.draw(curs, 0, {ngPos.x - curs.width() * 0.5f, ngPos.y + ng.height() * 0.5f / 4}, {0.5f, 0.5f});
-        sb.draw(curs, 0, {ngPos.x + ng.width() * 0.5f, ngPos.y + ng.height() * 0.5f / 4}, {0.5f, 0.5f}, {true, false});
+        sb.draw(curs, 0, {ngPos.x - curs.width() * 0.5f, ngPos.y + ng.height() * 0.5f / 4}, {0.5f, 0.5f}, {true, false});
+        sb.draw(curs, 0, {ngPos.x + ng.width() * 0.5f, ngPos.y + ng.height() * 0.5f / 4}, {0.5f, 0.5f});
     }
     else
     {
-        sb.draw(curs, 0, {qPos.x - curs.width() * 0.5f, qPos.y + quit.height() * 0.5f / 4}, {0.5f, 0.5f});
-        sb.draw(curs, 0, {qPos.x + quit.width() * 0.5f, qPos.y + quit.height() * 0.5f / 4}, {0.5f, 0.5f}, {true, false});
+        sb.draw(curs, 0, {qPos.x - curs.width() * 0.5f, qPos.y + quit.height() * 0.5f / 4}, {0.5f, 0.5f}, {true, false});
+        sb.draw(curs, 0, {qPos.x + quit.width() * 0.5f, qPos.y + quit.height() * 0.5f / 4}, {0.5f, 0.5f});
     }
     sb.end();
 }
