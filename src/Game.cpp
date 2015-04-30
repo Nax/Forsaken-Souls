@@ -46,9 +46,7 @@ Game::load()
     _player = Player();
     _level.load(2);
     _camera.focus(_player, _level.map());
-    for (int i = 0; i < 10; ++i)
-        _entities.push_back(new Entity(0, rand() % 32000 / 100.0f + 2.0f, rand() % 1000 / 100.0f + 10.0f));
-    _entities.push_back(new Entity(1, 312, 17));
+    _level.map().spawn(_entities);
 }
 
 void
@@ -73,7 +71,7 @@ Game::update()
     _healTicks++;
     if (_healTicks > 30)
     {
-        _player.heal(1);
+        //_player.heal(1);
         _healTicks = 0;
     }
     //std::cout << _player.position.x << " " << _player.position.y << std::endl;
