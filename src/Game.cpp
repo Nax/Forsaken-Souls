@@ -14,6 +14,11 @@ bool debugMode = false;
 
 Game::Game()
 {
+}
+
+void
+Game::load()
+{
     sp.attach(lm::Shader("shaders/frag.glsl", lm::Shader::Type::Fragment));
     sp.attach(lm::Shader("shaders/vert.glsl", lm::Shader::Type::Vertex));
     sp.attach(lm::Shader::fragment());
@@ -22,13 +27,9 @@ Game::Game()
     sp.use();
 
     int loc = glGetUniformLocation(sp.program(), "size");
-    //glUniform2f(loc, 1280.0, 800.0);
-    glUniform2f(loc, 2560.0, 1600.0);
-}
+    glUniform2f(loc, 1280.0, 800.0);
+    // glUniform2f(loc, 2560.0, 1600.0);
 
-void
-Game::load()
-{
     _gameOverTicks = 0;
     _healTicks = 0;
     _player = Player();
