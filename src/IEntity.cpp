@@ -2,6 +2,7 @@
 #include "Screen.hpp"
 #include "Tile.hpp"
 #include "Physics.hpp"
+#include "GameOver.hpp"
 #include <vector>
 #include <iostream>
 

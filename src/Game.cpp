@@ -27,8 +27,8 @@ Game::load()
     sp.use();
 
     int loc = glGetUniformLocation(sp.program(), "size");
-    glUniform2f(loc, 1280.0, 800.0);
-    // glUniform2f(loc, 2560.0, 1600.0);
+    // glUniform2f(loc, 1280.0, 800.0);
+    glUniform2f(loc, 2560.0, 1600.0);
 
     _gameOverTicks = 0;
     _healTicks = 0;
@@ -41,6 +41,8 @@ Game::load()
     {
         if (e->id() == 3)
             _medicine = e;
+        if (e->id() == 2)
+            _boss = e;
     }
 }
 
@@ -72,7 +74,7 @@ Game::update()
         Phys::checkDamages(_player, *e);
         Phys::checkDamages(*e, _player);
     }
-    if (_player.dead())
+    if (_player.dead() || _boss->dead())
         _gameOverTicks++;
     if (_gameOverTicks > 500)
         Core::get().transition<GameOver>();
