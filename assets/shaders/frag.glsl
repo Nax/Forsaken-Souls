@@ -22,15 +22,15 @@ void main() {
 	vec2 light;
 	while (i < count)
 	{
-		light.x = (l[i].x - offset.x) * 64.0 * s.x / 1920.0;
-        light.y = (l[i].y - offset.y) * 64.0 * s.y / 1080.0;
+		light.x = (l[i].x - offset.x) * ((s.x * 64.0) / 1920.0);
+        light.y = (l[i].y - offset.y) * ((s.y * 64.0) / 1080.0);
 		d = gl_FragCoord.xy - light.xy;
 		dist = sqrt(d.x * d.x + d.y * d.y);
 		if (dist < 200.0)
 		{
 			c.r = min(c.r + (1.0 - (dist / max)) * 0.5, 1.0);
 			c.g = min(c.g + (1.0 - (dist / max)) * 0.5, 1.0);
-			c.b = min(c.b + (1.0 - (dist / max)) * 0.5, 1.0);
+			c.b = min(c.b + (1.0 - (dist / max)) * 0.5, 0.6);
 		}
 		i++;
 	}

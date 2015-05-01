@@ -15,8 +15,8 @@ Player::update(const Map& map)
 {
 	IEntity::update(map);
 
-    setKey(Key::Space, false);
-    setKey(Key::A, false);
+    // setKey(Key::Space, false);
+    // setKey(Key::A, false);
 }
 
 Player::~Player()
