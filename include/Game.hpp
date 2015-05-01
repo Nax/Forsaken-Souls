@@ -36,6 +36,7 @@ private:
     Camera          _camera;
     Entity*         _medicine;
     Entity*         _boss;
+    int             _clock;
     int             _gameOverTicks;
     int             _healTicks;
     EntityVector    _entities;

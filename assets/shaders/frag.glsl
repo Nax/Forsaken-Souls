@@ -2,6 +2,7 @@ varying vec2 s;
 varying float lCount;
 varying vec2 l[16];
 varying vec2 offset;
+varying float fclock;
 
 vec4 lm_fragColor();
 
@@ -28,9 +29,22 @@ void main() {
 		dist = sqrt(d.x * d.x + d.y * d.y);
 		if (dist < max)
 		{
-			c.r = min(c.r + (1.0 - (dist / max)) * 0.5, 1.0);
-			c.g = min(c.g + (1.0 - (dist / max)) * 0.5, 1.0);
-			c.b = min(c.b + (1.0 - (dist / max)) * 0.5, 0.6);
+			if ((fclock >= 20.0 && fclock <= 30.0)
+				|| (fclock >= 40.0 && fclock <= 45.0)
+				|| (fclock >= 250.0 && fclock <= 300.0)
+				|| (fclock >= 310.0 && fclock <= 315.0)
+				|| (fclock >= 700.0 && fclock <= 725.0))
+			{
+				c.r = min(c.r + (1.0 - (dist / max)) * 0.3, 1.0);
+				c.g = min(c.g + (1.0 - (dist / max)) * 0.3, 1.0);
+				c.b = min(c.b + (1.0 - (dist / max)) * 0.3, 0.6);
+			}
+			else
+			{
+				c.r = min(c.r + (1.0 - (dist / max)) * 0.5, 1.0);
+				c.g = min(c.g + (1.0 - (dist / max)) * 0.5, 1.0);
+				c.b = min(c.b + (1.0 - (dist / max)) * 0.5, 0.6);
+			}
 		}
 		i++;
 	}

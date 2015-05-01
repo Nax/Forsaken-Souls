@@ -2,11 +2,13 @@ uniform vec2 size;
 uniform int lightCount;
 uniform vec2 lights[16];
 uniform vec2 off;
+uniform int clock;
 
 varying vec2 s;
 varying float lCount;
 varying vec2 l[16];
 varying vec2 offset;
+varying float fclock;
 
 vec4 lm_position();
 vec4 lm_texCoord();
@@ -25,4 +27,5 @@ void main() {
 		l[i] = lights[i];
 		i++;
 	}
+	fclock = float(clock);
 }

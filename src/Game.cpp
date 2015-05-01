@@ -19,6 +19,8 @@ Game::Game()
 void
 Game::load()
 {
+    _clock = 0;
+
     sp.attach(lm::Shader("shaders/frag.glsl", lm::Shader::Type::Fragment));
     sp.attach(lm::Shader("shaders/vert.glsl", lm::Shader::Type::Vertex));
     sp.attach(lm::Shader::fragment());
@@ -27,8 +29,8 @@ Game::load()
     sp.use();
 
     int loc = glGetUniformLocation(sp.program(), "size");
-    // glUniform2f(loc, 1280.0, 800.0);
-    glUniform2f(loc, 2560.0, 1600.0);
+    glUniform2f(loc, 1280.0, 800.0);
+    // glUniform2f(loc, 2560.0, 1600.0);
 
     _gameOverTicks = 0;
     _healTicks = 0;
@@ -49,6 +51,10 @@ Game::load()
 void
 Game::update()
 {
+    _clock = (_clock + 1) % 1000;
+    int loc = glGetUniformLocation(sp.program(), "clock");
+    glUniform1i(loc, _clock);
+
     for (auto e : _entities)
     {
         if (e->ai())
