@@ -18,7 +18,7 @@ void main() {
 	int i = 0;
 	int count = int(lCount);
 	c = cc;
-	max = 200.0;
+	max = s.x / 6.0;
 	vec2 light;
 	while (i < count)
 	{
@@ -26,7 +26,7 @@ void main() {
         light.y = (l[i].y - offset.y) * ((s.y * 64.0) / 1080.0);
 		d = gl_FragCoord.xy - light.xy;
 		dist = sqrt(d.x * d.x + d.y * d.y);
-		if (dist < 200.0)
+		if (dist < max)
 		{
 			c.r = min(c.r + (1.0 - (dist / max)) * 0.5, 1.0);
 			c.g = min(c.g + (1.0 - (dist / max)) * 0.5, 1.0);
