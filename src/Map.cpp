@@ -32,6 +32,8 @@ Map::Map(std::ifstream& file)
 
         file.read(reinterpret_cast<char*>(&x), 4);
         file.read(reinterpret_cast<char*>(&y), 4);
+        x += 0.5;
+        y -= 0.7;
         _lights.push_back(x);
         _lights.push_back(y);
     }
