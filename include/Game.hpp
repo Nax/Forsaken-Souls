@@ -34,6 +34,7 @@ private:
     Player          _player;
     Level           _level;
     Camera          _camera;
+    Entity*         _medicine;
     int             _gameOverTicks;
     int             _healTicks;
     EntityVector    _entities;

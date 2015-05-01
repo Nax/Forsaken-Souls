@@ -15,7 +15,8 @@ enum class ImageId
 	MenuCursor,
 	Pause,
     CommonBoss,
-    Yseult
+    Yseult,
+    Medicine
 };
 
 class ImageProvider

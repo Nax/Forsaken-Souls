@@ -45,11 +45,11 @@ const EntityData gEntityData[] =
             // Fall
             {24, 1, 5, true},
             // Dead
-            {24, 43, 4, false},
+            {24, 1, 30, false},
             // Attack
             {0, 16, 3, false},
             // Hit
-            {80, 12, 3, false}
+            {24, 1, 40, false}
         },
         // Speed
         {
@@ -182,5 +182,59 @@ const EntityData gEntityData[] =
             {0.0f, 0.0f}
         },
         AI::boss
+    },
+    {
+        "medecine",
+        ImageId::Medicine,
+        1000000000,
+        0,
+        0,
+        // Bounding box
+        {
+            {{0.0f,  0.0f}, {1.0f, 1.0f}},
+            {{0.0f,  0.0f}, {1.0f, 1.0f}},
+            {{0.0f,  0.0f}, {1.0f, 1.0f}},
+            {{0.0f,  0.0f}, {1.0f, 1.0f}},
+            {{0.0f,  0.0f}, {1.0f, 1.0f}},
+            {{0.0f,  0.0f}, {1.0f, 1.0f}},
+            {{0.0f,  0.0f}, {1.0f, 1.0f}},
+            {{0.0f,  0.0f}, {1.0f, 1.0f}}
+        },
+        // Hitbox
+        {
+            {{{0.0f, 0.0f}, {1.0f, 1.0f}}, 0, 1},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+        },
+        // Animations
+        {
+            // Idle
+            {0, 1, 1, true},
+            // Run
+            {0, 1, 1, true},
+            // Crouch
+            {0, 1, 1, true},
+            {0, 1, 1, true},
+            {0, 1, 1, true},
+            {0, 1, 1, true},
+            {0, 1, 1, true},
+            {0, 1, 1, true},
+        },
+        // Speed
+        {
+            {0.0f, 0.0f},
+            {0.0f, 0.0f},
+            {0.0f, 0.0f},
+            {0.0f, 0.0f},
+            {0.0f, 0.0f},
+            {0.0f, 0.0f},
+            {0.0f, 0.0f},
+            {0.0f, 0.0f}
+        },
+        nullptr
     }
 };

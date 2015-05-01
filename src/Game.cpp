@@ -22,7 +22,8 @@ Game::Game()
     sp.use();
 
     int loc = glGetUniformLocation(sp.program(), "size");
-    glUniform2f(loc, 1280.0, 800.0);
+    //glUniform2f(loc, 1280.0, 800.0);
+    glUniform2f(loc, 2560.0, 1600.0);
 }
 
 void
@@ -35,6 +36,11 @@ Game::load()
     _camera.focus(_player, _level.map());
     _level.map().spawn(_entities);
     _level.map().enlight(sp, _camera);
+    for (auto e : _entities)
+    {
+        if (e->id() == 3)
+            _medicine = e;
+    }
 }
 
 void
@@ -42,13 +48,24 @@ Game::update()
 {
     for (auto e : _entities)
     {
-        e->ai()(*e, _player, _level.map());
+        if (e->ai())
+            e->ai()(*e, _player, _level.map());
         e->update(_level.map());
     }
     _player.update(_level.map());
     _camera.update(_player, _level.map());
     _level.map().enlight(sp, _camera);
 
+    if (_medicine)
+    {
+        if (Phys::checkDamages(*_medicine, _player))
+        {
+            _player.heal(50);
+            _entities.erase(std::find(_entities.begin(), _entities.end(), _medicine));
+            delete _medicine;
+            _medicine = nullptr;
+        }
+    }
     for (auto e : _entities)
     {
         Phys::checkDamages(_player, *e);
@@ -58,13 +75,6 @@ Game::update()
         _gameOverTicks++;
     if (_gameOverTicks > 500)
         Core::get().transition<GameOver>();
-    _healTicks++;
-    if (_healTicks > 30)
-    {
-        //_player.heal(1);
-        _healTicks = 0;
-    }
-    //std::cout << _player.position.x << " " << _player.position.y << std::endl;
 }
 
 static int

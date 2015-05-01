@@ -24,6 +24,7 @@ public:
 
 	IEntity(int dataId, float x, float y);
 
+    int                 id() const                  { return _dataId; }
     int                 hp() const                  { return _hp; }
     int                 mp() const                  { return _mp; }
     int                 hpMax() const               { return gEntityData[_dataId].hp; }

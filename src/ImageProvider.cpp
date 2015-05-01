@@ -18,7 +18,8 @@ static const ImageDescriptor descriptors[] =
 	ImageDescriptor("images/menu_cursor.png"),
 	ImageDescriptor("images/pause.png"),
     ImageDescriptor("images/common_boss.png").atlas(12, 12),
-    ImageDescriptor("images/yseult.png").atlas(7, 6)
+    ImageDescriptor("images/yseult.png").atlas(7, 6),
+    ImageDescriptor("images/medicine.png")
 };
 
 ImageProvider::ImageProvider()

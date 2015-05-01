@@ -375,6 +375,21 @@
                  "width":128,
                  "x":3323.87878787879,
                  "y":5463.27272727273
+                }, 
+                {
+                 "height":128,
+                 "id":37,
+                 "name":"medicine",
+                 "properties":
+                    {
+                     "enemyID":"3"
+                    },
+                 "rotation":0,
+                 "type":"spawn",
+                 "visible":true,
+                 "width":128,
+                 "x":16512,
+                 "y":2944
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -383,7 +398,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":37,
+ "nextobjectid":39,
  "orientation":"orthogonal",
  "properties":
     {
