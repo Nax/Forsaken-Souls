@@ -41,9 +41,9 @@ const EntityData gEntityData[] =
             // Crouch
             {22, 1, 10, true},
             // Jump
-            {24, 1, 5, true},
+            {37, 1, 5, true},
             // Fall
-            {24, 1, 5, true},
+            {37, 1, 5, true},
             // Dead
             {24, 1, 30, false},
             // Attack

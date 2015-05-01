@@ -29,8 +29,8 @@ Game::load()
     sp.use();
 
     int loc = glGetUniformLocation(sp.program(), "size");
-    glUniform2f(loc, 1280.0, 800.0);
-    // glUniform2f(loc, 2560.0, 1600.0);
+    // glUniform2f(loc, 1280.0, 800.0);
+    glUniform2f(loc, 2560.0, 1600.0);
 
     _gameOverTicks = 0;
     _healTicks = 0;
