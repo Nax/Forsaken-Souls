@@ -24,3 +24,12 @@ add_custom_target(
 	COMMAND "ruby" "${CMAKE_SOURCE_DIR}/utils/build.rb"
 	COMMAND "cp" "-r" "${CMAKE_SOURCE_DIR}/assets" "${CMAKE_BINARY_DIR}/Forsaken Souls.app/Contents/Resources"
 )
+
+# check bundle
+
+install(CODE "
+    include(BundleUtilities)
+    file(COPY \"/usr/local/lib/libLums.dylib\" DESTINATION \"${CMAKE_BINARY_DIR}/Forsaken Souls.app/Contents/MacOS/\")
+    fixup_bundle(\"${CMAKE_BINARY_DIR}/Forsaken Souls.app/Contents/MacOS/Forsaken Souls\" \"${CMAKE_BINARY_DIR}/Forsaken Souls.app/Contents/MacOS/libLums.dylib\" \"/usr/local/lib\")
+")
+#verify_app("${CMAKE_BINARY_DIR}/Forsaken Souls.app")
