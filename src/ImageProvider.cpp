@@ -17,7 +17,7 @@ static const ImageDescriptor descriptors[] =
 	ImageDescriptor("images/quit.png"),
 	ImageDescriptor("images/menu_cursor.png"),
 	ImageDescriptor("images/pause.png"),
-    ImageDescriptor("images/common_boss.png").atlas(12, 12),
+    ImageDescriptor("images/boss_bot.png").atlas(12, 11),
     ImageDescriptor("images/yseult.png").atlas(7, 6),
     ImageDescriptor("images/medicine.png")
 };
