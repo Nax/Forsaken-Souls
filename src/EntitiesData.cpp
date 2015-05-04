@@ -164,7 +164,7 @@ const EntityData gEntityData[] =
             // Fall
             {67, 12, 5, true},
             // Dead
-            {24, 43, 4, false},
+            {130, 33, 4, false},
             // Attack
             {0, 42, 4, false},
             // Hit
