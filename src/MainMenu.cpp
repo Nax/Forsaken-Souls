@@ -49,6 +49,8 @@ MainMenu::handleEvent(const lm::Event& event)
             case lm::Key::Down:
                 moveCursor(1);
                 break;
+            default:
+                break;
         }
     }
     else if (event.type == lm::Event::Type::ButtonDown)
@@ -60,6 +62,9 @@ MainMenu::handleEvent(const lm::Event& event)
                     lm::Core::instance().push<Game>();
                 else
                     lm::Core::instance().stop();
+                break;
+            default:
+                break;
         }
     }
 }
