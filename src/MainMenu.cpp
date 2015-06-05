@@ -16,9 +16,16 @@ MainMenu::load()
 {
     auto& newGame = lm::TextureProvider::instance().get(Assets::Texture::NewGame);
     auto& quit = lm::TextureProvider::instance().get(Assets::Texture::Quit);
+    auto& menuCursor = lm::TextureProvider::instance().get(Assets::Texture::MenuCursor);
 
-    _newGameBatch.draw(newGame);
+    _newGameBatch.draw(newGame, 0, {SCREEN_WIDTH / 2 - newGame.width() / 2, SCREEN_HEIGHT / 3 - newGame.height() / 2});
     _newGameBatch.send();
+
+    _quitBatch.draw(quit, 0, {SCREEN_WIDTH / 2 - quit.width() / 2, 2 * SCREEN_HEIGHT / 3 - quit.height() / 2});
+    _quitBatch.send();
+
+    _cursorBatch.draw(menuCursor);
+    _cursorBatch.send();
 
     _proj.projection = lm::ortho(0, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
 }
@@ -66,32 +73,16 @@ MainMenu::update()
 void
 MainMenu::render()
 {
-    // lm::SpriteBatch sb;
-    // const lm::Image& ng = ImageProvider::get().image(ImageId::NewGame);
-    // const lm::Image& quit = ImageProvider::get().image(ImageId::Quit);
-    // const lm::Image& curs = ImageProvider::get().image(ImageId::MenuCursor);
-    // const Vector2f ngPos = { SCREEN_WIDTH / 2 - ng.width() / 2 * 0.5f, SCREEN_HEIGHT / 2 - ng.height() / 2 * 0.5f };
-    // const Vector2f qPos = { SCREEN_WIDTH / 2 - quit.width() / 2 * 0.5f, SCREEN_HEIGHT / 2 - quit.height() / 2 * 0.5f + ng.height() };
-
-    // sb.begin();
-    // sb.draw(ng, 0, ngPos, {0.5f, 0.5f});
-    // sb.draw(quit, 0, qPos, {0.5, 0.5f});
-    // if (!_cursor)
-    // {
-    //     sb.draw(curs, 0, {ngPos.x - curs.width() * 0.5f, ngPos.y + ng.height() * 0.5f / 4}, {0.5f, 0.5f}, {true, false});
-    //     sb.draw(curs, 0, {ngPos.x + ng.width() * 0.5f, ngPos.y + ng.height() * 0.5f / 4}, {0.5f, 0.5f});
-    // }
-    // else
-    // {
-    //     sb.draw(curs, 0, {qPos.x - curs.width() * 0.5f, qPos.y + quit.height() * 0.5f / 4}, {0.5f, 0.5f}, {true, false});
-    //     sb.draw(curs, 0, {qPos.x + quit.width() * 0.5f, qPos.y + quit.height() * 0.5f / 4}, {0.5f, 0.5f});
-    // }
-    // sb.end();
-
     auto& shader = lm::ShaderProvider::instance().get(Assets::Shader::MainMenu);
     shader.use();
+    _proj.view = lm::Matrix4f::identity();
+    lm::uniform(shader, "view", _proj.view);
     lm::uniform(shader, "projection", _proj.projection);
     _newGameBatch.render();
+    _quitBatch.render();
+    lm::translate(_proj.view, 0, (1 + _cursor) * SCREEN_HEIGHT / 3, 0);
+    lm::uniform(shader, "view", _proj.view);
+    _cursorBatch.render();
 }
 
 void
