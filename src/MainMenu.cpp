@@ -24,7 +24,7 @@ MainMenu::load()
     _quitBatch.draw(quit, 0, {SCREEN_WIDTH / 2 - quit.width() / 2, 2 * SCREEN_HEIGHT / 3 - quit.height() / 2});
     _quitBatch.send();
 
-    _cursorBatch.draw(menuCursor);
+    _cursorBatch.draw(menuCursor, 0, {0, -menuCursor.height() / 2}, {1, 1}, {1, 1, 1, 1}, {true, false});
     _cursorBatch.send();
 
     _proj.projection = lm::ortho(0, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
@@ -80,7 +80,7 @@ MainMenu::render()
     lm::uniform(shader, "projection", _proj.projection);
     _newGameBatch.render();
     _quitBatch.render();
-    lm::translate(_proj.view, 0, (1 + _cursor) * SCREEN_HEIGHT / 3, 0);
+    lm::translate(_proj.view, 300, (1 + _cursor) * SCREEN_HEIGHT / 3, 0);
     lm::uniform(shader, "view", _proj.view);
     _cursorBatch.render();
 }
