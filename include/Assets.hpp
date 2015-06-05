@@ -23,7 +23,7 @@ namespace	Assets
 
 	enum Shader
 	{
-		MainMenu
+		Basic2D
 	};
 
 	void	init();

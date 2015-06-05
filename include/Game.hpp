@@ -22,12 +22,12 @@ public:
     void render();
     void unload();
 
+    void setLevel(int level, int map);
+
     ~Game();
 
-    lm::ShaderProgram   sp;
-
 private:
-    typedef std::array<int, 6>      t_array6i;
+    typedef std::array<int, 6>      t_array6i; // wtf
 
     void            drawBackground(lm::SpriteBatch& sb) const;
 
@@ -40,6 +40,10 @@ private:
     int             _gameOverTicks;
     int             _healTicks;
     EntityVector    _entities;
+
+    lm::StaticSpriteBatch   _backBatch;
+    lm::StaticSpriteBatch   _frontBatch;
+    lm::Projection          _proj;
 };
 
 #endif

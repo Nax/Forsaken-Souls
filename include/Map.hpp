@@ -31,13 +31,16 @@ public:
 	uint32_t						height() const;
     uint16_t                        indexAt(int x, int y, int z = 2) const;
 	const Tile&						at(int x, int y, int z = 2) const;
-	void							draw(lm::SpriteBatch& sb, const Camera& camera, int z) const;
+	void							drawBack(lm::StaticSpriteBatch& batch) const;
+	void							drawFront(lm::StaticSpriteBatch& batch) const;
 	const std::vector<t_array4i>&	links() const;
     void                            spawn(std::vector<Entity*>& entities) const;
     void                            enlight(lm::ShaderProgram& sp, Camera& camera) const;
 	~Map();
 
 private:
+	void draw(lm::StaticSpriteBatch& sb, int z) const;
+
     struct Spawn
     {
         uint32_t x;

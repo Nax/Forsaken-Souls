@@ -47,13 +47,13 @@ initShaders()
 {
     auto& provider = lm::ShaderProvider::instance();
 
-    auto& mainMenu = provider.set(Assets::Shader::MainMenu);
-    mainMenu.attach(lm::Shader("shaders/main_menu.vert.glsl", lm::Shader::Type::Vertex));
-    mainMenu.attach(lm::Shader("shaders/main_menu.frag.glsl", lm::Shader::Type::Fragment));
-    mainMenu.bindAttribLocation(lm::Vertex::Position, "position");
-    mainMenu.bindAttribLocation(lm::Vertex::Texture, "tex");
-    mainMenu.bindAttribLocation(lm::Vertex::Color, "color");
-    mainMenu.link();
+    auto& basic2d = provider.set(Assets::Shader::Basic2D);
+    basic2d.attach(lm::Shader("shaders/2D.vert.glsl", lm::Shader::Type::Vertex));
+    basic2d.attach(lm::Shader("shaders/2D.frag.glsl", lm::Shader::Type::Fragment));
+    basic2d.bindAttribLocation(lm::Vertex::Position, "position");
+    basic2d.bindAttribLocation(lm::Vertex::Texture, "tex");
+    basic2d.bindAttribLocation(lm::Vertex::Color, "color");
+    basic2d.link();
 }
 
 void

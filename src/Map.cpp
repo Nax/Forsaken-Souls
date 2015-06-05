@@ -3,6 +3,7 @@
 #include "ImageProvider.hpp"
 #include "Screen.hpp"
 #include "Entity.hpp"
+#include "Assets.hpp"
 
 Map::Map(std::ifstream& file)
 {
@@ -105,25 +106,18 @@ Map::at(int x, int y, int z) const
 }
 
 void
-Map::draw(lm::SpriteBatch& sb, const Camera& camera, int z) const
+Map::drawBack(lm::StaticSpriteBatch& batch) const
 {
-	// lm::Image& img = ImageProvider::get().image(ImageId::Tileset);
-	// const lm::Vector2f& off = camera.offset();
- //    const int minX = off.x;
- //    const int maxX = std::min<int>(ceil(off.x + SCREEN_TILES_W), _width);
- //    const int minY = off.y;
- //    const int maxY = std::min<int>(ceil(off.y + SCREEN_TILES_H), _height);
+	draw(batch, 4);
+	draw(batch, 3);
+	draw(batch, 2);
+}
 
- //    for (int j = minY; j < maxY; ++j)
-	// {
-	// 	for (int i = minX; i < maxX; ++i)
-	// 	{
-	// 		const uint16_t tileId = _tiles[i + j * _width + z * _width * _height];
-
-	// 		if (tileId != 0)
-	// 			sb.draw(img, tileId - 1, {(i - off.x) * TILE_SIZE, SCREEN_HEIGHT - ((j - off.y) + 1) * TILE_SIZE}, {0.5, 0.5});
-	// 	}
-	// }
+void
+Map::drawFront(lm::StaticSpriteBatch& batch) const
+{
+	draw(batch, 1);
+	draw(batch, 0);
 }
 
 void
@@ -147,4 +141,23 @@ Map::enlight(lm::ShaderProgram& sp, Camera& camera) const
 Map::~Map()
 {
 	delete [] _tiles;
+}
+
+/* PRIVATE */
+
+void
+Map::draw(lm::StaticSpriteBatch& sb, int z) const
+{
+    auto& tileset = lm::TextureProvider::instance().get(Assets::Texture::Tileset);
+
+    for (int j = 0; j < _height; ++j)
+    {
+    	for (int i = 0; i < _width; ++i)
+    	{
+    		const uint16_t tileId = _tiles[i + j * _width + z * _width * _height];
+
+    		if (tileId != 0)
+    			sb.draw(tileset, tileId - 1, {i * TILE_SIZE, j * TILE_SIZE}, {0.5f, 0.5f});
+    	}
+    }
 }

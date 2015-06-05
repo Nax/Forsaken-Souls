@@ -78,9 +78,10 @@ MainMenu::update()
 void
 MainMenu::render()
 {
-    auto& shader = lm::ShaderProvider::instance().get(Assets::Shader::MainMenu);
+    auto& shader = lm::ShaderProvider::instance().get(Assets::Shader::Basic2D);
     shader.use();
     _proj.view = lm::Matrix4f::identity();
+    lm::uniform(shader, "model", _proj.model);
     lm::uniform(shader, "view", _proj.view);
     lm::uniform(shader, "projection", _proj.projection);
     _newGameBatch.render();
