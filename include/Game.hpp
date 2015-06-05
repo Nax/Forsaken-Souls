@@ -43,6 +43,8 @@ private:
 
     lm::StaticSpriteBatch   _backBatch;
     lm::StaticSpriteBatch   _frontBatch;
+    lm::StaticSpriteBatch   _parallaxBatch;
+    lm::SpriteBatch         _entitiesBatch;
     lm::Projection          _proj;
 };
 

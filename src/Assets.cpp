@@ -17,6 +17,12 @@ initImages()
 
     auto& menuCursor = provider.set(Assets::Image::MenuCursor);
     menuCursor.setPath("images/menu_cursor.png");
+
+    auto& background = provider.set(Assets::Image::Background);
+    background.setPath("images/backgrounds.png");
+
+    auto& yseult = provider.set(Assets::Image::Yseult);
+    yseult.setPath("images/yseult.png");
 }
 
 static void
@@ -40,6 +46,14 @@ initTextures()
     auto& menuCursor = provider.set(Assets::Texture::MenuCursor);
     menuCursor.setImage(images.set(Assets::Image::MenuCursor));
     menuCursor.pushAtlas(1, 1);
+
+    auto& background = provider.set(Assets::Texture::Background);
+    background.setImage(images.set(Assets::Image::Background));
+    background.pushAtlas(3, 2);
+
+    auto& yseult = provider.set(Assets::Texture::Yseult);
+    yseult.setImage(images.set(Assets::Image::Yseult));
+    yseult.pushAtlas(7, 6);
 }
 
 static void

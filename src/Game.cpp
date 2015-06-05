@@ -15,6 +15,7 @@ bool debugMode = false;
 
 Game::Game()
 {
+
 }
 
 void
@@ -24,17 +25,17 @@ Game::load()
     _gameOverTicks = 0;
     _healTicks = 0;
     _player = Player();
-    //_camera.focus(_player, _level.map());
     //_level.map().spawn(_entities);
     //_level.map().enlight(sp, _camera);
-   // for (auto e : _entities)
+    // for (auto e : _entities)
     //{
     //    if (e->id() == 3)
     //        _medicine = e;
     //    if (e->id() == 2)
     //        _boss = e;
-   // }
+    // }
     setLevel(2, 0);
+    _camera.focus(_player, _level.map());
     _proj.projection = lm::ortho(0, 1920, 1080, 0);
 }
 
@@ -76,30 +77,6 @@ Game::update()
     //     Core::instance().transition<GameOver>();
 }
 
-static int
-perlin(int x,int y)
-{
-    int n = x + y * 57;
-    n = (n << 13) ^ n;
-    int nn = (n * (n * n * 60493 + 19990303) + 1376312589) & 0x7fffffff;
-    return nn;
-}
-
-void
-Game::drawBackground(lm::SpriteBatch& sb) const
-{
-    // const Map& m = _level.map();
-    // lm::Vector2f parallax = -_camera.offset() * TILE_SIZE * 0.4f;
-    // const lm::Image& bg = ImageProvider::get().image(ImageId::Background);
-    // const lm::Vector2f bgDim = { bg.width() / 3.f, bg.height() / 2.f };
-
-    // for (int i = 0; i <= ceil(m.width() * TILE_SIZE / (bgDim.x / 2.f)); ++i)
-    // {
-    //     for (int j = 0; j <= ceil(m.height() * TILE_SIZE / (bgDim.y / 2.f)); ++j)
-    //         sb.draw(bg, perlin(i, j) % 5, Vector2f(i * bgDim.x / 2.0f + parallax.x, float(SCREEN_HEIGHT) - m.height() * TILE_SIZE + j * bgDim.y / 2.f - parallax.y), {0.5f, 0.5f});
-    // }
-}
-
 void
 Game::render()
 {
@@ -107,7 +84,13 @@ Game::render()
     lm::uniform(shader, "model", _proj.model);
     lm::uniform(shader, "view", _proj.view);
     lm::uniform(shader, "projection", _proj.projection);
+    _parallaxBatch.render();
     _backBatch.render();
+    _entitiesBatch.begin();
+    //for (auto e : _entities)
+    //    e->render(_entitiesBatch, _camera);
+    _player.render(_entitiesBatch, _camera);
+    _entitiesBatch.end();
     _frontBatch.render();
 }
 
@@ -213,6 +196,15 @@ Game::unload()
     _entities.clear();
 }
 
+static int
+perlin(int x, int y)
+{
+    int n = x + y * 57;
+    n = (n << 13) ^ n;
+    int nn = (n * (n * n * 60493 + 19990303) + 1376312589) & 0x7fffffff;
+    return nn;
+}
+
 void
 Game::setLevel(int level, int map)
 {
@@ -223,6 +215,18 @@ Game::setLevel(int level, int map)
     _frontBatch.flush();
     _level.map().drawFront(_frontBatch);
     _frontBatch.send();
+    _parallaxBatch.flush();
+    auto& parallax = lm::TextureProvider::instance().get(Assets::Texture::Background);
+    //int xMax = std::ceil((_level.map().width() * TILE_SIZE) / ((parallax.width() / 6) / 0.4f));
+    //int yMax = std::ceil((_level.map().height() * TILE_SIZE) / ((parallax.height() / 4) / 0.4f));
+    int xMax = 30;
+    int yMax = 20; // Will fix later
+    for (int j = 0; j < yMax; ++j)
+    {
+        for (int i = 0; i < xMax; ++i)
+            _parallaxBatch.draw(parallax, perlin(i, j) % 5, {i * parallax.width() / 6, j * parallax.height() / 4}, {0.5, 0.5});
+    }
+    _parallaxBatch.send();
 }
 
 Game::~Game()
