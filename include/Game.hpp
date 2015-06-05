@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <array>
-#include <Lums/Lums.hpp>
+#include <Lums>
 #include "Player.hpp"
 #include "Level.hpp"
 #include "Camera.hpp"

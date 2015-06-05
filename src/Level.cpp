@@ -1,5 +1,5 @@
 #include <iostream>
-#include <Lums/Lums.hpp>
+#include <Lums>
 #include "Level.hpp"
 
 std::vector<Level::t_array6i>		

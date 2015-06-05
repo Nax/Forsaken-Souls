@@ -18,9 +18,9 @@ IEntity::IEntity(int dataId, float x, float y)
 , _invFrames(0)
 , _hit(false)
 {
-	_sprite.setImage(ImageProvider::get().image(gEntityData[_dataId].image));
-	_sprite.pos = {position.x * TILE_SIZE, SCREEN_HEIGHT - ((position.y + 1) * TILE_SIZE) - _sprite.height()};
-    _sprite.setScale(0.5f);
+	// _sprite.setImage(ImageProvider::get().image(gEntityData[_dataId].image));
+	// _sprite.pos = {position.x * TILE_SIZE, SCREEN_HEIGHT - ((position.y + 1) * TILE_SIZE) - _sprite.height()};
+ //    _sprite.setScale(0.5f);
     setState(0);
     aim(Aim::None);
     setDirection(true);
@@ -29,51 +29,51 @@ IEntity::IEntity(int dataId, float x, float y)
 void
 IEntity::render(lm::SpriteBatch& sb, const Camera& camera) const
 {
-	const lm::Vector2f& off = camera.offset();
-	const lm::Vector2f p = position - off;
-	const lm::Vector2f bpp = { boundingBox().pos.x + position.x - off.x, boundingBox().pos.y + position.y - off.y };
-	lm::Rect2f hb = hitBox();
-	bool hit = hb.size.x != 0.0f;
+	// const lm::Vector2f& off = camera.offset();
+	// const lm::Vector2f p = position - off;
+	// const lm::Vector2f bpp = { boundingBox().pos.x + position.x - off.x, boundingBox().pos.y + position.y - off.y };
+	// lm::Rect2f hb = hitBox();
+	// bool hit = hb.size.x != 0.0f;
 
-	hb.pos.x -= off.x;
-	hb.pos.y -= off.y;
+	// hb.pos.x -= off.x;
+	// hb.pos.y -= off.y;
 
-	_sprite.pos.x = p.x * TILE_SIZE;
-	_sprite.pos.y = SCREEN_HEIGHT - (position.y - off.y) * TILE_SIZE - _sprite.height();
+	// _sprite.pos.x = p.x * TILE_SIZE;
+	// _sprite.pos.y = SCREEN_HEIGHT - (position.y - off.y) * TILE_SIZE - _sprite.height();
 
-	sb.draw(_sprite);
+	// sb.draw(_sprite);
 
-	if (debugMode)
-	{
-		lm::VertexArray<12> bb;
-		glColor3ub(0, 255, 0);
-		bb.push(bpp.x * TILE_SIZE, SCREEN_HEIGHT - bpp.y * TILE_SIZE);
-		bb.push((bpp.x + boundingBox().size.x) * TILE_SIZE, SCREEN_HEIGHT - bpp.y * TILE_SIZE);
-		bb.push((bpp.x + boundingBox().size.x) * TILE_SIZE, SCREEN_HEIGHT - (bpp.y + boundingBox().size.y) * TILE_SIZE);
-		bb.push(bpp.x * TILE_SIZE, SCREEN_HEIGHT - (bpp.y + boundingBox().size.y) * TILE_SIZE);
-		bb.draw(GL_LINE_LOOP);
+	// if (debugMode)
+	// {
+	// 	lm::VertexArray<12> bb;
+	// 	glColor3ub(0, 255, 0);
+	// 	bb.push(bpp.x * TILE_SIZE, SCREEN_HEIGHT - bpp.y * TILE_SIZE);
+	// 	bb.push((bpp.x + boundingBox().size.x) * TILE_SIZE, SCREEN_HEIGHT - bpp.y * TILE_SIZE);
+	// 	bb.push((bpp.x + boundingBox().size.x) * TILE_SIZE, SCREEN_HEIGHT - (bpp.y + boundingBox().size.y) * TILE_SIZE);
+	// 	bb.push(bpp.x * TILE_SIZE, SCREEN_HEIGHT - (bpp.y + boundingBox().size.y) * TILE_SIZE);
+	// 	bb.draw(GL_LINE_LOOP);
 
-		lm::VertexArray<4>	va;
-		glColor3ub(255, 0, 0);
-		va.push(_sprite.pos.x, _sprite.pos.y);
-		va.push(_sprite.pos.x + _sprite.width(), _sprite.pos.y);
-		va.push(_sprite.pos.x + _sprite.width(), _sprite.pos.y + _sprite.height());
-		va.push(_sprite.pos.x, _sprite.pos.y + _sprite.height());
-		va.draw(GL_LINE_LOOP);
+	// 	lm::VertexArray<4>	va;
+	// 	glColor3ub(255, 0, 0);
+	// 	va.push(_sprite.pos.x, _sprite.pos.y);
+	// 	va.push(_sprite.pos.x + _sprite.width(), _sprite.pos.y);
+	// 	va.push(_sprite.pos.x + _sprite.width(), _sprite.pos.y + _sprite.height());
+	// 	va.push(_sprite.pos.x, _sprite.pos.y + _sprite.height());
+	// 	va.draw(GL_LINE_LOOP);
 
-		if (hit)
-		{
-			lm::VertexArray<4>	va2;
-			glColor3ub(255, 255, 0);
-			va2.push(hb.pos.x * TILE_SIZE, SCREEN_HEIGHT - hb.pos.y * TILE_SIZE);
-			va2.push((hb.pos.x + hb.size.x) * TILE_SIZE, SCREEN_HEIGHT - hb.pos.y * TILE_SIZE);
-			va2.push((hb.pos.x + hb.size.x) * TILE_SIZE, SCREEN_HEIGHT - (hb.pos.y + hb.size.y) * TILE_SIZE);
-			va2.push(hb.pos.x * TILE_SIZE, SCREEN_HEIGHT - (hb.pos.y + hb.size.y) * TILE_SIZE);
-			va2.draw(GL_LINE_LOOP);
-		}
+	// 	if (hit)
+	// 	{
+	// 		lm::VertexArray<4>	va2;
+	// 		glColor3ub(255, 255, 0);
+	// 		va2.push(hb.pos.x * TILE_SIZE, SCREEN_HEIGHT - hb.pos.y * TILE_SIZE);
+	// 		va2.push((hb.pos.x + hb.size.x) * TILE_SIZE, SCREEN_HEIGHT - hb.pos.y * TILE_SIZE);
+	// 		va2.push((hb.pos.x + hb.size.x) * TILE_SIZE, SCREEN_HEIGHT - (hb.pos.y + hb.size.y) * TILE_SIZE);
+	// 		va2.push(hb.pos.x * TILE_SIZE, SCREEN_HEIGHT - (hb.pos.y + hb.size.y) * TILE_SIZE);
+	// 		va2.draw(GL_LINE_LOOP);
+	// 	}
 
-		glColor3ub(255, 255, 255);
-	}
+	// 	glColor3ub(255, 255, 255);
+	// }
 }
 
 void

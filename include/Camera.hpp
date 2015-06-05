@@ -1,7 +1,7 @@
 #ifndef CAMERA_HPP
 #define CAMERA_HPP
 
-#include <Lums/Lums.hpp>
+#include <Lums>
 
 class IEntity;
 class Map;

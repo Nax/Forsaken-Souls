@@ -2,7 +2,7 @@
 #define IENTITY_HPP
 
 #include <string>
-#include <Lums/Lums.hpp>
+#include <Lums>
 #include "ImageProvider.hpp"
 #include "Camera.hpp"
 #include "Map.hpp"

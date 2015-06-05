@@ -1,7 +1,7 @@
 #ifndef PAUSE_STATE_HPP
 #define PAUSE_STATE_HPP
 
-#include <Lums/Lums.hpp>
+#include <Lums>
 
 class PauseState : public lm::GameState
 {

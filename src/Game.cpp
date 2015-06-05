@@ -20,18 +20,6 @@ void
 Game::load()
 {
     _clock = 0;
-
-    sp.attach(lm::Shader("shaders/frag.glsl", lm::Shader::Type::Fragment));
-    sp.attach(lm::Shader("shaders/vert.glsl", lm::Shader::Type::Vertex));
-    sp.attach(lm::Shader::fragment());
-    sp.attach(lm::Shader::vertex());
-    sp.link();
-    sp.use();
-
-    int loc = glGetUniformLocation(sp.program(), "size");
-    // glUniform2f(loc, 1280.0, 800.0);
-    glUniform2f(loc, 2560.0, 1600.0);
-
     _gameOverTicks = 0;
     _healTicks = 0;
     _player = Player();
@@ -83,7 +71,7 @@ Game::update()
     if (_player.dead() || _boss->dead())
         _gameOverTicks++;
     if (_gameOverTicks > 500)
-        Core::get().transition<GameOver>();
+        Core::instance().transition<GameOver>();
 }
 
 static int
@@ -98,47 +86,47 @@ perlin(int x,int y)
 void
 Game::drawBackground(lm::SpriteBatch& sb) const
 {
-    const Map& m = _level.map();
-    lm::Vector2f parallax = -_camera.offset() * TILE_SIZE * 0.4f;
-    const lm::Image& bg = ImageProvider::get().image(ImageId::Background);
-    const lm::Vector2f bgDim = { bg.width() / 3.f, bg.height() / 2.f };
+    // const Map& m = _level.map();
+    // lm::Vector2f parallax = -_camera.offset() * TILE_SIZE * 0.4f;
+    // const lm::Image& bg = ImageProvider::get().image(ImageId::Background);
+    // const lm::Vector2f bgDim = { bg.width() / 3.f, bg.height() / 2.f };
 
-    for (int i = 0; i <= ceil(m.width() * TILE_SIZE / (bgDim.x / 2.f)); ++i)
-    {
-        for (int j = 0; j <= ceil(m.height() * TILE_SIZE / (bgDim.y / 2.f)); ++j)
-            sb.draw(bg, perlin(i, j) % 5, Vector2f(i * bgDim.x / 2.0f + parallax.x, float(SCREEN_HEIGHT) - m.height() * TILE_SIZE + j * bgDim.y / 2.f - parallax.y), {0.5f, 0.5f});
-    }
+    // for (int i = 0; i <= ceil(m.width() * TILE_SIZE / (bgDim.x / 2.f)); ++i)
+    // {
+    //     for (int j = 0; j <= ceil(m.height() * TILE_SIZE / (bgDim.y / 2.f)); ++j)
+    //         sb.draw(bg, perlin(i, j) % 5, Vector2f(i * bgDim.x / 2.0f + parallax.x, float(SCREEN_HEIGHT) - m.height() * TILE_SIZE + j * bgDim.y / 2.f - parallax.y), {0.5f, 0.5f});
+    // }
 }
 
 void
 Game::render()
 {
-	lm::SpriteBatch sb;
-    const Map& m = _level.map();
+	// lm::SpriteBatch sb;
+ //    const Map& m = _level.map();
     
-	sb.begin();
-    drawBackground(sb);
-	m.draw(sb, _camera, 0);
-    m.draw(sb, _camera, 1);
-    m.draw(sb, _camera, 2);
-    for (auto e : _entities)
-        e->render(sb, _camera);
-    _player.render(sb, _camera);
-    m.draw(sb, _camera, 3);
-    m.draw(sb, _camera, 4);
-	sb.end();
-    hud::draw(_player);
-    if (_gameOverTicks > 240)
-    {
-        const float alpha = 0.005f * (_gameOverTicks - 240);
-        glColor4f(0, 0, 0, alpha);
-        glBegin(GL_QUADS);
-        glVertex2f(0, 0);
-        glVertex2f(SCREEN_WIDTH, 0);
-        glVertex2f(SCREEN_WIDTH, SCREEN_HEIGHT);
-        glVertex2f(0, SCREEN_HEIGHT);
-        glEnd();
-    }
+	// sb.begin();
+ //    drawBackground(sb);
+	// m.draw(sb, _camera, 0);
+ //    m.draw(sb, _camera, 1);
+ //    m.draw(sb, _camera, 2);
+ //    for (auto e : _entities)
+ //        e->render(sb, _camera);
+ //    _player.render(sb, _camera);
+ //    m.draw(sb, _camera, 3);
+ //    m.draw(sb, _camera, 4);
+	// sb.end();
+ //    hud::draw(_player);
+ //    if (_gameOverTicks > 240)
+ //    {
+ //        const float alpha = 0.005f * (_gameOverTicks - 240);
+ //        glColor4f(0, 0, 0, alpha);
+ //        glBegin(GL_QUADS);
+ //        glVertex2f(0, 0);
+ //        glVertex2f(SCREEN_WIDTH, 0);
+ //        glVertex2f(SCREEN_WIDTH, SCREEN_HEIGHT);
+ //        glVertex2f(0, SCREEN_HEIGHT);
+ //        glEnd();
+ //    }
 }
 
 void
@@ -153,7 +141,7 @@ Game::handleEvent(const Event& event)
         {
             case Key::Escape:
                 if (down)
-                    Core::get().stop();
+                    Core::instance().stop();
                 break;
             case Key::R:
                 if (down)
@@ -183,7 +171,7 @@ Game::handleEvent(const Event& event)
                 break;
             case Key::P:
                 if (down)
-                    lm::Core::get().push<PauseState>();
+                    lm::Core::instance().push<PauseState>();
                 break;
             default:
                 break;
@@ -206,7 +194,7 @@ Game::handleEvent(const Event& event)
                 break;
             case 9:
                 if (down)
-                    lm::Core::get().push<PauseState>();
+                    lm::Core::instance().push<PauseState>();
                 break;
             case 10:
                 if (down)

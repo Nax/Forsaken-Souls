@@ -1,7 +1,7 @@
 #ifndef TILE_HPP
 #define TILE_HPP
 
-#include <Lums/Lums.hpp>
+#include <Lums>
 
 #define TILE_SIZE	64
 

@@ -2,7 +2,7 @@
 #define IMAGE_PROVIDER_HPP
 
 #include <array>
-#include <Lums/Lums.hpp>
+#include <Lums>
 
 enum class ImageId
 {

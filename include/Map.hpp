@@ -5,7 +5,7 @@
 #include <fstream>
 #include <vector>
 #include <array>
-#include <Lums/Lums.hpp>
+#include <Lums>
 #include "Tile.hpp"
 #include "Camera.hpp"
 

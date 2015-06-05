@@ -1,7 +1,7 @@
 #ifndef GAME_OVER_HPP
 #define GAME_OVER_HPP
 
-#include <Lums/Lums.hpp>
+#include <Lums>
 
 class GameOver : public lm::GameState
 {
