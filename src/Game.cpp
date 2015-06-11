@@ -42,44 +42,38 @@ Game::load()
 void
 Game::update()
 {
-    // _clock = (_clock + 1) % 1000;
-    // int loc = glGetUniformLocation(sp.program(), "clock");
-    // glUniform1i(loc, _clock);
+    _clock = (_clock + 1) % 1000;
+    //int loc = glGetUniformLocation(sp.program(), "clock");
+    //glUniform1i(loc, _clock);
 
-    // for (auto e : _entities)
-    // {
-    //     if (e->ai())
-    //         e->ai()(*e, _player, _level.map());
-    //     e->update(_level.map());
-    // }
-    // _player.update(_level.map());
-    // _camera.update(_player, _level.map());
-    // _level.map().enlight(sp, _camera);
+    for (auto e : _entities)
+    {
+        if (e->ai())
+            e->ai()(*e, _player, _level.map());
+        e->update(_level.map());
+    }
+    _player.update(_level.map());
+    _camera.update(_player, _level.map());
+    //_level.map().enlight(sp, _camera);
 
-    // if (_medicine)
-    // {
-    //     if (Phys::checkDamages(*_medicine, _player))
-    //     {
-    //         _player.heal(50);
-    //         _entities.erase(std::find(_entities.begin(), _entities.end(), _medicine));
-    //         delete _medicine;
-    //         _medicine = nullptr;
-    //     }
-    // }
-    // for (auto e : _entities)
-    // {
-    //     Phys::checkDamages(_player, *e);
-    //     Phys::checkDamages(*e, _player);
-    // }
-    // if (_player.dead() || _boss->dead())
-    //     _gameOverTicks++;
-    // if (_gameOverTicks > 500)
-    //     Core::instance().transition<GameOver>();
+    for (auto e : _entities)
+    {
+        Phys::checkDamages(_player, *e);
+        Phys::checkDamages(*e, _player);
+    }
+    if (_player.dead()/* || _boss->dead()*/)
+        _gameOverTicks++;
+    if (_gameOverTicks > 500)
+        Core::instance().transition<GameOver>();
 }
 
 void
 Game::render()
 {
+    lm::Vector2f off = _camera.offset();
+
+    _proj.view = lm::Matrix4f::identity();
+    lm::translate(_proj.view, -off.x * TILE_SIZE, -(_level.map().height() - off.y) * TILE_SIZE + SCREEN_HEIGHT, 0);
     auto& shader = lm::ShaderProvider::instance().get(Assets::Shader::Basic2D);
     lm::uniform(shader, "model", _proj.model);
     lm::uniform(shader, "view", _proj.view);
@@ -87,8 +81,8 @@ Game::render()
     _parallaxBatch.render();
     _backBatch.render();
     _entitiesBatch.begin();
-    //for (auto e : _entities)
-    //    e->render(_entitiesBatch, _camera);
+    for (auto e : _entities)
+        //e->render(_entitiesBatch, _camera);
     _player.render(_entitiesBatch, _camera);
     _entitiesBatch.end();
     _frontBatch.render();
@@ -208,7 +202,8 @@ perlin(int x, int y)
 void
 Game::setLevel(int level, int map)
 {
-    _level.load(map);
+    _level.load(level);
+    _level.setCurrent(map);
     _backBatch.flush();
     _level.map().drawBack(_backBatch);
     _backBatch.send();

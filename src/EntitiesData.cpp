@@ -1,4 +1,5 @@
 #include "IEntity.hpp"
+#include "Assets.hpp"
 
 using namespace lm;
 
@@ -6,7 +7,7 @@ const EntityData gEntityData[] =
 {
     {
         "Yseult",
-        ImageId::Yseult,
+        Assets::Texture::Yseult,
         100,
         21,
         10,
@@ -66,7 +67,7 @@ const EntityData gEntityData[] =
     },
     {
         "Common Bot",
-        ImageId::CommonBot,
+        0,//ImageId::CommonBot,
         50,
         21,
         15,
@@ -126,7 +127,7 @@ const EntityData gEntityData[] =
     },
     {
         "Boss",
-        ImageId::CommonBoss,
+        0,//ImageId::CommonBoss,
         140,
         21,
         30,
@@ -185,7 +186,7 @@ const EntityData gEntityData[] =
     },
     {
         "medecine",
-        ImageId::Medicine,
+        0,//ImageId::Medicine,
         1000000000,
         0,
         0,

@@ -8,7 +8,7 @@
 struct  EntityData
 {
     const char*         name;
-    ImageId             image;
+    int                 image;
     int                 hp;
     int                 mp;
     int                 damage;

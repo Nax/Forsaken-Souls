@@ -18,9 +18,9 @@ IEntity::IEntity(int dataId, float x, float y)
 , _invFrames(0)
 , _hit(false)
 {
-	// _sprite.setImage(ImageProvider::get().image(gEntityData[_dataId].image));
-	// _sprite.pos = {position.x * TILE_SIZE, SCREEN_HEIGHT - ((position.y + 1) * TILE_SIZE) - _sprite.height()};
- //    _sprite.setScale(0.5f);
+	_sprite.setTexture(lm::TextureProvider::instance().get(gEntityData[_dataId].image));
+	_sprite.pos = {position.x * TILE_SIZE, SCREEN_HEIGHT - ((position.y + 1) * TILE_SIZE) - _sprite.height()};
+    _sprite.scale = 0.5f;
     setState(0);
     aim(Aim::None);
     setDirection(true);
@@ -29,19 +29,19 @@ IEntity::IEntity(int dataId, float x, float y)
 void
 IEntity::render(lm::SpriteBatch& sb, const Camera& camera) const
 {
-	// const lm::Vector2f& off = camera.offset();
-	// const lm::Vector2f p = position - off;
-	// const lm::Vector2f bpp = { boundingBox().pos.x + position.x - off.x, boundingBox().pos.y + position.y - off.y };
-	// lm::Rect2f hb = hitBox();
-	// bool hit = hb.size.x != 0.0f;
+	const lm::Vector2f& off = camera.offset();
+	const lm::Vector2f p = position - off;
+	const lm::Vector2f bpp = { boundingBox().pos.x + position.x - off.x, boundingBox().pos.y + position.y - off.y };
+	lm::Rect2f hb = hitBox();
+	bool hit = hb.size.x != 0.0f;
 
-	// hb.pos.x -= off.x;
-	// hb.pos.y -= off.y;
+	hb.pos.x -= off.x;
+	hb.pos.y -= off.y;
 
-	// _sprite.pos.x = p.x * TILE_SIZE;
-	// _sprite.pos.y = SCREEN_HEIGHT - (position.y - off.y) * TILE_SIZE - _sprite.height();
+	_sprite.pos.x = p.x * TILE_SIZE;
+	_sprite.pos.y = SCREEN_HEIGHT - (position.y - off.y) * TILE_SIZE - _sprite.height();
 
-	// sb.draw(_sprite);
+	sb.draw(_sprite);
 
 	// if (debugMode)
 	// {
