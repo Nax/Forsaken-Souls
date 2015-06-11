@@ -67,7 +67,7 @@ const EntityData gEntityData[] =
     },
     {
         "Common Bot",
-        Assets::Texture::Yseult,
+        Assets::Texture::CommonBot,
         50,
         21,
         15,
@@ -127,7 +127,7 @@ const EntityData gEntityData[] =
     },
     {
         "Boss",
-        Assets::Texture::Yseult,
+        Assets::Texture::CommonBoss,
         140,
         21,
         30,

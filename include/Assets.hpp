@@ -27,6 +27,8 @@ namespace	Assets
 	};
 
 	void	init();
+    void    setScale(float scale);
+    float   scale();
 }
 
 #endif

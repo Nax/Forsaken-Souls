@@ -1,6 +1,8 @@
 #include <Lums>
 #include "Assets.hpp"
 
+static float gScale;
+
 static void
 initImages()
 {
@@ -29,9 +31,6 @@ initImages()
 
     auto& yseult = provider.set(Assets::Image::Yseult);
     yseult.setPath("images/yseult.png");
-
-    for (int i = 0; i < provider.size(); ++i)
-        provider.set(i).setScale(0.5f);
 }
 
 static void
@@ -93,4 +92,20 @@ Assets::init()
 	initImages();
 	initTextures();
 	initShaders();
+}
+
+void
+Assets::setScale(float scale)
+{
+    auto& provider = lm::ImageProvider::instance();
+
+    gScale = scale;
+    for (int i = 0; i < provider.size(); ++i)
+        provider.set(i).setScale(scale);
+}
+
+float
+Assets::scale()
+{
+    return gScale;
 }

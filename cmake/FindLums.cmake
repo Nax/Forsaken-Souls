@@ -20,7 +20,7 @@ find_library(LUMS_LIBRARIES
 )
 
 find_path(LUMS_INCLUDE_DIRS
-    Lums
+    LumsInclude
     PATHS
     ${LUMS_SEARCH_PATH}
     PATH_SUFFIXES
