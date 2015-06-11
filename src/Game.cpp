@@ -61,7 +61,7 @@ Game::update()
         Phys::checkDamages(_player, *e);
         Phys::checkDamages(*e, _player);
     }
-    if (_player.dead()/* || _boss->dead()*/)
+    if (_player.dead())
         _gameOverTicks++;
     if (_gameOverTicks > 500)
         Core::instance().transition<GameOver>();
@@ -71,15 +71,18 @@ void
 Game::render()
 {
     lm::Vector2f off = _camera.offset();
+    Matrix4f parallaxView = lm::Matrix4f::identity();
     
     _proj.view = lm::Matrix4f::identity();
     lm::translate(_proj.view, -off.x * TILE_SIZE, off.y * TILE_SIZE, 0);
+    lm::translate(parallaxView, -off.x * TILE_SIZE * 0.4f, off.y * TILE_SIZE * 0.4f, 0);
     auto& shader = lm::ShaderProvider::instance().get(Assets::Shader::Basic2D);
 
     lm::uniform(shader, "model", _proj.model);
-    lm::uniform(shader, "view", _proj.view);
+    lm::uniform(shader, "view", parallaxView);
     lm::uniform(shader, "projection", _proj.projection);
     _parallaxBatch.render();
+    lm::uniform(shader, "view", _proj.view);
     _backBatch.render();
     _entitiesBatch.begin();
     for (auto e : _entities);
@@ -213,14 +216,17 @@ Game::setLevel(int level, int map)
     _frontBatch.send();
     _parallaxBatch.flush();
     auto& parallax = lm::TextureProvider::instance().get(Assets::Texture::Background);
-    //int xMax = std::ceil((_level.map().width() * TILE_SIZE) / ((parallax.width() / 6) / 0.4f));
-    //int yMax = std::ceil((_level.map().height() * TILE_SIZE) / ((parallax.height() / 4) / 0.4f));
-    int xMax = 30;
+    int xMax = std::ceil((_level.map().width() * TILE_SIZE - SCREEN_WIDTH) / float(parallax.width() / 6.0f)) * 0.4f + std::ceil(SCREEN_WIDTH / float(parallax.width() / 6.0f));
+    std::cout << _level.map().width() << std::endl;
+    std::cout << parallax.width() / (6.0f * TILE_SIZE)  << std::endl;
+    std::cout << SCREEN_TILES_W << std::endl;
+    //int xMax = 26;
     int yMax = 20; // Will fix later
+    std::cout << xMax << std::endl;
     for (int j = 0; j < yMax; ++j)
     {
         for (int i = 0; i < xMax; ++i)
-            _parallaxBatch.draw(parallax, perlin(i, j) % 5, {i * parallax.width() / 6, j * parallax.height() / 4}, {0.5, 0.5});
+            _parallaxBatch.draw(parallax, perlin(i, j) % 5, {i * parallax.width() / 6, SCREEN_HEIGHT - (j + 1) * parallax.height() / 4}, {0.5, 0.5});
     }
     _parallaxBatch.send();
 }

@@ -19,7 +19,6 @@ IEntity::IEntity(int dataId, float x, float y)
 , _hit(false)
 {
 	_sprite.setTexture(lm::TextureProvider::instance().get(gEntityData[_dataId].image));
-	_sprite.pos = {position.x * TILE_SIZE, SCREEN_HEIGHT - ((position.y + 1) * TILE_SIZE) - _sprite.height()};
     _sprite.scale = {0.5f, 0.5f};
     setState(0);
     aim(Aim::None);
@@ -110,8 +109,6 @@ IEntity::update(const Map& map)
 	if (_hp <= 0)
 		die();
 	_sprite.update();
-	_sprite.pos.x = position.x * TILE_SIZE;
-	_sprite.pos.y = SCREEN_HEIGHT - (position.y + 1) * TILE_SIZE - _sprite.height();
 	_hit = false;
 }
 

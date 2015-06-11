@@ -23,6 +23,9 @@ initImages()
 
     auto& yseult = provider.set(Assets::Image::Yseult);
     yseult.setPath("images/yseult.png");
+
+    for (int i = 0; i < provider.size(); ++i)
+        provider.set(i).setScale(0.5f);
 }
 
 static void
