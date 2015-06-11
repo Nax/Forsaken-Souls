@@ -71,17 +71,18 @@ void
 Game::render()
 {
     lm::Vector2f off = _camera.offset();
-
+    
     _proj.view = lm::Matrix4f::identity();
-    lm::translate(_proj.view, -off.x * TILE_SIZE, -(_level.map().height() - off.y) * TILE_SIZE + SCREEN_HEIGHT, 0);
+    lm::translate(_proj.view, -off.x * TILE_SIZE, off.y * TILE_SIZE, 0);
     auto& shader = lm::ShaderProvider::instance().get(Assets::Shader::Basic2D);
+
     lm::uniform(shader, "model", _proj.model);
     lm::uniform(shader, "view", _proj.view);
     lm::uniform(shader, "projection", _proj.projection);
     _parallaxBatch.render();
     _backBatch.render();
     _entitiesBatch.begin();
-    for (auto e : _entities)
+    for (auto e : _entities);
         //e->render(_entitiesBatch, _camera);
     _player.render(_entitiesBatch, _camera);
     _entitiesBatch.end();

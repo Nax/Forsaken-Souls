@@ -108,16 +108,16 @@ Map::at(int x, int y, int z) const
 void
 Map::drawBack(lm::StaticSpriteBatch& batch) const
 {
-	draw(batch, 4);
-	draw(batch, 3);
+	draw(batch, 0);
+	draw(batch, 1);
 	draw(batch, 2);
 }
 
 void
 Map::drawFront(lm::StaticSpriteBatch& batch) const
 {
-	draw(batch, 1);
-	draw(batch, 0);
+	draw(batch, 3);
+	draw(batch, 4);
 }
 
 void
@@ -157,7 +157,7 @@ Map::draw(lm::StaticSpriteBatch& sb, int z) const
     		const uint16_t tileId = _tiles[i + j * _width + z * _width * _height];
 
     		if (tileId != 0)
-    			sb.draw(tileset, tileId - 1, {i * TILE_SIZE, (_height - j) * TILE_SIZE}, {0.5f, 0.5f});
+    			sb.draw(tileset, tileId - 1, {i * TILE_SIZE, SCREEN_HEIGHT - (j + 1) * TILE_SIZE}, {0.5f, 0.5f});
     	}
     }
 }
