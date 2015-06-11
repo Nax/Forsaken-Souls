@@ -19,7 +19,6 @@ IEntity::IEntity(int dataId, float x, float y)
 , _hit(false)
 {
 	_sprite.setTexture(lm::TextureProvider::instance().get(gEntityData[_dataId].image));
-    _sprite.scale = {0.5f, 0.5f};
     setState(0);
     aim(Aim::None);
     setDirection(true);

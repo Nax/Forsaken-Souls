@@ -21,6 +21,12 @@ initImages()
     auto& background = provider.set(Assets::Image::Background);
     background.setPath("images/backgrounds.png");
 
+    auto& commonBot = provider.set(Assets::Image::CommonBot);
+    commonBot.setPath("images/common_bot.png");
+
+    auto& bossBot = provider.set(Assets::Image::CommonBoss);
+    bossBot.setPath("images/boss_bot.png");
+
     auto& yseult = provider.set(Assets::Image::Yseult);
     yseult.setPath("images/yseult.png");
 
@@ -53,6 +59,14 @@ initTextures()
     auto& background = provider.set(Assets::Texture::Background);
     background.setImage(images.set(Assets::Image::Background));
     background.pushAtlas(3, 2);
+
+    auto& commonBot = provider.set(Assets::Texture::CommonBot);
+    commonBot.setImage(images.set(Assets::Image::CommonBot));
+    commonBot.pushAtlas(12, 12);
+
+    auto& bossBot = provider.set(Assets::Texture::CommonBoss);
+    bossBot.setImage(images.set(Assets::Image::CommonBoss));
+    bossBot.pushAtlas(13, 13);
 
     auto& yseult = provider.set(Assets::Texture::Yseult);
     yseult.setImage(images.set(Assets::Image::Yseult));

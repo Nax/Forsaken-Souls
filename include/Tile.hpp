@@ -3,7 +3,7 @@
 
 #include <Lums>
 
-#define TILE_SIZE	64
+#define TILE_SIZE	128
 
 struct TileBoundingBox
 {

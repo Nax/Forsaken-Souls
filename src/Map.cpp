@@ -123,7 +123,7 @@ Map::drawFront(lm::StaticSpriteBatch& batch) const
 void
 Map::spawn(std::vector<Entity*>& entities) const
 {
-    for (auto s : _spawns)
+    for (auto& s : _spawns)
         entities.push_back(new Entity(s.id, s.x, s.y));
 }
 
@@ -157,7 +157,7 @@ Map::draw(lm::StaticSpriteBatch& sb, int z) const
     		const uint16_t tileId = _tiles[i + j * _width + z * _width * _height];
 
     		if (tileId != 0)
-    			sb.draw(tileset, tileId - 1, {i * TILE_SIZE, SCREEN_HEIGHT - (j + 1) * TILE_SIZE}, {0.5f, 0.5f});
+    			sb.draw(tileset, tileId - 1, {i * TILE_SIZE, SCREEN_HEIGHT - (j + 1) * TILE_SIZE});
     	}
     }
 }

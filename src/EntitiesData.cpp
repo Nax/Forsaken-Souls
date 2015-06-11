@@ -67,7 +67,7 @@ const EntityData gEntityData[] =
     },
     {
         "Common Bot",
-        0,//ImageId::CommonBot,
+        Assets::Texture::Yseult,
         50,
         21,
         15,
@@ -127,7 +127,7 @@ const EntityData gEntityData[] =
     },
     {
         "Boss",
-        0,//ImageId::CommonBoss,
+        Assets::Texture::Yseult,
         140,
         21,
         30,
@@ -183,59 +183,5 @@ const EntityData gEntityData[] =
             {0.0f, 0.0f}
         },
         AI::boss
-    },
-    {
-        "medecine",
-        0,//ImageId::Medicine,
-        1000000000,
-        0,
-        0,
-        // Bounding box
-        {
-            {{0.0f,  0.0f}, {1.0f, 1.0f}},
-            {{0.0f,  0.0f}, {1.0f, 1.0f}},
-            {{0.0f,  0.0f}, {1.0f, 1.0f}},
-            {{0.0f,  0.0f}, {1.0f, 1.0f}},
-            {{0.0f,  0.0f}, {1.0f, 1.0f}},
-            {{0.0f,  0.0f}, {1.0f, 1.0f}},
-            {{0.0f,  0.0f}, {1.0f, 1.0f}},
-            {{0.0f,  0.0f}, {1.0f, 1.0f}}
-        },
-        // Hitbox
-        {
-            {{{0.0f, 0.0f}, {1.0f, 1.0f}}, 0, 1},
-            {},
-            {},
-            {},
-            {},
-            {},
-            {},
-        },
-        // Animations
-        {
-            // Idle
-            {0, 1, 1, true},
-            // Run
-            {0, 1, 1, true},
-            // Crouch
-            {0, 1, 1, true},
-            {0, 1, 1, true},
-            {0, 1, 1, true},
-            {0, 1, 1, true},
-            {0, 1, 1, true},
-            {0, 1, 1, true},
-        },
-        // Speed
-        {
-            {0.0f, 0.0f},
-            {0.0f, 0.0f},
-            {0.0f, 0.0f},
-            {0.0f, 0.0f},
-            {0.0f, 0.0f},
-            {0.0f, 0.0f},
-            {0.0f, 0.0f},
-            {0.0f, 0.0f}
-        },
-        nullptr
     }
 };

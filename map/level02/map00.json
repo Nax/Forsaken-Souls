@@ -555,21 +555,6 @@
                  "width":128,
                  "x":40062.4426846024,
                  "y":7142.84579016379
-                }, 
-                {
-                 "height":128,
-                 "id":52,
-                 "name":"Medicine",
-                 "properties":
-                    {
-                     "enemyID":"3"
-                    },
-                 "rotation":0,
-                 "type":"spawn",
-                 "visible":true,
-                 "width":128,
-                 "x":16512,
-                 "y":2944
                 }],
          "opacity":1,
          "properties":
