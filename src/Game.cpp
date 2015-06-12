@@ -8,6 +8,7 @@
 #include "Physics.hpp"
 #include "Assets.hpp"
 #include <cstdlib>
+#include <chrono>
 
 using namespace lm;
 
@@ -74,6 +75,23 @@ Game::update()
 void
 Game::render()
 {
+    static double fpsc = 0;
+    static double fpssum = 0;
+    static int fpscount = 0;
+    char fps[256];
+    static auto t0 = std::chrono::high_resolution_clock::now();
+    auto t1 = std::chrono::high_resolution_clock::now();
+    fpssum += 1000000000.0 / std::chrono::duration_cast<std::chrono::nanoseconds>(t1-t0).count();
+    fpscount += 1;
+    if (fpscount == 15)
+    {
+        fpscount = 0;
+        fpsc = fpssum / 15.0;
+        fpssum = 0;
+    }
+    t0 = t1;
+    snprintf(fps, 256, "%5.0lf FPS", fpsc);
+
     lm::Vector2f off = _camera.offset();
     Matrix4f parallaxView = lm::Matrix4f::identity();
     Matrix4f identity = lm::Matrix4f::identity();
@@ -106,7 +124,7 @@ Game::render()
     shader.use();
 
     _textBatch.begin();
-    _textBatch.draw(lm::FontProvider::instance().get(Assets::Font::Roboto20), "Miaou");
+    _textBatch.draw(lm::FontProvider::instance().get(Assets::Font::Roboto20), fps);
     _textBatch.end();
 }
 
