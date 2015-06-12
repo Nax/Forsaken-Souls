@@ -228,6 +228,7 @@ Game::unload()
     for (auto e : _entities)
         delete e;
     _entities.clear();
+    _pipeline.clear();
 }
 
 static int
