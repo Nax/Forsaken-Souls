@@ -16,7 +16,7 @@ namespace	Assets
 		CommonBoss,
 		Yseult,
 		Medicine,
-        Count
+        Count,
 	};
 
 	using Texture = Image;
