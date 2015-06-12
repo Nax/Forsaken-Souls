@@ -46,6 +46,7 @@ private:
     lm::StaticSpriteBatch   _parallaxBatch;
     lm::SpriteBatch         _entitiesBatch;
     lm::Projection          _proj;
+    lm::ShaderPipeline      _pipeline;
 };
 
 #endif

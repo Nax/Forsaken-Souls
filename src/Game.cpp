@@ -37,14 +37,18 @@ Game::load()
     _level.map().spawn(_entities);
     _camera.focus(_player, _level.map());
     _proj.projection = lm::ortho(0, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
+
+    _pipeline.setWindow(lm::Core::instance().window());
+    _pipeline.append(lm::ShaderProvider::instance().get(Assets::Shader::Light));
+    _pipeline.append(lm::ShaderProvider::instance().get(Assets::Shader::Border));
 }
 
 void
 Game::update()
 {
-    _clock = (_clock + 1) % 1000;
-    //int loc = glGetUniformLocation(sp.program(), "clock");
-    //glUniform1i(loc, _clock);
+    // _clock = (_clock + 1) % 1000;
+    // int loc = glGetUniformLocation(sp.program(), "clock");
+    // glUniform1i(loc, _clock);
 
     for (auto e : _entities)
     {
@@ -72,11 +76,14 @@ Game::render()
 {
     lm::Vector2f off = _camera.offset();
     Matrix4f parallaxView = lm::Matrix4f::identity();
+
+    _pipeline.bind();
     
     _proj.view = lm::Matrix4f::identity();
     lm::translate(_proj.view, -off.x * TILE_SIZE, off.y * TILE_SIZE, 0);
     lm::translate(parallaxView, -off.x * TILE_SIZE * 0.4f, off.y * TILE_SIZE * 0.4f, 0);
     auto& shader = lm::ShaderProvider::instance().get(Assets::Shader::Basic2D);
+    shader.use();
 
     lm::uniform(shader, "model", _proj.model);
     lm::uniform(shader, "view", parallaxView);
@@ -90,6 +97,8 @@ Game::render()
     _player.render(_entitiesBatch, _camera);
     _entitiesBatch.end();
     _frontBatch.render();
+
+    _pipeline.render();
 }
 
 void

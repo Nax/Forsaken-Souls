@@ -23,7 +23,9 @@ namespace	Assets
 
 	enum Shader
 	{
-		Basic2D
+		Basic2D,
+		Border,
+		Light
 	};
 
 	void	init();

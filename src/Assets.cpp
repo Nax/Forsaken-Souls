@@ -84,6 +84,20 @@ initShaders()
     basic2d.bindAttribLocation(lm::Vertex::Texture, "tex");
     basic2d.bindAttribLocation(lm::Vertex::Color, "color");
     basic2d.link();
+
+    auto& border = provider.set(Assets::Shader::Border);
+    border.attach(lm::Shader("shaders/fx.vert.glsl", lm::Shader::Type::Vertex));
+    border.attach(lm::Shader("shaders/border.frag.glsl", lm::Shader::Type::Fragment));
+    border.bindAttribLocation(lm::Vertex::Position, "position");
+    border.bindAttribLocation(lm::Vertex::Texture, "tex");
+    border.link();
+
+    auto& light = provider.set(Assets::Shader::Light);
+    light.attach(lm::Shader("shaders/fx.vert.glsl", lm::Shader::Type::Vertex));
+    light.attach(lm::Shader("shaders/light.frag.glsl", lm::Shader::Type::Fragment));
+    light.bindAttribLocation(lm::Vertex::Position, "position");
+    light.bindAttribLocation(lm::Vertex::Texture, "tex");
+    light.link();
 }
 
 void
