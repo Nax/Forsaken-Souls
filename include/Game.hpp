@@ -47,6 +47,7 @@ private:
     lm::SpriteBatch         _entitiesBatch;
     lm::Projection          _proj;
     lm::ShaderPipeline      _pipeline;
+    lm::SpriteBatch         _textBatch;
 };
 
 #endif

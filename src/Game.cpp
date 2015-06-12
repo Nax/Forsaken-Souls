@@ -39,7 +39,7 @@ Game::load()
     _proj.projection = lm::ortho(0, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
 
     _pipeline.setWindow(lm::Core::instance().window());
-    _pipeline.append(lm::ShaderProvider::instance().get(Assets::Shader::Light));
+    //_pipeline.append(lm::ShaderProvider::instance().get(Assets::Shader::Light));
     _pipeline.append(lm::ShaderProvider::instance().get(Assets::Shader::Border));
 }
 
@@ -76,10 +76,11 @@ Game::render()
 {
     lm::Vector2f off = _camera.offset();
     Matrix4f parallaxView = lm::Matrix4f::identity();
+    Matrix4f identity = lm::Matrix4f::identity();
 
     _pipeline.bind();
     
-    _proj.view = lm::Matrix4f::identity();
+    _proj.view = identity;
     lm::translate(_proj.view, -off.x * TILE_SIZE, off.y * TILE_SIZE, 0);
     lm::translate(parallaxView, -off.x * TILE_SIZE * 0.4f, off.y * TILE_SIZE * 0.4f, 0);
     auto& shader = lm::ShaderProvider::instance().get(Assets::Shader::Basic2D);
@@ -98,7 +99,15 @@ Game::render()
     _entitiesBatch.end();
     _frontBatch.render();
 
+    lm::uniform(shader, "view", identity);
+
     _pipeline.render();
+
+    shader.use();
+
+    _textBatch.begin();
+    _textBatch.draw(lm::FontProvider::instance().get(Assets::Font::Roboto20), "Miaou");
+    _textBatch.end();
 }
 
 void

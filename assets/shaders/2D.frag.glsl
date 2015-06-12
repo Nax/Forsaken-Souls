@@ -1,5 +1,7 @@
 #version 150
 
+precision lowp float;
+
 in vec2 vTex;
 in vec4 vColor;
 

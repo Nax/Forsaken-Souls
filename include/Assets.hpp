@@ -28,6 +28,11 @@ namespace	Assets
 		Light
 	};
 
+	enum Font
+	{
+		Roboto20
+	};
+
 	void	init();
     void    setScale(float scale);
     float   scale();

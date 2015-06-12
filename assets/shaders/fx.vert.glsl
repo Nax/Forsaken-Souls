@@ -1,5 +1,7 @@
 #version 150
 
+precision lowp float;
+
 in vec2 position;
 in vec2 tex;
 
