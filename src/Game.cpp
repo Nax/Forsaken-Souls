@@ -40,7 +40,7 @@ Game::load()
     _proj.projection = lm::ortho(0, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
 
     _pipeline.setWindow(lm::Core::instance().window());
-    //_pipeline.append(lm::ShaderProvider::instance().get(Assets::Shader::Light));
+    _pipeline.append(lm::ShaderProvider::instance().get(Assets::Shader::Light));
     _pipeline.append(lm::ShaderProvider::instance().get(Assets::Shader::Border));
 }
 
