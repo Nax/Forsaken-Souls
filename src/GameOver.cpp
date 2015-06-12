@@ -2,10 +2,22 @@
 #include "Game.hpp"
 #include "Screen.hpp"
 #include "MainMenu.hpp"
+#include "Assets.hpp"
 
 GameOver::GameOver()
 {
 
+}
+
+void
+GameOver::load()
+{
+	auto& gameOver = lm::TextureProvider::instance().get(Assets::Texture::GameOver);
+
+	_gameOverBatch.draw(gameOver, 0, {SCREEN_WIDTH / 2 - gameOver.width() / 2, SCREEN_HEIGHT / 2 - gameOver.height() / 2});
+	_gameOverBatch.send();
+
+	_proj.projection = lm::ortho(0, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
 }
 
 void
@@ -33,13 +45,20 @@ GameOver::update()
 void
 GameOver::render()
 {
-	// lm::SpriteBatch sb;
-	// const lm::Image& go = ImageProvider::get().image(ImageId::GameOver);
-	// lm::Vector2f pos(SCREEN_WIDTH / 2 - go.width() / 4, SCREEN_HEIGHT / 2 - go.height() / 4);
+	auto& shader = lm::ShaderProvider::instance().get(Assets::Shader::Basic2D);
+    shader.use();
+ 
+    _proj.view = lm::Matrix4f::identity();
+    lm::uniform(shader, "model", _proj.model);
+    lm::uniform(shader, "view", _proj.view);
+    lm::uniform(shader, "projection", _proj.projection);
+ 
+    _gameOverBatch.render();
+}
 
-	// sb.begin();
-	// sb.draw(go, 0, pos, {0.5f, 0.5f});
-	// sb.end();
+void
+GameOver::unload()
+{
 
 }
 

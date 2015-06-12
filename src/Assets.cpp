@@ -31,6 +31,10 @@ initImages()
 
     auto& yseult = provider.set(Assets::Image::Yseult);
     yseult.setPath("images/yseult.png");
+
+    auto& gameOver = provider.set(Assets::Image::GameOver);
+    gameOver.setPath("images/game_over.png");
+
 }
 
 static void
@@ -70,6 +74,10 @@ initTextures()
     auto& yseult = provider.set(Assets::Texture::Yseult);
     yseult.setImage(images.set(Assets::Image::Yseult));
     yseult.pushAtlas(7, 6);
+
+    auto& gameOver = provider.set(Assets::Texture::GameOver);
+    gameOver.setImage(images.set(Assets::Image::GameOver));
+    gameOver.pushAtlas(1, 1);
 }
 
 static void

@@ -7,12 +7,16 @@ class GameOver : public lm::GameState
 {
 public:
 	GameOver();
+    void    load();
 	void	handleEvent(const lm::Event& event);
 	void	update();
 	void	render();
-	~GameOver();
+	void    unload();
+    ~GameOver();
 
 private:
+    lm::StaticSpriteBatch  _gameOverBatch;
+    lm::Projection         _proj;
 };
 
 #endif
