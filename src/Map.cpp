@@ -123,8 +123,8 @@ Map::drawFront(lm::StaticSpriteBatch& batch) const
 void
 Map::spawn(std::vector<Entity*>& entities) const
 {
-    for (auto& s : _spawns)
-        entities.push_back(new Entity(s.id, s.x, s.y));
+    // for (auto& s : _spawns)
+    //     entities.push_back(new Entity(s.id, s.x, s.y));
 }
 
 void

@@ -9,7 +9,7 @@ include_directories(include)
 
 # Build game
 
-file(GLOB SRC "src/*.cpp")
+file(GLOB_RECURSE SRC "src/*.cpp")
 add_executable(forsaken_souls MACOSX_BUNDLE ${SRC})
 set_target_properties(forsaken_souls PROPERTIES OUTPUT_NAME "Forsaken Souls")
 set_target_properties(forsaken_souls PROPERTIES MACOSX_BUNDLE_INFO_PLIST "${CMAKE_SOURCE_DIR}/Info.plist")

@@ -1,16 +1,16 @@
-#ifndef PHYSICS_HPP
-#define PHYSICS_HPP
+// #ifndef PHYSICS_HPP
+// #define PHYSICS_HPP
 
-#include "IEntity.hpp"
-#include "Map.hpp"
+// #include "Entity.hpp"
+// #include "Map.hpp"
 
-namespace Phys
-{
-    void    updateEntity(IEntity& e, const Map& map);
-    void    applyGravity(IEntity& e);
-    void    checkCollisionX(IEntity& e, const Map& map);
-    void    checkCollisionY(IEntity& e, const Map& map);
-    bool	checkDamages(IEntity& attacker, IEntity& target);
-}
+// namespace Phys
+// {
+//     void    updateEntity(Entity& e, const Map& map);
+//     void    applyGravity(Entity& e);
+//     void    checkCollisionX(Entity& e, const Map& map);
+//     void    checkCollisionY(Entity& e, const Map& map);
+//     bool	checkDamages(Entity& attacker, Entity& target);
+// }
 
-#endif
+// #endif

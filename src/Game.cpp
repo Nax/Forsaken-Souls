@@ -4,7 +4,6 @@
 #include "Hud.hpp"
 #include "GameOver.hpp"
 #include "PauseState.hpp"
-#include "Player.hpp"
 #include "Physics.hpp"
 #include "Assets.hpp"
 #include <cstdlib>
@@ -25,7 +24,7 @@ Game::load()
     _clock = 0;
     _gameOverTicks = 0;
     _healTicks = 0;
-    _player = Player();
+    // _player = Player();
     //_level.map().enlight(sp, _camera);
     // for (auto e : _entities)
     //{
@@ -53,21 +52,21 @@ Game::update()
 
     for (auto e : _entities)
     {
-        if (e->ai())
-            e->ai()(*e, _player, _level.map());
-        e->update(_level.map());
+        //if (e->ai())
+            //e->ai()(*e, _player, _level.map());
+        e->update(/*_level.map()*/);
     }
-    _player.update(_level.map());
+    _player.update(/*_level.map()*/);
     _camera.update(_player, _level.map());
     //_level.map().enlight(sp, _camera);
 
-    for (auto e : _entities)
-    {
-        Phys::checkDamages(_player, *e);
-        Phys::checkDamages(*e, _player);
-    }
-    if (_player.dead())
-        _gameOverTicks++;
+    // for (auto e : _entities)
+    // {
+    //     Phys::checkDamages(_player, *e);
+    //     Phys::checkDamages(*e, _player);
+    // }
+    // if (_player.dead())
+    //     _gameOverTicks++;
     if (_gameOverTicks > 500)
         Core::instance().transition<GameOver>();
 }
@@ -112,8 +111,8 @@ Game::render()
     _backBatch.render();
     _entitiesBatch.begin();
     for (auto e : _entities)
-        e->render(_entitiesBatch, _camera);
-    _player.render(_entitiesBatch, _camera);
+        e->render<lm::SpriteBatch&>(_entitiesBatch/*, _camera*/);
+    _player.render<lm::SpriteBatch&>(_entitiesBatch/*, _camera*/);
     _entitiesBatch.end();
     _frontBatch.render();
 
@@ -142,84 +141,84 @@ Game::handleEvent(const Event& event)
                 if (down)
                     Core::instance().stop();
                 break;
-            case Key::R:
-                if (down)
-                    reload();
-                break;
-            case Key::Right:
-                _player.setKey(Player::Key::Right, down);
-                break;
-            case Key::Left:
-                _player.setKey(Player::Key::Left, down);
-                break;
-            case Key::Down:
-                _player.setKey(Player::Key::Down, down);
-                break;
-            case Key::Space:
-                _player.setKey(Player::Key::Space, down);
-                break;
-            case Key::D:
-                if (down)
-                    debugMode = !debugMode;
-                break;
-            case Key::X:
-                _player.die();
-                break;
-            case Key::A:
-                _player.setKey(Player::Key::A, down);
-                break;
-            case Key::P:
-                if (down)
-                    lm::Core::instance().push<PauseState>();
-                break;
+            // case Key::R:
+            //     if (down)
+            //         reload();
+            //     break;
+            // case Key::Right:
+            //     _player.setKey(Player::Key::Right, down);
+            //     break;
+            // case Key::Left:
+            //     _player.setKey(Player::Key::Left, down);
+            //     break;
+            // case Key::Down:
+            //     _player.setKey(Player::Key::Down, down);
+            //     break;
+            // case Key::Space:
+            //     _player.setKey(Player::Key::Space, down);
+            //     break;
+            // case Key::D:
+            //     if (down)
+            //         debugMode = !debugMode;
+            //     break;
+            // case Key::X:
+            //     _player.die();
+            //     break;
+            // case Key::A:
+            //     _player.setKey(Player::Key::A, down);
+            //     break;
+            // case Key::P:
+            //     if (down)
+            //         lm::Core::instance().push<PauseState>();
+            //     break;
             default:
                 break;
         }
     }
-    if (event.type == Event::Type::ButtonDown
-        || event.type == Event::Type::ButtonUp)
-    {
-        bool down = (event.type == Event::Type::ButtonDown);
-        switch (event.gamepad.button)
-        {
-            case 1:
-                _player.setKey(Player::Key::Space, down);
-                break;
-            case 3:
-                _player.setKey(Player::Key::A, down);
-                break;
-            case 4:
-                _player.die();
-                break;
-            case 9:
-                if (down)
-                    lm::Core::instance().push<PauseState>();
-                break;
-            case 10:
-                if (down)
-                    debugMode = !debugMode;
-                break;
-            case 14:
-                _player.setKey(Player::Key::Left, down);
-                break;
-            case 15:
-                _player.setKey(Player::Key::Right, down);
-                break;
-            default:
-                break;
-        }
-    }
-    if (event.type == lm::Event::Type::LeftStick)
-    {
-        if (event.gamepad.stick.x < -0.9f)
-            _player.setKey(Player::Key::Left, true);
-        else
-            _player.setKey(Player::Key::Left, false);
-        if (event.gamepad.stick.x > 0.1f)
-            _player.setKey(Player::Key::Right, true);
-        else
-            _player.setKey(Player::Key::Right, false);
-    }
+    // if (event.type == Event::Type::ButtonDown
+    //     || event.type == Event::Type::ButtonUp)
+    // {
+    //     bool down = (event.type == Event::Type::ButtonDown);
+    //     switch (event.gamepad.button)
+    //     {
+    //         case 1:
+    //             _player.setKey(Player::Key::Space, down);
+    //             break;
+    //         case 3:
+    //             _player.setKey(Player::Key::A, down);
+    //             break;
+    //         case 4:
+    //             _player.die();
+    //             break;
+    //         case 9:
+    //             if (down)
+    //                 lm::Core::instance().push<PauseState>();
+    //             break;
+    //         case 10:
+    //             if (down)
+    //                 debugMode = !debugMode;
+    //             break;
+    //         case 14:
+    //             _player.setKey(Player::Key::Left, down);
+    //             break;
+    //         case 15:
+    //             _player.setKey(Player::Key::Right, down);
+    //             break;
+    //         default:
+    //             break;
+    //     }
+    // }
+    // if (event.type == lm::Event::Type::LeftStick)
+    // {
+    //     if (event.gamepad.stick.x < -0.9f)
+    //         _player.setKey(Player::Key::Left, true);
+    //     else
+    //         _player.setKey(Player::Key::Left, false);
+    //     if (event.gamepad.stick.x > 0.1f)
+    //         _player.setKey(Player::Key::Right, true);
+    //     else
+    //         _player.setKey(Player::Key::Right, false);
+    // }
 }
 
 void

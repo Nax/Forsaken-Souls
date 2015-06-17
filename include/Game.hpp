@@ -4,7 +4,6 @@
 #include <vector>
 #include <array>
 #include <Lums>
-#include "Player.hpp"
 #include "Level.hpp"
 #include "Camera.hpp"
 #include "Entity.hpp"
@@ -31,7 +30,7 @@ private:
 
     void            drawBackground(lm::SpriteBatch& sb) const;
 
-    Player          _player;
+    Entity          _player;
     Level           _level;
     Camera          _camera;
     Entity*         _medicine;

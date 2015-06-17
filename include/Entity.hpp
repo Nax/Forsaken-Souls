@@ -1,13 +1,14 @@
 #ifndef ENTITY_HPP
 #define ENTITY_HPP
 
-#include "IEntity.hpp"
+#include <Lums>
+#include "Components/Component.hpp"
 
-class Entity : public IEntity
+class Entity : public lm::GameObject<Entity, Component>
 {
 public:
-	Entity(int dataId, float x, float y);
-	AI::function	ai() const { return gEntityData[_dataId].ai; }
+	Entity();
+    lm::Vector2f    center();
     ~Entity();
 };
 
