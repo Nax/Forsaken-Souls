@@ -13,6 +13,7 @@ public:
     void    update(Entity& e);
 
     lm::Vector2f*   speed();
+    void            setSpeed(lm::Vector2f speed);
     ~MovableComponent();
 
 private:

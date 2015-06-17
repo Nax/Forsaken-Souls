@@ -9,6 +9,8 @@
 #include <cstdlib>
 #include <chrono>
 
+#include <Components/Movable.hpp>
+
 using namespace lm;
 
 bool debugMode = false;
@@ -33,6 +35,8 @@ Game::load()
     //    if (e->id() == 2)
     //        _boss = e;
     // }
+    _player.attach<MovableComponent>();
+    _player.send("setSpeed", lm::Vector2f(0.5f, 0.5f));
     setLevel(2, 0);
     _level.map().spawn(_entities);
     _camera.focus(_player, _level.map());

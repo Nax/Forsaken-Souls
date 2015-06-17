@@ -3,6 +3,7 @@
 MovableComponent::MovableComponent()
 {
     bind("speed", &MovableComponent::speed);
+    bind("setSpeed", &MovableComponent::setSpeed);
 }
 
 void
@@ -16,6 +17,12 @@ lm::Vector2f*
 MovableComponent::speed()
 {
     return &_speed;
+}
+
+void
+MovableComponent::setSpeed(lm::Vector2f speed)
+{
+    _speed = speed;
 }
 
 MovableComponent::~MovableComponent()
