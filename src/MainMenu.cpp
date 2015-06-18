@@ -59,7 +59,7 @@ MainMenu::handleEvent(const lm::Event& event)
         {
             case 1:
                 if (!_cursor)
-                    lm::Core::instance().push<Game>();
+                    lm::Core::instance().transition<Game>();
                 else
                     lm::Core::instance().stop();
                 break;

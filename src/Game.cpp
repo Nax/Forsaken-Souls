@@ -3,7 +3,6 @@
 #include "Screen.hpp"
 #include "Hud.hpp"
 #include "GameOver.hpp"
-#include "PauseState.hpp"
 #include "Physics.hpp"
 #include "Assets.hpp"
 #include <cstdlib>
