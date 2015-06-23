@@ -3,31 +3,6 @@
 
 namespace	Assets
 {
-	enum Image
-	{
-		Tileset,
-		CommonBot,
-		GameOver,
-		Background,
-		NewGame,
-		Quit,
-		MenuCursor,
-		Pause,
-		CommonBoss,
-		Yseult,
-		Medicine,
-        Count,
-	};
-
-	using Texture = Image;
-
-	enum Shader
-	{
-		Basic2D,
-		Border,
-		Light
-	};
-
 	enum Font
 	{
 		Roboto20

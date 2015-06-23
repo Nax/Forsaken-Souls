@@ -78,7 +78,7 @@ PauseMenu::handleEvent(const lm::Event& event)
 void
 PauseMenu::render()
 {
-	auto& shader = lm::ShaderProvider::instance().get(Assets::Shader::Basic2D);
+	auto& shader = lm::ShaderProvider::instance().get("basic2d");
     shader.use();
     _proj.view = lm::Matrix4f::identity();
     lm::uniform(shader, "model", _proj.model);

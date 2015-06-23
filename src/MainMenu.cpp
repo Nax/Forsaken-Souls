@@ -14,9 +14,9 @@ MainMenu::MainMenu()
 void
 MainMenu::load()
 {
-    auto& newGame = lm::TextureProvider::instance().get(Assets::Texture::NewGame);
-    auto& quit = lm::TextureProvider::instance().get(Assets::Texture::Quit);
-    auto& menuCursor = lm::TextureProvider::instance().get(Assets::Texture::MenuCursor);
+    auto& newGame = lm::TextureProvider::instance().get("new_game");
+    auto& quit = lm::TextureProvider::instance().get("quit");
+    auto& menuCursor = lm::TextureProvider::instance().get("menu_cursor");
 
     _newGameBatch.draw(newGame, 0, {SCREEN_WIDTH / 2 - newGame.width() / 2, SCREEN_HEIGHT / 3 - newGame.height() / 2});
     _newGameBatch.send();
@@ -78,7 +78,7 @@ MainMenu::update()
 void
 MainMenu::render()
 {
-    auto& shader = lm::ShaderProvider::instance().get(Assets::Shader::Basic2D);
+    auto& shader = lm::ShaderProvider::instance().get("basic2d");
     shader.use();
     _proj.view = lm::Matrix4f::identity();
     lm::uniform(shader, "model", _proj.model);

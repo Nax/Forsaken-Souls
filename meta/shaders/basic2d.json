@@ -1,0 +1,10 @@
+{
+    "name": "basic2d",
+    "fragment": "shaders/2D.frag.glsl",
+    "vertex": "shaders/2D.vert.glsl",
+    "attachments": {
+        "position": 0,
+        "color": 1,
+        "tex": 2
+    }
+}

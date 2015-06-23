@@ -1,0 +1,5 @@
+{
+    "name": "tileset",
+    "path": "images/tileset.png",
+    "atlas": [8, 52]
+}

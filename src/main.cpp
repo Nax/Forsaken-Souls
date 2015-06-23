@@ -24,10 +24,12 @@ main(int argc, char* argv[])
     core.setWindow(new lm::Window(width, scale * SCREEN_HEIGHT, "Forsaken Souls", false));
     Assets::init();
     Assets::setScale(scale);
+    lm::TextureProvider::instance().loadBinary("bbd/textures.bbd");
+    lm::ShaderProvider::instance().loadBinary("bbd/shaders.bbd");
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    core.push<PauseMenu>();
+    core.push<MainMenu>();
     core.start();
 }

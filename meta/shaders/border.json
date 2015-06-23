@@ -1,0 +1,9 @@
+{
+    "name": "border",
+    "fragment": "shaders/border.frag.glsl",
+    "vertex": "shaders/fx.vert.glsl",
+    "attachments": {
+        "position": 0,
+        "tex": 2
+    }
+}

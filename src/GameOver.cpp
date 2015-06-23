@@ -12,7 +12,7 @@ GameOver::GameOver()
 void
 GameOver::load()
 {
-	auto& gameOver = lm::TextureProvider::instance().get(Assets::Texture::GameOver);
+	auto& gameOver = lm::TextureProvider::instance().get("game_over");
 
 	_gameOverBatch.draw(gameOver, 0, {SCREEN_WIDTH / 2 - gameOver.width() / 2, SCREEN_HEIGHT / 2 - gameOver.height() / 2});
 	_gameOverBatch.send();
@@ -45,7 +45,7 @@ GameOver::update()
 void
 GameOver::render()
 {
-	auto& shader = lm::ShaderProvider::instance().get(Assets::Shader::Basic2D);
+	auto& shader = lm::ShaderProvider::instance().get("basic2d");
     shader.use();
  
     _proj.view = lm::Matrix4f::identity();
