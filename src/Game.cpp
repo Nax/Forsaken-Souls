@@ -126,7 +126,7 @@ Game::render()
     shader.use();
 
     _textBatch.begin();
-    _textBatch.draw(lm::FontProvider::instance().get(Assets::Font::Roboto20), fps);
+    _textBatch.draw(lm::FontProvider::instance().get("roboto80"), fps);
     _textBatch.end();
 }
 

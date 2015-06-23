@@ -3,23 +3,6 @@
 
 static float gScale;
 
-static void
-initFonts()
-{
-    auto& provider = lm::FontProvider::instance();
-
-    auto& roboto20 = provider.set(Assets::Font::Roboto20);
-    roboto20.setSize(80.f);
-    roboto20.setPath("/Library/Fonts/AppleGothic.ttf", false);
-    //roboto20.setPath("fonts/Roboto-Light.ttf");
-}
-
-void
-Assets::init()
-{
-    initFonts();
-}
-
 void
 Assets::setScale(float scale)
 {
