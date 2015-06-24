@@ -42,8 +42,8 @@ Game::load()
     _proj.projection = lm::ortho(0, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
 
     _pipeline.setWindow(lm::Core::instance().window());
-    _pipeline.append(lm::ShaderProvider::instance().get(Assets::Shader::Light));
-    _pipeline.append(lm::ShaderProvider::instance().get(Assets::Shader::Border));
+    _pipeline.append(lm::ShaderProvider::instance().get("light"));
+    _pipeline.append(lm::ShaderProvider::instance().get("border"));
 }
 
 void
@@ -103,7 +103,7 @@ Game::render()
     _proj.view = identity;
     lm::translate(_proj.view, -off.x * TILE_SIZE, off.y * TILE_SIZE, 0);
     lm::translate(parallaxView, -off.x * TILE_SIZE * 0.4f, off.y * TILE_SIZE * 0.4f, 0);
-    auto& shader = lm::ShaderProvider::instance().get(Assets::Shader::Basic2D);
+    auto& shader = lm::ShaderProvider::instance().get("basic2d");
     shader.use();
 
     lm::uniform(shader, "model", _proj.model);
@@ -126,7 +126,7 @@ Game::render()
     shader.use();
 
     _textBatch.begin();
-    _textBatch.draw(lm::FontProvider::instance().get(Assets::Font::Roboto20), fps);
+    _textBatch.draw(lm::FontProvider::instance().get("roboto80"), fps);
     _textBatch.end();
 }
 
@@ -254,7 +254,7 @@ Game::setLevel(int level, int map)
     _level.map().drawFront(_frontBatch);
     _frontBatch.send();
     _parallaxBatch.flush();
-    auto& parallax = lm::TextureProvider::instance().get(Assets::Texture::Background);
+    auto& parallax = lm::TextureProvider::instance().get("backgrounds");
     int xMax = std::ceil((_level.map().width() * TILE_SIZE - SCREEN_WIDTH) / float(parallax.width() / 3.0f)) * 0.4f + std::ceil(SCREEN_WIDTH / float(parallax.width() / 3.0f));
     int yMax = std::ceil((_level.map().height() * TILE_SIZE - SCREEN_HEIGHT) / float(parallax.height() / 2.0f)) * 0.4f + std::ceil(SCREEN_HEIGHT / float(parallax.height() / 2.0f));
     for (int j = 0; j < yMax; ++j)

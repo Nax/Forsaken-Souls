@@ -1,0 +1,9 @@
+{
+    "name": "light",
+    "fragment": "shaders/light.frag.glsl",
+    "vertex": "shaders/fx.vert.glsl",
+    "attachments": {
+        "position": 0,
+        "tex": 2
+    }
+}

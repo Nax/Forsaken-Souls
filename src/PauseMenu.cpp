@@ -14,11 +14,11 @@ PauseMenu::PauseMenu()
 void
 PauseMenu::load()
 {
-	_resumeBatch.draw(lm::FontProvider::instance().get(Assets::Font::Roboto20), "Resume",
+	_resumeBatch.draw(lm::FontProvider::instance().get("roboto80"), "Resume",
 					{SCREEN_WIDTH / 2 - 200.f / 2.f, SCREEN_HEIGHT / 2 - 500.f / 2.f}, {1.f, 0.f, 1.f, _resumeAlpha});
 	_resumeBatch.send();
 
-	_settingsBatch.draw(lm::FontProvider::instance().get(Assets::Font::Roboto20), "Settings",
+	_settingsBatch.draw(lm::FontProvider::instance().get("roboto80"), "Settings",
 					{SCREEN_WIDTH / 2 - 200.f / 2.f, SCREEN_HEIGHT / 2 - 300.f / 2.f}, {1.f, 0.f, 1.f, _settingsAlpha});
 	_settingsBatch.send();
 	_proj.projection = lm::ortho(0, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
@@ -31,12 +31,12 @@ PauseMenu::update()
 	_settingsAlpha = (_cursor == 1) ? fmin(_settingsAlpha + 0.03f, 1.f) : fmax(0.3f, _settingsAlpha - 0.03f);
 
 	_resumeBatch.flush();
-	_resumeBatch.draw(lm::FontProvider::instance().get(Assets::Font::Roboto20), "Resume",
+	_resumeBatch.draw(lm::FontProvider::instance().get("roboto80"), "Resume",
 					{SCREEN_WIDTH / 2 - 200.f / 2.f, SCREEN_HEIGHT / 2 - 500.f / 2.f}, {1.f, 0.f, 1.f, _resumeAlpha});
 	_resumeBatch.send();
 
 	_settingsBatch.flush();
-	_settingsBatch.draw(lm::FontProvider::instance().get(Assets::Font::Roboto20), "Settings",
+	_settingsBatch.draw(lm::FontProvider::instance().get("roboto80"), "Settings",
 					{SCREEN_WIDTH / 2 - 200.f / 2.f, SCREEN_HEIGHT / 2 - 300.f / 2.f}, {1.f, 0.f, 1.f, _settingsAlpha});
 	_settingsBatch.send();
 }
@@ -78,7 +78,7 @@ PauseMenu::handleEvent(const lm::Event& event)
 void
 PauseMenu::render()
 {
-	auto& shader = lm::ShaderProvider::instance().get(Assets::Shader::Basic2D);
+	auto& shader = lm::ShaderProvider::instance().get("basic2d");
     shader.use();
     _proj.view = lm::Matrix4f::identity();
     lm::uniform(shader, "model", _proj.model);
