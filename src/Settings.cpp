@@ -29,6 +29,24 @@ dumpDefaults(bool& isBad)
     // TODO
 }
 
+std::ostream&
+operator<<(std::ostream& lhs, const lm::Vector2i& rhs)
+{
+    std::string         ser;
+
+    lhs << rhs.x << ' ' << rhs.y;
+    return lhs;
+}
+
+std::istream&   
+operator>>(std::istream& in, lm::Vector2i& out)
+{
+    in >> out.x;
+    in >> out.y;
+    return in;
+}
+
+
 static void
 load(SettingsMap& sm, bool& isBad)
 {
@@ -57,12 +75,31 @@ load(SettingsMap& sm, bool& isBad)
    
     while (!file.eof() && !file.fail() && !file.bad())
     {
-        char     prop[128], value[128];
+        char     buf[1024];
+        std::stringstream   ss;
+        std::string         line, prop, val;
+        std::istringstream  iss;
+        lm::Vector2i        res;
 
-        file.getline(prop, sizeof(prop) - 1, ':');
-        std::cout << "Got prop: " << prop << std::endl;
-        file.getline(value, sizeof(value) - 1, ';');
-        std::cout << "Got value: " << value << std::endl;
+        file.getline(buf, sizeof(buf) - 1);
+        // std::cout << "Read line: " << buf << std::endl; 
+        ss << buf;
+        ss >> line;
+        // std::cout << "Prop ? " << line << std::endl;
+        ss.clear();
+        iss.str(buf);
+        iss.getline(buf, sizeof(buf) - 1, ':');
+        // std::cout << "stuff A ? " << buf << std::endl;
+        ss << buf;
+        ss >> prop;
+        ss.clear();
+        iss.getline(buf, sizeof(buf) - 1, ';');
+        ss.str(buf);
+        // std::cout << "stuff B ? " << buf << std::endl;
+        ss << buf;
+        ss >> res;
+        // std::cout << "Value ? " << res << std::endl;
+
         (void)sm;
         // TODO
     }
@@ -100,22 +137,7 @@ Settings::~Settings()
 	delete &_smap;
 }
 
-std::ostream&
-operator<<(std::ostream& lhs, const lm::Vector2i& rhs)
-{
-    std::string         ser;
 
-    lhs << rhs.x << ' ' << rhs.y;
-    return lhs;
-}
-
-std::istream&   
-operator>>(std::istream& in, const lm::Vector2i& out)
-{
-    in >> out.x;
-    in >> out.y;
-    return in;
-}
 
 std::ostream&
 operator<<(std::ostream& os, const Settings::ExplicitBool& v)
