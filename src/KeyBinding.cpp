@@ -61,8 +61,8 @@ KeyBinding::load()
                     {SCREEN_WIDTH - 400.f, SCREEN_HEIGHT / 2 - 100.f / 2}, {1.f, 0.f, 1.f, _keyAttackAlpha});
     _keyAttackBatch.send();
 
-    _saveBatch.draw(lm::FontProvider::instance().get("roboto80"), "Save",
-                    {SCREEN_WIDTH / 2 - 200.f / 2, SCREEN_HEIGHT - 200.f}, {1.f, 0.f, 1.f, _saveAlpha});
+    _saveBatch.draw(lm::FontProvider::instance().get("roboto80"), "Back",
+                    {SCREEN_WIDTH / 2 - 200.f / 2, SCREEN_HEIGHT - 300.f}, {1.f, 0.f, 1.f, _saveAlpha});
     _saveBatch.send();
 
     _proj.projection = lm::ortho(0, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
@@ -149,8 +149,8 @@ KeyBinding::update()
     _keyAttackBatch.send();
 
     _saveBatch.flush();
-    _saveBatch.draw(lm::FontProvider::instance().get("roboto80"), "Save",
-                    {SCREEN_WIDTH / 2 - 200.f / 2, SCREEN_HEIGHT - 200.f}, {1.f, 0.f, 1.f, _saveAlpha});
+    _saveBatch.draw(lm::FontProvider::instance().get("roboto80"), "Back",
+                    {SCREEN_WIDTH / 2 - 200.f / 2, SCREEN_HEIGHT - 300.f}, {1.f, 0.f, 1.f, _saveAlpha});
     _saveBatch.send();
 }
 
