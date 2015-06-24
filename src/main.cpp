@@ -5,6 +5,8 @@
 #include "MainMenu.hpp"
 #include "PauseMenu.hpp"
 
+#include "Settings.hpp"
+
 int
 main(int argc, char* argv[])
 {
@@ -29,6 +31,12 @@ main(int argc, char* argv[])
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    int err=   lm::mkAppDataDir((lm::userDataPath() + "Forsaken Souls/").c_str());
+    if (err)
+        std::cerr << "Fucked up Lums mkdir" << std::endl;
+    Settings&       settings_sg = lm::Singleton<Settings>::instance();
+    (void)settings_sg;
 
     core.push<MainMenu>();
     core.start();

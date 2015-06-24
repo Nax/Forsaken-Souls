@@ -1,20 +1,58 @@
 #include "Settings.hpp"
-#include <istream>
+#include <fstream>
 
 #include <iostream>
 
-static const std::string        appDataPath = lm::userDataPath() + "Forsaken Souls";
+static const std::string        appDataPath = lm::userDataPath() + "Forsaken Souls/";
+static const std::string        settingsFile = appDataPath + "settings.conf";
+
+#define DEFAULT_SETTINGS       "GraphicsResolution : 2560 1440;\nGraphicsFullscreen : False;\n"
 
 static void
-load(SettingsMap& sm, bool& isBad)
+dumpDefaults(bool& isBad)
 {
-    std::ifstream   file(appDataPath, std::ios_base::in);
+    std::ofstream   file(settingsFile, std::ios_base::trunc | std::ios_base::out);
+
 
     if (!file.good())
     {
         isBad = true;
-        std::cerr << "Failed to open  " << appDataPath << std::endl; 
+        std::cerr
+            << "Failed to write default configuration  "
+            << appDataPath << std::endl; 
         return;
+    }
+
+    // Temporary
+    const std::string     defaults(DEFAULT_SETTINGS);
+    file.write(defaults.c_str(), defaults.size());
+    // TODO
+}
+
+static void
+load(SettingsMap& sm, bool& isBad)
+{
+    std::ifstream   file(settingsFile);
+
+    if (!file.good())
+    {
+        dumpDefaults(isBad);
+
+        if (isBad)
+            return;
+        else
+        {
+            // Now retry
+            file.open(appDataPath);
+            if (!file.good())
+            {
+                isBad = true;
+                std::cerr
+                    << "Failed to write default configuration  "
+                    << appDataPath << std::endl; 
+                return;
+            }
+        }
     }
    
     while (!file.eof() && !file.fail() && !file.bad())
@@ -26,13 +64,14 @@ load(SettingsMap& sm, bool& isBad)
         file.getline(value, sizeof(value) - 1, ';');
         std::cout << "Got value: " << value << std::endl;
         (void)sm;
+        // TODO
     }
-    if (!file.eof())
+    isBad = !file.eof();
+    if (isBad)
     {
         const std::string    reason = file.bad() ? "BAD" : "FAIL";
 
         // Then something bad happened.
-        isBad = true;
         std::cerr << "Failed to read thoroughly : " << reason << std::endl; 
     }
 }
