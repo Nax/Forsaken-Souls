@@ -165,7 +165,7 @@ SettingsMenu::handleEvent(const lm::Event& event)
                     break;
                 case lm::Key::Return:
                     _switchRes = true;
-                    _selectReso = false;
+                    _selectReso = (_resCursor == 3) ? true : false;
                     break;
                 case lm::Key::Right:
                     _resCursor = (_resCursor + 1) % 4;
