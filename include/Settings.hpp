@@ -6,51 +6,62 @@
 #include <sstream>
 #include <Lums>
 
-using SettingsMap = std::map<Settings::Entry, std::string>;
+
+enum struct SettingsEntry : short
+{
+	GraphResolution = 0,
+	GraphFullScreen,
+	Count
+};
+
+namespace
+{
+	// Defining type mapping to Settings::Entry values.
+	// Impossible in class scope.
+
+	template <SettingsEntry E>
+	struct EntryType
+	{
+		static_assert(E < SettingsEntry::Count, "Invalid Settings::Entry template value.");
+		typedef void type;
+	};
+
+	template <> struct EntryType<SettingsEntry::GraphResolution> { typedef lm::Vector2i type; };
+
+	template <> struct EntryType<SettingsEntry::GraphFullScreen> { typedef bool type; };
+}
+
+using SettingsMap = std::map<SettingsEntry, std::string>;
 
 class Settings
 {
 public:
-	enum struct Entry : short
-	{
-		GraphResolution = 0,
-		GraphFullScreen,
-		Count
-	};
 
-	template <Entry E>
-	struct EntryType
-	{
-		static_assert(E < Count, "Invalid Settings::Entry template value.");
-		typedef void type;
-	};
-	template <> struct EntryType<GraphResolution> { typedef lm::Vector2i type; };
-	template <> struct EntryType<GraphFullScreen> { typedef bool type; };
-
-	Settings() = default;
+	Settings();
 
 	Settings(const Settings&) = delete;
 	Settings&	operator=(const Settings&) = delete;
- 
-	template<Entry E>
+
+
+	template<SettingsEntry E>
 	void
-	set(EntryType<E>::type val)
+	set(typename EntryType<E>::type val)
 	{
 		std::stringstream ss;
 
-		if (std::is_same<EntryType<E>::type, bool>)
+		if (std::is_same<typename EntryType<E>::type, bool>::value)
 			ss << ExplicitBool(val);
 		else
 			ss << val;
 		_smap[E] = ss.str();
 	}
 
-	template<Entry E>
-	void get(EntryType<E>::type& outval) const
+	template<SettingsEntry E>
+	void get(typename EntryType<E>::type& outval) const
 	{
 		std::stringstream entryss(_smap[E]);
 
-		if (std::is_same<EntryType<E>::type, bool>)
+		if (std::is_same<typename EntryType<E>::type, bool>::value)
 		{
 			ExplicitBool eb = true;
 
@@ -61,11 +72,13 @@ public:
 			entryss >> outval;
 	}
 
+
 	bool						bad() const			{ return _bad; }
 	void						store();
 	void						reload();
 
 	~Settings();
+
 
 private:
 
@@ -81,6 +94,8 @@ private:
 	SettingsMap&				_smap;
 	bool						_bad;
 };
+
+
 
 // TODO?:  define in Lums
 std::ostream&	
