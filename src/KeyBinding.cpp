@@ -16,7 +16,7 @@ KeyBinding::KeyBinding()
  _keyJumpAlpha(0.3f),
  _keyCrouchAlpha(0.3f),
  _keyAttackAlpha(0.3f),
- _saveAlpha(0.3f),
+ _backAlpha(0.3f),
  _cursor(0),
  _switch(false)
 {
@@ -61,9 +61,9 @@ KeyBinding::load()
                     {SCREEN_WIDTH - 400.f, SCREEN_HEIGHT / 2 - 100.f / 2}, {1.f, 0.f, 1.f, _keyAttackAlpha});
     _keyAttackBatch.send();
 
-    _saveBatch.draw(lm::FontProvider::instance().get("roboto80"), "Back",
-                    {SCREEN_WIDTH / 2 - 200.f / 2, SCREEN_HEIGHT - 300.f}, {1.f, 0.f, 1.f, _saveAlpha});
-    _saveBatch.send();
+    _backBatch.draw(lm::FontProvider::instance().get("roboto80"), "Back",
+                    {SCREEN_WIDTH / 2 - 200.f / 2, SCREEN_HEIGHT - 300.f}, {1.f, 0.f, 1.f, _backAlpha});
+    _backBatch.send();
 
     _proj.projection = lm::ortho(0, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
 }
@@ -81,7 +81,7 @@ KeyBinding::update()
     _keyJumpAlpha = _jumpAlpha;
     _keyCrouchAlpha = _crouchAlpha;
     _keyAttackAlpha = _attackAlpha;
-    _saveAlpha = (_cursor == 5) ? fmin(_saveAlpha + 0.03f, 1.f) : fmax(0.3f, _saveAlpha - 0.03f);
+    _backAlpha = (_cursor == 5) ? fmin(_backAlpha + 0.03f, 1.f) : fmax(0.3f, _backAlpha - 0.03f);
 
     _leftBatch.flush();
     _leftBatch.draw(lm::FontProvider::instance().get("roboto80"), "Left",
@@ -148,10 +148,10 @@ KeyBinding::update()
                         {SCREEN_WIDTH - 400.f, SCREEN_HEIGHT / 2 - 100.f / 2}, {1.f, 0.f, 1.f, _keyAttackAlpha});
     _keyAttackBatch.send();
 
-    _saveBatch.flush();
-    _saveBatch.draw(lm::FontProvider::instance().get("roboto80"), "Back",
-                    {SCREEN_WIDTH / 2 - 200.f / 2, SCREEN_HEIGHT - 300.f}, {1.f, 0.f, 1.f, _saveAlpha});
-    _saveBatch.send();
+    _backBatch.flush();
+    _backBatch.draw(lm::FontProvider::instance().get("roboto80"), "Back",
+                    {SCREEN_WIDTH / 2 - 200.f / 2, SCREEN_HEIGHT - 300.f}, {1.f, 0.f, 1.f, _backAlpha});
+    _backBatch.send();
 }
 
 void
@@ -229,7 +229,7 @@ KeyBinding::render()
     _keyJumpBatch.render();
     _keyCrouchBatch.render();
     _keyAttackBatch.render();
-    _saveBatch.render();
+    _backBatch.render();
 }
 
 KeyBinding::~KeyBinding()

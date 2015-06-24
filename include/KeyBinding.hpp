@@ -35,7 +35,7 @@ private:
     lm::SpriteBatch         _keyJumpBatch;
     lm::SpriteBatch         _keyCrouchBatch;
     lm::SpriteBatch         _keyAttackBatch;
-    lm::SpriteBatch         _saveBatch;
+    lm::SpriteBatch         _backBatch;
 
 
     float                   _leftAlpha;
@@ -48,7 +48,7 @@ private:
     float                   _keyJumpAlpha;
     float                   _keyCrouchAlpha;
     float                   _keyAttackAlpha;
-    float                   _saveAlpha;
+    float                   _backAlpha;
 
     int                     _cursor;
     bool                    _switch;
