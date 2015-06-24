@@ -2,7 +2,6 @@
 #define KEY_BINDING_HPP
 
 #include <Lums>
-#include <array>
 
 enum class Input : int
 {
@@ -53,8 +52,6 @@ private:
 
     int                     _cursor;
     bool                    _switch;
-
-    lm::Key                 _keys[5];
 };
 
 #endif
