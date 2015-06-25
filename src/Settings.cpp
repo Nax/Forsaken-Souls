@@ -106,7 +106,7 @@ load(const DeserializerMap& dsm, SettingsArray& settings, bool& isBad)
 
         // Then something bad happened.
         std::cerr << "Failed to read thoroughly : "
-            << reason  << "bit."<< std::endl; 
+            << reason  << "bit." << std::endl;
     }
 }
 

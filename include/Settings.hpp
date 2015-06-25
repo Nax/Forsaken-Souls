@@ -61,7 +61,8 @@ public:
 	}
 
 	template<SettingsEntry E>
-	void get(typename EntryType<E>::type& outval) const
+	void
+	get(typename EntryType<E>::type& outval) const
 	{
 		std::stringstream entryss(_valA[static_cast<short>(E)]);
 
