@@ -43,6 +43,8 @@ private:
     lm::SpriteBatch                 _textBatch;
     std::vector<lm::GameObject*>    _gameObjects;
     System::RenderSprite            _renderSprite;
+    System::Input                   _input;
+    System::Physics                 _physics;
 };
 
 #endif

@@ -44,16 +44,6 @@ moveCamera(bool& moving, int screenPos, int screenTiles, int mapSize, float& spe
 		speed = CAMERA_MIN_SPEED;
 	else if (speed < 0.0f && speed > -CAMERA_MIN_SPEED)
 		speed = -CAMERA_MIN_SPEED;
-	if (offset < 0.0f)
-	{
-		offset = 0.0f;
-		moving = false;
-	}
-	else if (offset + screenTiles >= mapSize)
-	{
-		offset = mapSize - screenTiles;
-		moving = false;
-	}
     if (speed == 0.0f)
         moving = false;
 }
@@ -71,6 +61,21 @@ checkCamera(bool& moving, int screenPos, int screenTiles, float& speed, float en
 	}
 }
 
+static void
+checkBounds(float& offset, bool& moving, int screenTiles, int mapSize)
+{
+	if (offset < 0.0f)
+	{
+		offset = 0.0f;
+		moving = false;
+	}
+	else if (offset + screenTiles >= mapSize)
+	{
+		offset = mapSize - screenTiles;
+		moving = false;
+	}
+}
+
 void
 Camera::update(lm::GameObject& go, const Map& map)
 {
@@ -83,6 +88,8 @@ Camera::update(lm::GameObject& go, const Map& map)
 	checkCamera(_movingY, screenPos.y, SCREEN_TILES_H, _speed.y, speed.y);
 	moveCamera(_movingX, screenPos.x, SCREEN_TILES_W, map.width(), _speed.x, speed.x, _offset.x);
 	moveCamera(_movingY, screenPos.y, SCREEN_TILES_H, map.height(), _speed.y, speed.y, _offset.y);
+	checkBounds(_offset.x, _movingX, SCREEN_TILES_W, map.width());
+	checkBounds(_offset.y, _movingY, SCREEN_TILES_H, map.height());
 }
 
 Camera::~Camera()

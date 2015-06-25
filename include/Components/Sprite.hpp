@@ -1,5 +1,5 @@
-#ifndef SPRITE_HPP
-#define SPRITE_HPP
+#ifndef COMPONENTS_SPRITE_HPP
+#define COMPONENTS_SPRITE_HPP
 
 #include <Lums>
 

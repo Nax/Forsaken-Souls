@@ -1,5 +1,5 @@
-#ifndef RENDER_SPRITE_HPP
-#define RENDER_SPRITE_HPP
+#ifndef SYSTEMS_RENDER_SPRITE_HPP
+#define SYSTEMS_RENDER_SPRITE_HPP
 
 #include <vector>
 #include <Lums>
