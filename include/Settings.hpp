@@ -36,7 +36,15 @@ using DeserializerMap = std::map<std::string, SettingsEntry>;
 using SerializerArray = std::array<std::string, static_cast<short>(SettingsEntry::Count)>;
 using SettingsArray = std::array<std::string, static_cast<short>(SettingsEntry::Count)>;
 
-class Settings
+// TODO?:  define in Lums
+std::ostream&	
+operator<<(std::ostream& lhs, const lm::Vector2i& rhs);
+
+std::istream&	
+operator>>(const lm::Vector2i& lhs, std::istream& rhs);
+
+
+class Settings : public lm::Singleton<Settings>
 {
 
 public:
@@ -51,30 +59,14 @@ public:
 	void
 	set(typename EntryType<E>::type val)
 	{
-		std::stringstream ss;
-
-		if (std::is_same<typename EntryType<E>::type, bool>::value)
-			ss << ExplicitBool(val);
-		else
-			ss << val;
-		_valA[static_cast<short>(E)] = ss.str();
+		setWithType<typename EntryType<E>::type>(E, val, std::is_same<bool, typename EntryType<E>::type>());
 	}
 
 	template<SettingsEntry E>
 	void
 	get(typename EntryType<E>::type& outval) const
 	{
-		std::stringstream entryss(_valA[static_cast<short>(E)]);
-
-		if (std::is_same<typename EntryType<E>::type, bool>::value)
-		{
-			ExplicitBool eb = true;
-
-			entryss >> eb;
-			outval = eb.b;
-		}
-		else
-			entryss >> outval;
+		getWithType<typename EntryType<E>::type>(E, outval, std::is_same<bool, typename EntryType<E>::type>());
 	}
 
 
@@ -96,19 +88,50 @@ private:
 	friend std::ostream& operator<<(std::ostream& out, const ExplicitBool& v);
 	friend std::istream& operator>>(std::istream& in, ExplicitBool& out);
 
+	template<typename T>
+	void
+	setWithType(SettingsEntry e, const T& val, std::false_type)
+	{
+		std::stringstream ss;
+
+		ss << val;
+		_valA[static_cast<short>(e)] = ss.str();
+	}
+
+	template<typename T>
+	void
+	setWithType(SettingsEntry e, bool val, std::true_type)
+	{
+		std::stringstream ss;
+
+		ss << ExplicitBool(val);
+		_valA[static_cast<short>(e)] = ss.str();
+	}
+
+	template<typename T>
+	void
+	getWithType(SettingsEntry e, T& out, std::true_type)
+	{
+		std::stringstream entryss(_valA[static_cast<short>(e)]);
+		ExplicitBool eb = true;
+
+		entryss >> eb;
+		out = eb.b;
+	}
+
+	template<typename T>
+	void
+	getWithType(SettingsEntry e, T& out, std::false_type)
+	{
+		std::stringstream entryss(_valA[static_cast<short>(e)]);
+
+		entryss >> out;
+	}
+
 	const DeserializerMap&		_deserializerM;
 	const SerializerArray&		_serializerA;
 	SettingsArray&				_valA;
 	bool						_bad;
 };
-
-
-
-// TODO?:  define in Lums
-std::ostream&	
-operator<<(std::ostream& lhs, const lm::Vector2i& rhs);
-
-std::istream&	
-operator>>(const lm::Vector2i& lhs, std::istream& rhs);
 
 #endif

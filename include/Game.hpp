@@ -26,8 +26,6 @@ public:
     ~Game();
 
 private:
-    typedef std::array<int, 6>      t_array6i; // wtf
-
     void            drawBackground(lm::SpriteBatch& sb) const;
 
     Entity          _player;

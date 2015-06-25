@@ -7,6 +7,21 @@
 
 #include "Settings.hpp"
 
+static int
+initUserDataIO()
+{
+    int err = lm::mkAppDataDir((lm::userDataPath() + "Forsaken Souls/").c_str());
+
+    if (err)
+        std::cerr << "Fucked up Lums mkdir" << std::endl;
+    else
+    {
+        // Initialize Settings
+        static_cast<void>(Settings::instance());
+    }
+    return err;
+}
+
 int
 main(int argc, char* argv[])
 {
@@ -21,6 +36,9 @@ main(int argc, char* argv[])
 
     srand(time(nullptr));
 
+    if (initUserDataIO())
+        return 1;
+
     lm::enableModule(lm::Module::All);
     auto& core = lm::Core::instance();
     core.setWindow(new lm::Window(width, scale * SCREEN_HEIGHT, "Forsaken Souls", false));
@@ -30,12 +48,7 @@ main(int argc, char* argv[])
     lm::FontProvider::instance().loadBinary("bbd/fonts.bbd");
 
     glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    int err = lm::mkAppDataDir((lm::userDataPath() + "Forsaken Souls/").c_str());
-    if (err)
-        std::cerr << "Fucked up Lums mkdir" << std::endl;
-    lm::Singleton<Settings>::instance();
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);    
 
     //core.push<MainMenu>();
     core.push<PauseMenu>();

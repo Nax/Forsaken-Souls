@@ -113,21 +113,21 @@ load(const DeserializerMap& dsm, SettingsArray& settings, bool& isBad)
 // Set string key to enum mapping here.
 // Set default values here.
 static void
-setDefaults(SettingsArray& settings, DeserializerMap& dsm, SerializerArray& serAr)
+setDefaults(SettingsArray& settingsA, DeserializerMap& desrlzM, SerializerArray& srlzA)
 {
     SettingsEntry   curEntry = static_cast<SettingsEntry>(0);
 
     // Relational initializations !
 
     curEntry = SettingsEntry::GraphResolution;
-    serAr[static_cast<short>(curEntry)] = "GraphResolution";
-    dsm[serAr[static_cast<short>(curEntry)]] = curEntry;
-    settings[static_cast<short>(curEntry)] = "2560 1440";
+    srlzA[static_cast<short>(curEntry)] = "GraphResolution";
+    desrlzM[srlzA[static_cast<short>(curEntry)]] = curEntry;
+    settingsA[static_cast<short>(curEntry)] = "2560 1440";
 
     curEntry = SettingsEntry::GraphFullScreen;
-    serAr[static_cast<short>(curEntry)] = "GraphFullScreen";
-    dsm[serAr[static_cast<short>(curEntry)]] = curEntry;
-    settings[static_cast<short>(curEntry)] = "false";
+    srlzA[static_cast<short>(curEntry)] = "GraphFullScreen";
+    desrlzM[srlzA[static_cast<short>(curEntry)]] = curEntry;
+    settingsA[static_cast<short>(curEntry)] = "false";
 }
 
 Settings::Settings()

@@ -1,4 +1,5 @@
 #include "SettingsMenu.hpp"
+#include "Settings.hpp"
 #include "KeyBinding.hpp"
 #include "Assets.hpp"
 #include "Screen.hpp"
@@ -116,16 +117,17 @@ SettingsMenu::update()
         switch (_resCursor)
         {
             case 0:
-                lm::Core::instance().window().resize(1280, 800);
+                switchRes({1280, 800});
                 break;
             case 1:
-                lm::Core::instance().window().resize(1920, 1080);
+                switchRes({1920, 1080});
                 break;
             case 2:
-                lm::Core::instance().window().resize(2560, 1440);
+                switchRes({2560, 2560});
                 break;
             case 3:
                 _fullscreen = !_fullscreen;
+                Settings::instance().set<SettingsEntry::GraphFullScreen>(_fullscreen);
                 break;
             default:
                 break;
@@ -215,6 +217,19 @@ SettingsMenu::render()
     _res2Batch.render();
     _res3Batch.render();
     _fullscreenBatch.render();
+}
+
+void
+SettingsMenu::unload()
+{
+    Settings::instance().store();
+}
+
+void
+SettingsMenu::switchRes(lm::Vector2i res)
+{
+    lm::Core::instance().window().resize(res.x, res.y);
+    Settings::instance().set<SettingsEntry::GraphResolution>(res);
 }
 
 SettingsMenu::~SettingsMenu()
