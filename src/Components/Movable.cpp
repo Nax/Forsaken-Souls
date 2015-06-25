@@ -1,6 +1,6 @@
 #include "Components/Movable.hpp"
 
-LUMS_REGISTER_COMPONENT(Components::Movable, "movable");
+LUMS_REGISTER_COMPONENT(Component::Movable, "movable");
 
 using namespace Component;
 

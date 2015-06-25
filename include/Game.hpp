@@ -7,6 +7,9 @@
 #include "Level.hpp"
 #include "Camera.hpp"
 #include "Systems/RenderSprite.hpp"
+#include "Systems/Input.hpp"
+#include "Systems/Physics.hpp"
+
 
 class Game : public lm::GameState
 {
