@@ -1,20 +1,8 @@
 {
     "name": "yseult",
     "components": {
-        "input": {
-
-        },
-        "physic": {
-            "mass": 4.0
-        },
         "sprite": {
             "texture": "yseult"
-        },
-        "movable": {
-
-        },
-        "collidable": {
-
         }
     }
 }

@@ -24,24 +24,24 @@ void
 SettingsMenu::load()
 {
     _resumeBatch.draw(lm::FontProvider::instance().get("roboto80"), "Resume",
-                    {SCREEN_WIDTH / 2 - 200.f / 2, SCREEN_HEIGHT / 2 - 500.f / 2}, {1.f, 0.f, 1.f, _resumeAlpha});
+                    {SCREEN_WIDTH / 2 - 200.f / 2, SCREEN_HEIGHT / 2 - 500.f / 2, 0.f}, {1.f, 0.f, 1.f, _resumeAlpha});
     _resumeBatch.send();
 
     _resolutionBatch.draw(lm::FontProvider::instance().get("roboto80"), "Resolution",
-                    {SCREEN_WIDTH / 2 - 200.f / 2, SCREEN_HEIGHT / 2 - 300.f / 2}, {1.f, 0.f, 1.f, _resoAlpha});
+                    {SCREEN_WIDTH / 2 - 200.f / 2, SCREEN_HEIGHT / 2 - 300.f / 2, 0.f}, {1.f, 0.f, 1.f, _resoAlpha});
     _resolutionBatch.send();
 
     _res1Batch.draw(lm::FontProvider::instance().get("roboto80"), "800x600",
-                    {SCREEN_WIDTH / 2 - 1200.f / 2, SCREEN_HEIGHT / 2 - 100.f / 2}, {1.f, 0.f, 1.f, _res1Alpha});
+                    {SCREEN_WIDTH / 2 - 1200.f / 2, SCREEN_HEIGHT / 2 - 100.f / 2, 0.f}, {1.f, 0.f, 1.f, _res1Alpha});
     _res1Batch.send();
     _res2Batch.draw(lm::FontProvider::instance().get("roboto80"), "1024x768",
-                    {SCREEN_WIDTH / 2 - 200.f / 2, SCREEN_HEIGHT / 2 - 100.f / 2}, {1.f, 0.f, 1.f, _res2Alpha});
+                    {SCREEN_WIDTH / 2 - 200.f / 2, SCREEN_HEIGHT / 2 - 100.f / 2, 0.f}, {1.f, 0.f, 1.f, _res2Alpha});
     _res2Batch.send();
     _res3Batch.draw(lm::FontProvider::instance().get("roboto80"), "2560x1440",
-                    {SCREEN_WIDTH / 2 + 800.f / 2, SCREEN_HEIGHT / 2 - 100.f / 2}, {1.f, 0.f, 1.f, _res3Alpha});
+                    {SCREEN_WIDTH / 2 + 800.f / 2, SCREEN_HEIGHT / 2 - 100.f / 2, 0.f}, {1.f, 0.f, 1.f, _res3Alpha});
     _res3Batch.send();
     _fullscreenBatch.draw(lm::FontProvider::instance().get("roboto80"), "Fullscreen",
-                    {SCREEN_WIDTH / 2 + 220.f / 2, SCREEN_HEIGHT / 2 + 100.f / 2}, {1.f, 0.f, 1.f, _fullscreenAlpha});
+                    {SCREEN_WIDTH / 2 + 220.f / 2, SCREEN_HEIGHT / 2 + 100.f / 2, 0.f}, {1.f, 0.f, 1.f, _fullscreenAlpha});
     _fullscreenBatch.send();
 
     _proj.projection = lm::ortho(0, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
@@ -73,34 +73,34 @@ SettingsMenu::update()
 
     _resumeBatch.flush();
     _resumeBatch.draw(lm::FontProvider::instance().get("roboto80"), "Resume",
-                    {SCREEN_WIDTH / 2 - 200.f / 2, SCREEN_HEIGHT / 2 - 500.f / 2}, {1.f, 0.f, 1.f, _resumeAlpha});
+                    {SCREEN_WIDTH / 2 - 200.f / 2, SCREEN_HEIGHT / 2 - 500.f / 2, 0.f}, {1.f, 0.f, 1.f, _resumeAlpha});
     _resumeBatch.send();
 
     _resolutionBatch.flush();
     _resolutionBatch.draw(lm::FontProvider::instance().get("roboto80"), "Resolution",
-                    {SCREEN_WIDTH / 2 - 200.f / 2, SCREEN_HEIGHT / 2 - 300.f / 2}, {1.f, 0.f, 1.f, _resoAlpha});
+                    {SCREEN_WIDTH / 2 - 200.f / 2, SCREEN_HEIGHT / 2 - 300.f / 2, 0.f}, {1.f, 0.f, 1.f, _resoAlpha});
     _resolutionBatch.send();
 
 
 
     _res1Batch.flush();
     _res1Batch.draw(lm::FontProvider::instance().get("roboto80"), "1280x800",
-                {SCREEN_WIDTH / 2 - 1200.f / 2, SCREEN_HEIGHT / 2 - 100.f / 2}, {1.f, 0.f, 1.f, _res1Alpha});
+                {SCREEN_WIDTH / 2 - 1200.f / 2, SCREEN_HEIGHT / 2 - 100.f / 2, 0.f}, {1.f, 0.f, 1.f, _res1Alpha});
     _res1Batch.send();
 
     _res2Batch.flush();
     _res2Batch.draw(lm::FontProvider::instance().get("roboto80"), "1920x1080",
-                {SCREEN_WIDTH / 2 - 260.f / 2, SCREEN_HEIGHT / 2 - 100.f / 2}, {1.f, 0.f, 1.f, _res2Alpha});
+                {SCREEN_WIDTH / 2 - 260.f / 2, SCREEN_HEIGHT / 2 - 100.f / 2, 0.f}, {1.f, 0.f, 1.f, _res2Alpha});
     _res2Batch.send();
 
     _res3Batch.flush();
     _res3Batch.draw(lm::FontProvider::instance().get("roboto80"), "2560x1440",
-                {SCREEN_WIDTH / 2 + 800.f / 2, SCREEN_HEIGHT / 2 - 100.f / 2}, {1.f, 0.f, 1.f, _res3Alpha});
+                {SCREEN_WIDTH / 2 + 800.f / 2, SCREEN_HEIGHT / 2 - 100.f / 2, 0.f}, {1.f, 0.f, 1.f, _res3Alpha});
     _res3Batch.send();
 
     _fullscreenBatch.flush();
     _fullscreenBatch.draw(lm::FontProvider::instance().get("roboto80"), "Fullscreen",
-                    {SCREEN_WIDTH / 2 - 220.f / 2, SCREEN_HEIGHT / 2 + 100.f / 2}, {1.0, fsGreen, fsBlue, _fullscreenAlpha});
+                    {SCREEN_WIDTH / 2 - 220.f / 2, SCREEN_HEIGHT / 2 + 100.f / 2, 0.f}, {1.0, fsGreen, fsBlue, _fullscreenAlpha});
     _fullscreenBatch.send();
 
     if (_switchRes)

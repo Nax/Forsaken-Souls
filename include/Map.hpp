@@ -15,9 +15,6 @@
  * Instantiatied by a Level object and holding values and pointers,
  * class Map is a flyweight to a parcel of a Level object's data.
  */
-
-class Entity;
-
 class Map
 {
 	friend class Level;
@@ -34,7 +31,6 @@ public:
 	void							drawBack(lm::StaticSpriteBatch& batch) const;
 	void							drawFront(lm::StaticSpriteBatch& batch) const;
 	const std::vector<t_array4i>&	links() const;
-    void                            spawn(std::vector<Entity*>& entities) const;
     void                            enlight(lm::ShaderProgram& sp, Camera& camera) const;
 	~Map();
 

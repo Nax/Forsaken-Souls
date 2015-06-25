@@ -14,7 +14,7 @@ GameOver::load()
 {
 	auto& gameOver = lm::TextureProvider::instance().get("game_over");
 
-	_gameOverBatch.draw(gameOver, 0, {SCREEN_WIDTH / 2 - gameOver.width() / 2, SCREEN_HEIGHT / 2 - gameOver.height() / 2});
+	_gameOverBatch.draw(gameOver, 0, {SCREEN_WIDTH / 2 - gameOver.width() / 2, SCREEN_HEIGHT / 2 - gameOver.height() / 2, 0.f});
 	_gameOverBatch.send();
 
 	_proj.projection = lm::ortho(0, SCREEN_WIDTH, SCREEN_HEIGHT, 0);

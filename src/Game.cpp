@@ -1,14 +1,12 @@
 #include <iostream>
+#include <cstdlib>
+#include <chrono>
 #include "Game.hpp"
 #include "Screen.hpp"
 #include "Hud.hpp"
 #include "GameOver.hpp"
 #include "Physics.hpp"
 #include "Assets.hpp"
-#include <cstdlib>
-#include <chrono>
-
-#include <Components/Movable.hpp>
 
 using namespace lm;
 
@@ -25,22 +23,12 @@ Game::load()
     _clock = 0;
     _gameOverTicks = 0;
     _healTicks = 0;
-    // _player = Player();
-    //_level.map().enlight(sp, _camera);
-    // for (auto e : _entities)
-    //{
-    //    if (e->id() == 3)
-    //        _medicine = e;
-    //    if (e->id() == 2)
-    //        _boss = e;
-    // }
-    _player.attach<MovableComponent>();
-    _player.send("setSpeed", lm::Vector2f(0.5f, 0.5f));
     setLevel(0, 0);
-    _level.map().spawn(_entities);
-    _camera.focus(_player, _level.map());
-    _proj.projection = lm::ortho(0, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
 
+    _yseult = lm::GameObjectProvider::instance().get("yseult")();
+    _gameObjects.push_back(_yseult);
+    _camera.focus(*_yseult, _level.map());
+    _proj.projection = lm::ortho(0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 100.f, -100.f);
     _pipeline.setWindow(lm::Core::instance().window());
     _pipeline.append(lm::ShaderProvider::instance().get("light"));
     _pipeline.append(lm::ShaderProvider::instance().get("border"));
@@ -49,27 +37,7 @@ Game::load()
 void
 Game::update()
 {
-    // _clock = (_clock + 1) % 1000;
-    // int loc = glGetUniformLocation(sp.program(), "clock");
-    // glUniform1i(loc, _clock);
-
-    for (auto e : _entities)
-    {
-        //if (e->ai())
-            //e->ai()(*e, _player, _level.map());
-        e->update(/*_level.map()*/);
-    }
-    _player.update(/*_level.map()*/);
-    _camera.update(_player, _level.map());
-    //_level.map().enlight(sp, _camera);
-
-    // for (auto e : _entities)
-    // {
-    //     Phys::checkDamages(_player, *e);
-    //     Phys::checkDamages(*e, _player);
-    // }
-    // if (_player.dead())
-    //     _gameOverTicks++;
+    _camera.update(*_yseult, _level.map());
     if (_gameOverTicks > 500)
         Core::instance().transition<GameOver>();
 }
@@ -112,11 +80,7 @@ Game::render()
     _parallaxBatch.render();
     lm::uniform(shader, "view", _proj.view);
     _backBatch.render();
-    _entitiesBatch.begin();
-    for (auto e : _entities)
-        e->render<lm::SpriteBatch&>(_entitiesBatch/*, _camera*/);
-    _player.render<lm::SpriteBatch&>(_entitiesBatch/*, _camera*/);
-    _entitiesBatch.end();
+    _renderSprite(_gameObjects);
     _frontBatch.render();
 
     lm::uniform(shader, "view", identity);
@@ -126,7 +90,7 @@ Game::render()
     shader.use();
 
     _textBatch.begin();
-    _textBatch.draw(lm::FontProvider::instance().get("roboto80"), fps);
+    _textBatch.draw(lm::FontProvider::instance().get("roboto80"), fps, {0.0, 0.0, -10.f});
     _textBatch.end();
 }
 
@@ -227,9 +191,9 @@ Game::handleEvent(const Event& event)
 void
 Game::unload()
 {
-    for (auto e : _entities)
-        delete e;
-    _entities.clear();
+    for (auto go : _gameObjects)
+        delete go;
+    _gameObjects.clear();
     _pipeline.clear();
 }
 
@@ -260,7 +224,7 @@ Game::setLevel(int level, int map)
     for (int j = 0; j < yMax; ++j)
     {
         for (int i = 0; i < xMax; ++i)
-            _parallaxBatch.draw(parallax, perlin(i, j) % 5, {i * parallax.width() / 3, SCREEN_HEIGHT - (j + 1) * parallax.height() / 2});
+            _parallaxBatch.draw(parallax, perlin(i, j) % 5, {i * parallax.width() / 3, SCREEN_HEIGHT - (j + 1) * parallax.height() / 2, 10.f});
     }
     _parallaxBatch.send();
 }

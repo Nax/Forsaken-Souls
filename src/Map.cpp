@@ -2,7 +2,6 @@
 #include "Map.hpp"
 #include "ImageProvider.hpp"
 #include "Screen.hpp"
-#include "Entity.hpp"
 #include "Assets.hpp"
 
 Map::Map(std::ifstream& file)
@@ -121,13 +120,6 @@ Map::drawFront(lm::StaticSpriteBatch& batch) const
 }
 
 void
-Map::spawn(std::vector<Entity*>& entities) const
-{
-    // for (auto& s : _spawns)
-    //     entities.push_back(new Entity(s.id, s.x, s.y));
-}
-
-void
 Map::enlight(lm::ShaderProgram& sp, Camera& camera) const
 {
     int loc = glGetUniformLocation(sp.program(), "lightCount");
@@ -157,7 +149,7 @@ Map::draw(lm::StaticSpriteBatch& sb, int z) const
     		const uint16_t tileId = _tiles[i + j * _width + z * _width * _height];
 
     		if (tileId != 0)
-    			sb.draw(tileset, tileId - 1, {i * TILE_SIZE, SCREEN_HEIGHT - (j + 1) * TILE_SIZE});
+    			sb.draw(tileset, tileId - 1, {i * TILE_SIZE, SCREEN_HEIGHT - (j + 1) * TILE_SIZE, 5.0f - z});
     	}
     }
 }

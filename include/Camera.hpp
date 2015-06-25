@@ -3,16 +3,15 @@
 
 #include <Lums>
 
-class Entity;
 class Map;
 
 class Camera
 {
 public:
 	Camera();
-	void					focus(Entity& entity, const Map& map);
+	void					focus(lm::GameObject& go, const Map& map);
 	const lm::Vector2f&		offset() const;
-	void					update(Entity& entity, const Map& map);
+	void					update(lm::GameObject& go, const Map& map);
 	~Camera();
 
 private:

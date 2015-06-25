@@ -18,13 +18,13 @@ MainMenu::load()
     auto& quit = lm::TextureProvider::instance().get("quit");
     auto& menuCursor = lm::TextureProvider::instance().get("menu_cursor");
 
-    _newGameBatch.draw(newGame, 0, {SCREEN_WIDTH / 2 - newGame.width() / 2, SCREEN_HEIGHT / 3 - newGame.height() / 2});
+    _newGameBatch.draw(newGame, 0, {SCREEN_WIDTH / 2 - newGame.width() / 2, SCREEN_HEIGHT / 3 - newGame.height() / 2, 0.f});
     _newGameBatch.send();
 
-    _quitBatch.draw(quit, 0, {SCREEN_WIDTH / 2 - quit.width() / 2, 2 * SCREEN_HEIGHT / 3 - quit.height() / 2});
+    _quitBatch.draw(quit, 0, {SCREEN_WIDTH / 2 - quit.width() / 2, 2 * SCREEN_HEIGHT / 3 - quit.height() / 2, 0.f});
     _quitBatch.send();
 
-    _cursorBatch.draw(menuCursor, 0, {0, -menuCursor.height() / 2}, {1, 1}, {1, 1, 1, 1}, {true, false});
+    _cursorBatch.draw(menuCursor, 0, {0, -menuCursor.height() / 2, 0.f}, {1, 1}, {1, 1, 1, 1}, {true, false});
     _cursorBatch.send();
 
     _proj.projection = lm::ortho(0, SCREEN_WIDTH, SCREEN_HEIGHT, 0);

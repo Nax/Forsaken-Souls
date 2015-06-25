@@ -26,9 +26,7 @@ main(int argc, char* argv[])
     lm::TextureProvider::instance().loadBinary("bbd/textures.bbd");
     lm::ShaderProvider::instance().loadBinary("bbd/shaders.bbd");
     lm::FontProvider::instance().loadBinary("bbd/fonts.bbd");
-
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    lm::GameObjectProvider::instance().loadBinary("bbd/objects.bbd");
 
     core.push<MainMenu>();
     core.start();

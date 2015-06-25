@@ -6,9 +6,7 @@
 #include <Lums>
 #include "Level.hpp"
 #include "Camera.hpp"
-#include "Entity.hpp"
-
-typedef std::vector<Entity*> EntityVector;
+#include "Systems/RenderSprite.hpp"
 
 class Game : public lm::GameState
 {
@@ -30,23 +28,21 @@ private:
 
     void            drawBackground(lm::SpriteBatch& sb) const;
 
-    Entity          _player;
     Level           _level;
     Camera          _camera;
-    Entity*         _medicine;
-    Entity*         _boss;
     int             _clock;
     int             _gameOverTicks;
     int             _healTicks;
-    EntityVector    _entities;
 
-    lm::StaticSpriteBatch   _backBatch;
-    lm::StaticSpriteBatch   _frontBatch;
-    lm::StaticSpriteBatch   _parallaxBatch;
-    lm::SpriteBatch         _entitiesBatch;
-    lm::Projection          _proj;
-    lm::ShaderPipeline      _pipeline;
-    lm::SpriteBatch         _textBatch;
+    lm::GameObject*                 _yseult;
+    lm::StaticSpriteBatch           _backBatch;
+    lm::StaticSpriteBatch           _frontBatch;
+    lm::StaticSpriteBatch           _parallaxBatch;
+    lm::Projection                  _proj;
+    lm::ShaderPipeline              _pipeline;
+    lm::SpriteBatch                 _textBatch;
+    std::vector<lm::GameObject*>    _gameObjects;
+    System::RenderSprite            _renderSprite;
 };
 
 #endif

@@ -1,5 +1,4 @@
 #include "Camera.hpp"
-#include "Entity.hpp"
 #include "Screen.hpp"
 #include "Map.hpp"
 
@@ -13,15 +12,14 @@ Camera::Camera()
 }
 
 void
-Camera::focus(Entity& entity, const Map& map)
+Camera::focus(lm::GameObject& go, const Map& map)
 {
-	lm::Vector2f* position = entity.recv<lm::Vector2f>("position");
 	_movingY = true;
 	_movingX = true;
-	_offset.x = position->x - SCREEN_TILES_W / 2.0f;
-	_offset.y = position->y - SCREEN_TILES_H / 2.0f;
+	_offset.x = go.position.x - SCREEN_TILES_W / 2.0f;
+	_offset.y = go.position.y - SCREEN_TILES_H / 2.0f;
     _speed = {0, 0};
-	update(entity, map);
+	update(go, map);
 }
 
 const lm::Vector2f&
@@ -74,17 +72,17 @@ checkCamera(bool& moving, int screenPos, int screenTiles, float& speed, float en
 }
 
 void
-Camera::update(Entity& entity, const Map& map)
+Camera::update(lm::GameObject& go, const Map& map)
 {
-	const lm::Vector2f screenPos = entity.center() - _offset;
-	lm::Vector2f* speed = entity.recv<lm::Vector2f>("speed");
+	const lm::Vector2f screenPos = lm::Vector2f(go.position.x, go.position.y) - _offset;
+	//lm::Vector2f* speed = entity.recv<lm::Vector2f>("speed");
 
-	if (!speed)
-		return;
-	checkCamera(_movingX, screenPos.x, SCREEN_TILES_W, _speed.x, speed->x);
-	checkCamera(_movingY, screenPos.y, SCREEN_TILES_H, _speed.y, speed->y);
-	moveCamera(_movingX, screenPos.x, SCREEN_TILES_W, map.width(), _speed.x, speed->x, _offset.x);
-	moveCamera(_movingY, screenPos.y, SCREEN_TILES_H, map.height(), _speed.y, speed->y, _offset.y);
+	lm::Vector2f speed;
+
+	checkCamera(_movingX, screenPos.x, SCREEN_TILES_W, _speed.x, speed.x);
+	checkCamera(_movingY, screenPos.y, SCREEN_TILES_H, _speed.y, speed.y);
+	moveCamera(_movingX, screenPos.x, SCREEN_TILES_W, map.width(), _speed.x, speed.x, _offset.x);
+	moveCamera(_movingY, screenPos.y, SCREEN_TILES_H, map.height(), _speed.y, speed.y, _offset.y);
 }
 
 Camera::~Camera()
