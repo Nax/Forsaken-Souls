@@ -5,6 +5,8 @@
 #include "MainMenu.hpp"
 #include "PauseMenu.hpp"
 
+#include "Settings.hpp"
+
 int
 main(int argc, char* argv[])
 {
@@ -28,6 +30,9 @@ main(int argc, char* argv[])
     lm::FontProvider::instance().loadBinary("bbd/fonts.bbd");
     lm::GameObjectProvider::instance().loadBinary("bbd/objects.bbd");
 
+    lm::mkAppDataDir((lm::userDataPath() + "Forsaken Souls/").c_str());
+
     core.push<MainMenu>();
+    //core.push<PauseMenu>();
     core.start();
 }
