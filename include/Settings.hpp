@@ -4,6 +4,7 @@
 #include <map>
 #include <string>
 #include <sstream>
+#include <array>
 #include <Lums>
 
 
@@ -31,10 +32,13 @@ namespace
 	template <> struct EntryType<SettingsEntry::GraphFullScreen> { typedef bool type; };
 }
 
-using SettingsMap = std::map<SettingsEntry, std::string>;
+using DeserializerMap = std::map<std::string, SettingsEntry>;
+using SerializerArray = std::array<std::string, static_cast<short>(SettingsEntry::Count)>;
+using SettingsArray = std::array<std::string, static_cast<short>(SettingsEntry::Count)>;
 
 class Settings
 {
+
 public:
 
 	Settings();
@@ -53,13 +57,13 @@ public:
 			ss << ExplicitBool(val);
 		else
 			ss << val;
-		_smap[E] = ss.str();
+		_valA[static_cast<short>(E)] = ss.str();
 	}
 
 	template<SettingsEntry E>
 	void get(typename EntryType<E>::type& outval) const
 	{
-		std::stringstream entryss(_smap[E]);
+		std::stringstream entryss(_valA[static_cast<short>(E)]);
 
 		if (std::is_same<typename EntryType<E>::type, bool>::value)
 		{
@@ -84,14 +88,16 @@ private:
 
 	struct ExplicitBool
 	{
-		ExplicitBool() {}
+		ExplicitBool() : b(false) {}
 		ExplicitBool(bool state) : b(state) {}
 		bool b;
 	};
 	friend std::ostream& operator<<(std::ostream& out, const ExplicitBool& v);
 	friend std::istream& operator>>(std::istream& in, ExplicitBool& out);
 
-	SettingsMap&				_smap;
+	const DeserializerMap&		_deserializerM;
+	const SerializerArray&		_serializerA;
+	SettingsArray&				_valA;
 	bool						_bad;
 };
 
