@@ -16,12 +16,14 @@ public:
 private:
 	lm::Projection          _proj;
 	lm::SpriteBatch         _resumeBatch;
+	lm::SpriteBatch         _keyBatch;
 	lm::SpriteBatch         _resolutionBatch;
 	lm::SpriteBatch         _res1Batch;
 	lm::SpriteBatch         _res2Batch;
 	lm::SpriteBatch         _res3Batch;
 	lm::SpriteBatch         _fullscreenBatch;
 	float					_resumeAlpha;
+	float					_keyAlpha;
 	float					_resoAlpha;
 	float					_res1Alpha;
 	float					_res2Alpha;

@@ -36,7 +36,7 @@ Game::load()
     // }
     _player.attach<MovableComponent>();
     _player.send("setSpeed", lm::Vector2f(0.5f, 0.5f));
-    setLevel(2, 0);
+    setLevel(0, 0);
     _level.map().spawn(_entities);
     _camera.focus(_player, _level.map());
     _proj.projection = lm::ortho(0, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
