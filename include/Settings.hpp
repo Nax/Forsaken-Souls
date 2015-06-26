@@ -6,6 +6,7 @@
 #include <sstream>
 #include <array>
 #include <Lums>
+#include "MappedKeys.hpp"
 
 
 enum struct SettingsEntry : short
@@ -76,7 +77,7 @@ public:
 	void
 	get(typename EntryType<E>::type& outval) const
 	{
-		getWithType<typename EntryType<E>::type>(E, outval, std::is_same<bool, typename EntryType<E>::type>());
+		getWithType<typename EntryType<E>::type>(E, outval);
 	}
 
 
@@ -108,26 +109,9 @@ private:
 		_valA[static_cast<short>(e)] = ss.str();
 	}
 
-	template<lm::Key>
-	void		setWithType(SettingsEntry e, const lm::Key& val);
-
-	template<bool>
-	void		setWithType(SettingsEntry e, bool val);
-
 	template<typename T>
 	void
-	getWithType(SettingsEntry e, T& out, std::true_type)
-	{
-		std::stringstream entryss(_valA[static_cast<short>(e)]);
-		ExplicitBool eb = true;
-
-		entryss >> eb;
-		out = eb.b;
-	}
-
-	template<typename T>
-	void
-	getWithType(SettingsEntry e, T& out, std::false_type)
+	getWithType(SettingsEntry e, T& out)
 	{
 		std::stringstream entryss(_valA[static_cast<short>(e)]);
 
@@ -144,6 +128,8 @@ private:
 	bool						_bad;
 	bool						_unsynced;
 };
+
+// get / set helper specializations.
 
 template<>
 inline void
@@ -164,5 +150,28 @@ Settings::setWithType<bool>(SettingsEntry e, const bool& val)
 	ss << ExplicitBool(val);
 	_valA[static_cast<short>(e)] = ss.str();
 }
+
+template<>
+inline void
+Settings::getWithType<bool>(SettingsEntry e, bool& out)
+{
+	std::stringstream entryss(_valA[static_cast<short>(e)]);
+	ExplicitBool eb = true;
+
+	entryss >> eb;
+	out = eb.b;
+}
+
+template<>
+inline void
+Settings::getWithType<lm::Key>(SettingsEntry e, lm::Key& out)
+{
+	std::stringstream entryss(_valA[static_cast<short>(e)]);
+	int	value;
+
+	entryss >> value;
+	out = static_cast<lm::Key>(value);
+}
+
 
 #endif
