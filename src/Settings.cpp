@@ -10,14 +10,15 @@ static const std::string        settingsFile = appDataPath + "settings.conf";
 
 
 
-static void
-dumpConfiguration(const SerializerArray& serializer, const SettingsArray& settings, bool& isBad)
+void
+Settings::storeConfiguration()
 {
-    std::ofstream   file(settingsFile, std::ios_base::trunc | std::ios_base::out);
+    const SettingsArray&    settings = const_cast<const SettingsArray&>(_valA);
+    std::ofstream           file(settingsFile, std::ios_base::trunc | std::ios_base::out);
 
     if (!file.good())
     {
-        isBad = true;
+        _bad = true;
         return;
     }
 
@@ -25,11 +26,11 @@ dumpConfiguration(const SerializerArray& serializer, const SettingsArray& settin
     {
         std::stringstream     ssline;
 
-        ssline << serializer[i] << " : " << settings[i] << " ;" << std::endl;
+        ssline << _serializerA[i] << " : " << settings[i] << " ;" << std::endl;
         file.write(ssline.str().c_str(), ssline.str().size());
     }
 
-    isBad = !file.good();
+    _bad = !file.good();
 }
 
 std::ostream&
@@ -37,70 +38,76 @@ operator<<(std::ostream& lhs, const lm::Vector2i& rhs)
 {
     std::string         ser;
 
-    lhs << rhs.x << ' ' << rhs.y;
+    lhs << rhs.x << '_' << rhs.y;
     return lhs;
 }
 
 std::istream&   
 operator>>(std::istream& in, lm::Vector2i& out)
 {
+    char sep;
+
     in >> out.x;
+    in >> sep;
     in >> out.y;
     return in;
 }
 
 // Load settings from file.
 // If it does not exist, create it with defaults.
-static void
-load(const DeserializerMap& dsm, SettingsArray& settings, bool& isBad)
+void
+Settings::load()
 {
     std::ifstream   file(settingsFile);
 
     if (!file.good())
     {
-        isBad = true;
+        _bad = true;
         return;
     }
    
     while (!file.eof() && !file.fail() && !file.bad())
     {
-        char                buf[1024], substr[128];
+        char                buf[1024];
+        char                substr[128];
         std::stringstream   ss;
         std::string         tok;
         std::istringstream  iss;
-        auto                mapIt = dsm.end();
+        auto                mapIt = _deserializerM.end();
 
         file.getline(buf, sizeof(buf) - 1);
         iss.str(buf);
 
         // Get key part
         iss.getline(substr, sizeof(substr) - 1, ':');
-        // Trim !
+        // Trim word from substr
         ss << substr;
         ss >> tok;
 
-        mapIt = dsm.find(tok);
+        mapIt = _deserializerM.find(tok);
 
         // Misshappen line ? continue.
-        if (mapIt == dsm.end())
+        if (mapIt == _deserializerM.end())
             continue;
         
         tok.clear();
         ss.clear();
+        ss.str(std::string());
+
 
         // Get value part
         iss.getline(substr, sizeof(substr) - 1, ';');
-        // Trim !
+        // Trim word from substr
         ss << substr;
         ss >> tok;
 
         // Map iterator points to type std::pair<std::string, SettingsEntry>
-        settings[static_cast<short>(mapIt->second)] = tok;
+        _valA[static_cast<short>(mapIt->second)] = tok;
     }
 
-    isBad = !file.eof();
+    _bad = !file.eof();
 
-    if (isBad)
+    if (_bad)
     {
         const std::string    reason = file.bad() ? "BAD" : "FAIL";
 
@@ -112,22 +119,73 @@ load(const DeserializerMap& dsm, SettingsArray& settings, bool& isBad)
 
 // Set string key to enum mapping here.
 // Set default values here.
-static void
-setDefaults(SettingsArray& settingsA, DeserializerMap& desrlzM, SerializerArray& srlzA)
+void
+Settings::setDefaults()
 {
-    SettingsEntry   curEntry = static_cast<SettingsEntry>(0);
+    DeserializerMap&    desrlzM = const_cast<DeserializerMap&>(_deserializerM);
+    SerializerArray&    srlzA = const_cast<SerializerArray&>(_serializerA);
+    SettingsEntry       curEntry = static_cast<SettingsEntry>(0);
+    std::stringstream   ss;
 
     // Relational initializations !
 
+    ss.clear();
+    ss.str(std::string());
     curEntry = SettingsEntry::GraphResolution;
     srlzA[static_cast<short>(curEntry)] = "GraphResolution";
     desrlzM[srlzA[static_cast<short>(curEntry)]] = curEntry;
-    settingsA[static_cast<short>(curEntry)] = "2560 1440";
+    ss << lm::Vector2i{2560, 1440};
+    _valA[static_cast<short>(curEntry)] = ss.str();
 
+    ss.clear();
+    ss.str(std::string());
     curEntry = SettingsEntry::GraphFullScreen;
     srlzA[static_cast<short>(curEntry)] = "GraphFullScreen";
     desrlzM[srlzA[static_cast<short>(curEntry)]] = curEntry;
-    settingsA[static_cast<short>(curEntry)] = "false";
+    ss << ExplicitBool(false);
+    _valA[static_cast<short>(curEntry)] = ss.str();
+
+    // Key mapping ...
+    {
+        std::vector<lm::Key>            lmKeys
+        {
+            lm::Key::Left
+            , lm::Key::Right
+            , lm::Key::Space
+            , lm::Key::Down
+            , lm::Key::A
+        };
+        std::vector<SettingsEntry>      keySettings
+        {
+            SettingsEntry::KeyLeft
+            , SettingsEntry::KeyRight
+            , SettingsEntry::KeyJump
+            , SettingsEntry::KeyCrouch
+            , SettingsEntry::KeyAttack
+        };
+        std::vector<std::string>        settingStrs
+        {
+            "KeyLeft"
+            , "KeyRight"
+            , "KeyJump"
+            , "KeyCrouch"
+            , "KeyAttack"
+        };
+    
+        for (int i = 0; i < keySettings.size(); ++i)
+        {
+            ss.clear();
+            ss.str(std::string());
+            curEntry = keySettings[i];
+            srlzA[static_cast<short>(curEntry)] = settingStrs[i];
+            desrlzM[srlzA[static_cast<short>(curEntry)]] = curEntry;
+            ss << static_cast<int>(lmKeys[i]);
+            _valA[static_cast<short>(curEntry)] = ss.str();
+        }
+
+    }
+
+    // More ...
 }
 
 Settings::Settings()
@@ -136,18 +194,15 @@ Settings::Settings()
 , _valA(*new SettingsArray)
 , _bad(true)
 {
-    setDefaults(_valA
-        , const_cast<DeserializerMap&>(_deserializerM)
-        , const_cast<SerializerArray&>(_serializerA)
-    );
-	load(_deserializerM, _valA, _bad);
+    setDefaults();
+	load();
     if (_bad)
     {
         std::cerr
             << __func__ << " : "
             << "Failed to read existing configuration at "
             << settingsFile << std::endl; 
-        dumpConfiguration(_serializerA, _valA, _bad);
+        storeConfiguration();
         if (_bad)
         {
             std::cerr
@@ -160,7 +215,7 @@ Settings::Settings()
 void
 Settings::store()
 {
-    dumpConfiguration(_serializerA, _valA, _bad);
+    storeConfiguration();
     if (_bad)
     {
         std::cerr
@@ -172,7 +227,7 @@ Settings::store()
 void
 Settings::reload()
 {
-    load(_deserializerM, _valA, _bad);
+    load();
     if (_bad)
     {
         std::cerr

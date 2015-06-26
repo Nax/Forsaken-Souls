@@ -12,6 +12,11 @@ enum struct SettingsEntry : short
 {
 	GraphResolution = 0,
 	GraphFullScreen,
+	KeyLeft,
+	KeyRight,
+	KeyJump,
+	KeyCrouch,
+	KeyAttack,
 	Count
 };
 
@@ -27,9 +32,13 @@ namespace
 		typedef void type;
 	};
 
-	template <> struct EntryType<SettingsEntry::GraphResolution> { typedef lm::Vector2i type; };
-
-	template <> struct EntryType<SettingsEntry::GraphFullScreen> { typedef bool type; };
+	template <> struct EntryType<SettingsEntry::GraphResolution>	{ typedef lm::Vector2i type; };
+	template <> struct EntryType<SettingsEntry::GraphFullScreen>	{ typedef bool type; };
+	template <> struct EntryType<SettingsEntry::KeyLeft>			{ typedef int type; };
+	template <> struct EntryType<SettingsEntry::KeyRight>			{ typedef int type; };
+	template <> struct EntryType<SettingsEntry::KeyJump>			{ typedef int type; };
+	template <> struct EntryType<SettingsEntry::KeyCrouch>			{ typedef int type; };
+	template <> struct EntryType<SettingsEntry::KeyAttack>			{ typedef int type; };
 }
 
 using DeserializerMap = std::map<std::string, SettingsEntry>;
@@ -127,6 +136,10 @@ private:
 
 		entryss >> out;
 	}
+
+	void						setDefaults();
+	void						load();
+	void						storeConfiguration();
 
 	const DeserializerMap&		_deserializerM;
 	const SerializerArray&		_serializerA;
