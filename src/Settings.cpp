@@ -115,6 +115,8 @@ Settings::load()
         std::cerr << "Failed to read thoroughly : "
             << reason  << "bit." << std::endl;
     }
+    else
+        _unsynced = false;
 }
 
 // Set string key to enum mapping here.
@@ -134,7 +136,7 @@ Settings::setDefaults()
     curEntry = SettingsEntry::GraphResolution;
     srlzA[static_cast<short>(curEntry)] = "GraphResolution";
     desrlzM[srlzA[static_cast<short>(curEntry)]] = curEntry;
-    ss << lm::Vector2i{2560, 1440};
+    ss << lm::Vector2i{1280, 800};
     _valA[static_cast<short>(curEntry)] = ss.str();
 
     ss.clear();
@@ -193,6 +195,7 @@ Settings::Settings()
 , _serializerA(*new SerializerArray)
 , _valA(*new SettingsArray)
 , _bad(true)
+, _unsynced(false)
 {
     setDefaults();
 	load();
@@ -201,7 +204,8 @@ Settings::Settings()
         std::cerr
             << __func__ << " : "
             << "Failed to read existing configuration at "
-            << settingsFile << std::endl; 
+            << settingsFile << std::endl
+            << "Writing defaults... " << std::endl; 
         storeConfiguration();
         if (_bad)
         {
@@ -215,6 +219,8 @@ Settings::Settings()
 void
 Settings::store()
 {
+    if (!_unsynced)
+        return;
     storeConfiguration();
     if (_bad)
     {
@@ -222,6 +228,8 @@ Settings::store()
             << "Failed to write configuration at "
             << settingsFile << std::endl;
     }
+    else
+        _unsynced = false;
 }
 
 void

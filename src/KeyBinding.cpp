@@ -2,6 +2,7 @@
 #include "Assets.hpp"
 #include "Screen.hpp"
 #include "MappedKeys.hpp"
+#include "Settings.hpp"
 
 #include <iostream>
 
@@ -188,18 +189,23 @@ KeyBinding::handleEvent(const lm::Event& event)
             {
                 case 0:
                     MappedKeys::instance().left = event.key;
+                    Settings::instance().set<SettingsEntry::KeyLeft>(event.key);
                     break;
                 case 1:
                     MappedKeys::instance().right = event.key;
+                    Settings::instance().set<SettingsEntry::KeyRight>(event.key);
                     break;
                 case 2:
                     MappedKeys::instance().jump = event.key;
+                    Settings::instance().set<SettingsEntry::KeyJump>(event.key);
                     break;
                 case 3:
                     MappedKeys::instance().crouch = event.key;
+                    Settings::instance().set<SettingsEntry::KeyCrouch>(event.key);
                     break;
                 case 4:
                     MappedKeys::instance().attack = event.key;
+                    Settings::instance().set<SettingsEntry::KeyAttack>(event.key);
                     break;
                 default:
                     break;
@@ -230,6 +236,12 @@ KeyBinding::render()
     _keyCrouchBatch.render();
     _keyAttackBatch.render();
     _backBatch.render();
+}
+
+void
+KeyBinding::unload()
+{
+    Settings::instance().store();
 }
 
 KeyBinding::~KeyBinding()

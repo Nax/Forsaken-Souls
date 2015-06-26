@@ -123,7 +123,7 @@ SettingsMenu::update()
                 switchRes({1920, 1080});
                 break;
             case 2:
-                switchRes({2560, 2560});
+                switchRes({2560, 1440});
                 break;
             case 3:
                 _fullscreen = !_fullscreen;

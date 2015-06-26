@@ -34,11 +34,11 @@ namespace
 
 	template <> struct EntryType<SettingsEntry::GraphResolution>	{ typedef lm::Vector2i type; };
 	template <> struct EntryType<SettingsEntry::GraphFullScreen>	{ typedef bool type; };
-	template <> struct EntryType<SettingsEntry::KeyLeft>			{ typedef int type; };
-	template <> struct EntryType<SettingsEntry::KeyRight>			{ typedef int type; };
-	template <> struct EntryType<SettingsEntry::KeyJump>			{ typedef int type; };
-	template <> struct EntryType<SettingsEntry::KeyCrouch>			{ typedef int type; };
-	template <> struct EntryType<SettingsEntry::KeyAttack>			{ typedef int type; };
+	template <> struct EntryType<SettingsEntry::KeyLeft>			{ typedef lm::Key type; };
+	template <> struct EntryType<SettingsEntry::KeyRight>			{ typedef lm::Key type; };
+	template <> struct EntryType<SettingsEntry::KeyJump>			{ typedef lm::Key type; };
+	template <> struct EntryType<SettingsEntry::KeyCrouch>			{ typedef lm::Key type; };
+	template <> struct EntryType<SettingsEntry::KeyAttack>			{ typedef lm::Key type; };
 }
 
 using DeserializerMap = std::map<std::string, SettingsEntry>;
@@ -68,7 +68,8 @@ public:
 	void
 	set(typename EntryType<E>::type val)
 	{
-		setWithType<typename EntryType<E>::type>(E, val, std::is_same<bool, typename EntryType<E>::type>());
+		_unsynced = true;
+		setWithType<typename EntryType<E>::type>(E, val);
 	}
 
 	template<SettingsEntry E>
@@ -99,7 +100,7 @@ private:
 
 	template<typename T>
 	void
-	setWithType(SettingsEntry e, const T& val, std::false_type)
+	setWithType(SettingsEntry e, const T& val)
 	{
 		std::stringstream ss;
 
@@ -107,15 +108,11 @@ private:
 		_valA[static_cast<short>(e)] = ss.str();
 	}
 
-	template<typename T>
-	void
-	setWithType(SettingsEntry e, bool val, std::true_type)
-	{
-		std::stringstream ss;
+	template<lm::Key>
+	void		setWithType(SettingsEntry e, const lm::Key& val);
 
-		ss << ExplicitBool(val);
-		_valA[static_cast<short>(e)] = ss.str();
-	}
+	template<bool>
+	void		setWithType(SettingsEntry e, bool val);
 
 	template<typename T>
 	void
@@ -145,6 +142,27 @@ private:
 	const SerializerArray&		_serializerA;
 	SettingsArray&				_valA;
 	bool						_bad;
+	bool						_unsynced;
 };
+
+template<>
+inline void
+Settings::setWithType<lm::Key>(SettingsEntry e, const lm::Key& val)
+{
+	std::stringstream ss;
+
+	ss << static_cast<int>(val);
+	_valA[static_cast<short>(e)] = ss.str();
+}
+
+template<>
+inline void
+Settings::setWithType<bool>(SettingsEntry e, const bool& val)
+{
+	std::stringstream ss;
+
+	ss << ExplicitBool(val);
+	_valA[static_cast<short>(e)] = ss.str();
+}
 
 #endif
