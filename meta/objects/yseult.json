@@ -3,6 +3,8 @@
     "components": {
         "sprite": {
             "texture": "yseult"
+        },
+        "state": {
         }
     }
 }
