@@ -7,7 +7,18 @@
 // TODO :  Move to a file IO manager instance.
 static const std::string        appDataPath = lm::userDataPath() + "Forsaken Souls/";
 static const std::string        settingsFile = appDataPath + "settings.conf";
+// ------------
 
+const Settings::SettingToActionA  Settings::_settingToActionA =
+{
+    MappedKeys::Left
+    , MappedKeys::Left
+    , MappedKeys::Left
+    , MappedKeys::Right
+    , MappedKeys::Jump
+    , MappedKeys::Crouch
+    , MappedKeys::Attack
+};
 
 
 void
@@ -117,6 +128,33 @@ Settings::load()
     }
     else
         _unsynced = false;
+
+    // Loading MappedKeys instance with loaded settings.
+    {
+        const std::vector<SettingsEntry>    kSettings
+        {
+            SettingsEntry::Left
+            , SettingsEntry::Right
+            , SettingsEntry::Jump
+            , SettingsEntry::Crouch
+            , SettingsEntry::Attack
+        };
+
+        for (short i = 0; i < kSettings.size(); ++i)
+        {
+            std::stringstream   ss;
+            short               iSetting;
+            MappedActions       action;
+            int                 kcode;
+
+            iSetting = static_cast<short>(kSettings[i]);
+            action = _settingToActionA[iSetting];
+            ss.str(_valA[iSetting]);
+            ss >> kcode;
+            _keyMapping.actionKey(action) = static_cast<lm::Key>(kcode);
+        }
+    }
+    // --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
 }
 
 // Set string key to enum mapping here.
@@ -147,17 +185,17 @@ Settings::setDefaults()
     ss << ExplicitBool(false);
     _valA[static_cast<short>(curEntry)] = ss.str();
 
-    // Key mapping ...
+    // Key mapping --- --- --- --- 
     {
-        std::vector<lm::Key>            lmKeys
+        const std::vector<MappedActions>      mappedActions
         {
-            lm::Key::Left
-            , lm::Key::Right
-            , lm::Key::Space
-            , lm::Key::Down
-            , lm::Key::A
+            MappedActions::Left
+            , MappedActions::Right
+            , MappedActions::Jump
+            , MappedActions::Crouch
+            , MappedActions::Attack
         };
-        std::vector<SettingsEntry>      keySettings
+        const std::vector<SettingsEntry>      keySettings
         {
             SettingsEntry::KeyLeft
             , SettingsEntry::KeyRight
@@ -165,7 +203,8 @@ Settings::setDefaults()
             , SettingsEntry::KeyCrouch
             , SettingsEntry::KeyAttack
         };
-        std::vector<std::string>        settingStrs
+        // These will be the serialized keymapping Settings Keys.
+        const std::vector<std::string>        settingStrs
         {
             "KeyLeft"
             , "KeyRight"
@@ -181,11 +220,12 @@ Settings::setDefaults()
             curEntry = keySettings[i];
             srlzA[static_cast<short>(curEntry)] = settingStrs[i];
             desrlzM[srlzA[static_cast<short>(curEntry)]] = curEntry;
-            ss << static_cast<int>(lmKeys[i]);
+            ss << static_cast<int>(_keyMapping.actionKey(mappedActions[i]));
             _valA[static_cast<short>(curEntry)] = ss.str();
         }
 
     }
+    // --- --- --- --- --- 
 
     // More ...
 }
@@ -235,6 +275,8 @@ Settings::store()
 void
 Settings::reload()
 {
+    if (!_unsynced)
+        return;
     load();
     if (_bad)
     {
@@ -255,10 +297,10 @@ Settings::~Settings()
 
 
 std::ostream&
-operator<<(std::ostream& os, const Settings::ExplicitBool& v)
+operator<<(std::ostream& o, const Settings::ExplicitBool& v)
 {
-    os << (v.b ? "true" : "false");
-    return os;
+    o << (v.b ? "true" : "false");
+    return o;
 }
 
 std::istream&

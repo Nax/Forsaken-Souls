@@ -1,7 +1,6 @@
 #include "KeyBinding.hpp"
 #include "Assets.hpp"
 #include "Screen.hpp"
-#include "MappedKeys.hpp"
 #include "Settings.hpp"
 
 #include <iostream>
@@ -27,38 +26,46 @@ KeyBinding::KeyBinding()
 void
 KeyBinding::load()
 {
+    Settings&   rsettings = Settings::instance();
+    lm::Key     keyrec;
+
     _leftBatch.draw(lm::FontProvider::instance().get("roboto80"), "Left",
                     {100.f, SCREEN_HEIGHT / 2 - 900.f / 2}, {1.f, 0.f, 1.f, _leftAlpha});
     _leftBatch.send();
-    _keyLeftBatch.draw(lm::FontProvider::instance().get("roboto80"), std::to_string(static_cast<int>(MappedKeys::instance().left)).c_str(),
+    rsettings.get<SettingsEntry::KeyLeft>(keyrec);
+    _keyLeftBatch.draw(lm::FontProvider::instance().get("roboto80"), std::to_string(static_cast<int>(keyrec)).c_str(),
                     {SCREEN_WIDTH - 400.f, SCREEN_HEIGHT / 2 - 900.f / 2}, {1.f, 0.f, 1.f, _keyLeftAlpha});
     _keyLeftBatch.send();
 
     _rightBatch.draw(lm::FontProvider::instance().get("roboto80"), "Right",
                     {100.f, SCREEN_HEIGHT / 2 - 700.f / 2}, {1.f, 0.f, 1.f, _rightAlpha});
     _rightBatch.send();
-    _keyRightBatch.draw(lm::FontProvider::instance().get("roboto80"), std::to_string(static_cast<int>(MappedKeys::instance().right)).c_str(),
+    rsettings.get<SettingsEntry::KeyRight>(keyrec);
+    _keyRightBatch.draw(lm::FontProvider::instance().get("roboto80"), std::to_string(static_cast<int>(keyrec)).c_str(),
                     {SCREEN_WIDTH - 400.f, SCREEN_HEIGHT / 2 - 700.f / 2}, {1.f, 0.f, 1.f, _keyRightAlpha});
     _keyRightBatch.send();
 
     _jumpBatch.draw(lm::FontProvider::instance().get("roboto80"), "Jump",
                     {100.f, SCREEN_HEIGHT / 2 - 500.f / 2}, {1.f, 0.f, 1.f, _jumpAlpha});
     _jumpBatch.send();
-    _keyJumpBatch.draw(lm::FontProvider::instance().get("roboto80"), std::to_string(static_cast<int>(MappedKeys::instance().jump)).c_str(),
+    rsettings.get<SettingsEntry::KeyJump>(keyrec);
+    _keyJumpBatch.draw(lm::FontProvider::instance().get("roboto80"), std::to_string(static_cast<int>(keyrec)).c_str(),
                     {SCREEN_WIDTH - 400.f, SCREEN_HEIGHT / 2 - 500.f / 2}, {1.f, 0.f, 1.f, _keyJumpAlpha});
     _keyJumpBatch.send();
 
     _crouchBatch.draw(lm::FontProvider::instance().get("roboto80"), "Crouch",
                     {100.f, SCREEN_HEIGHT / 2 - 300.f / 2}, {1.f, 0.f, 1.f, _crouchAlpha});
     _crouchBatch.send();
-    _keyCrouchBatch.draw(lm::FontProvider::instance().get("roboto80"), std::to_string(static_cast<int>(MappedKeys::instance().crouch)).c_str(),
+    rsettings.get<SettingsEntry::KeyCrouch>(keyrec);
+    _keyCrouchBatch.draw(lm::FontProvider::instance().get("roboto80"), std::to_string(static_cast<int>(keyrec)).c_str(),
                     {SCREEN_WIDTH - 400.f, SCREEN_HEIGHT / 2 - 300.f / 2}, {1.f, 0.f, 1.f, _keyCrouchAlpha});
     _keyCrouchBatch.send();
 
     _attackBatch.draw(lm::FontProvider::instance().get("roboto80"), "Attack",
                     {100.f, SCREEN_HEIGHT / 2 - 100.f / 2}, {1.f, 0.f, 1.f, _attackAlpha});
     _attackBatch.send();
-    _keyAttackBatch.draw(lm::FontProvider::instance().get("roboto80"), std::to_string(static_cast<int>(MappedKeys::instance().attack)).c_str(),
+    rsettings.get<SettingsEntry::KeyAttack>(keyrec);
+    _keyAttackBatch.draw(lm::FontProvider::instance().get("roboto80"), std::to_string(static_cast<int>(keyrec)).c_str(),
                     {SCREEN_WIDTH - 400.f, SCREEN_HEIGHT / 2 - 100.f / 2}, {1.f, 0.f, 1.f, _keyAttackAlpha});
     _keyAttackBatch.send();
 
@@ -72,6 +79,8 @@ KeyBinding::load()
 void
 KeyBinding::update()
 {
+    const MappedKeys&   keyMapping = Settings::instance().keyMapping();
+
     _leftAlpha = (_cursor == 0) ? fmin(_leftAlpha + 0.03f, 1.f) : fmax(0.3f, _leftAlpha - 0.03f);
     _rightAlpha = (_cursor == 1) ? fmin(_rightAlpha + 0.03f, 1.f) : fmax(0.3f, _rightAlpha - 0.03f);
     _jumpAlpha = (_cursor == 2) ? fmin(_jumpAlpha + 0.03f, 1.f) : fmax(0.3f, _jumpAlpha - 0.03f);
@@ -93,7 +102,7 @@ KeyBinding::update()
         _keyLeftBatch.draw(lm::FontProvider::instance().get("roboto80"), "Press Key",
                         {SCREEN_WIDTH - 400.f, SCREEN_HEIGHT / 2 - 900.f / 2}, {1.f, 0.f, 1.f, _keyLeftAlpha});
     else
-        _keyLeftBatch.draw(lm::FontProvider::instance().get("roboto80"), std::to_string(static_cast<int>(MappedKeys::instance().left)).c_str(),
+        _keyLeftBatch.draw(lm::FontProvider::instance().get("roboto80"), std::to_string(static_cast<int>(keyMapping.left)).c_str(),
                         {SCREEN_WIDTH - 400.f, SCREEN_HEIGHT / 2 - 900.f / 2}, {1.f, 0.f, 1.f, _keyLeftAlpha});
     _keyLeftBatch.send();
 
@@ -106,7 +115,7 @@ KeyBinding::update()
         _keyRightBatch.draw(lm::FontProvider::instance().get("roboto80"), "Press Key",
                         {SCREEN_WIDTH - 400.f, SCREEN_HEIGHT / 2 - 700.f / 2}, {1.f, 0.f, 1.f, _keyRightAlpha});
     else
-        _keyRightBatch.draw(lm::FontProvider::instance().get("roboto80"), std::to_string(static_cast<int>(MappedKeys::instance().right)).c_str(),
+        _keyRightBatch.draw(lm::FontProvider::instance().get("roboto80"), std::to_string(static_cast<int>(keyMapping.right)).c_str(),
                         {SCREEN_WIDTH - 400.f, SCREEN_HEIGHT / 2 - 700.f / 2}, {1.f, 0.f, 1.f, _keyRightAlpha});
     _keyRightBatch.send();
 
@@ -119,7 +128,7 @@ KeyBinding::update()
         _keyJumpBatch.draw(lm::FontProvider::instance().get("roboto80"), "Press Key",
                         {SCREEN_WIDTH - 400.f, SCREEN_HEIGHT / 2 - 500.f / 2}, {1.f, 0.f, 1.f, _keyJumpAlpha});
     else
-        _keyJumpBatch.draw(lm::FontProvider::instance().get("roboto80"), std::to_string(static_cast<int>(MappedKeys::instance().jump)).c_str(),
+        _keyJumpBatch.draw(lm::FontProvider::instance().get("roboto80"), std::to_string(static_cast<int>(keyMapping.jump)).c_str(),
                         {SCREEN_WIDTH - 400.f, SCREEN_HEIGHT / 2 - 500.f / 2}, {1.f, 0.f, 1.f, _keyJumpAlpha});
     _keyJumpBatch.send();
 
@@ -132,7 +141,7 @@ KeyBinding::update()
         _keyCrouchBatch.draw(lm::FontProvider::instance().get("roboto80"), "Press Key",
                         {SCREEN_WIDTH - 400.f, SCREEN_HEIGHT / 2 - 300.f / 2}, {1.f, 0.f, 1.f, _keyCrouchAlpha});
     else
-        _keyCrouchBatch.draw(lm::FontProvider::instance().get("roboto80"), std::to_string(static_cast<int>(MappedKeys::instance().crouch)).c_str(),
+        _keyCrouchBatch.draw(lm::FontProvider::instance().get("roboto80"), std::to_string(static_cast<int>(keyMapping.crouch)).c_str(),
                         {SCREEN_WIDTH - 400.f, SCREEN_HEIGHT / 2 - 300.f / 2}, {1.f, 0.f, 1.f, _keyCrouchAlpha});
     _keyCrouchBatch.send();
 
@@ -145,7 +154,7 @@ KeyBinding::update()
         _keyAttackBatch.draw(lm::FontProvider::instance().get("roboto80"), "Press Key",
                         {SCREEN_WIDTH - 400.f, SCREEN_HEIGHT / 2 - 100.f / 2}, {1.f, 0.f, 1.f, _keyAttackAlpha});
     else
-        _keyAttackBatch.draw(lm::FontProvider::instance().get("roboto80"), std::to_string(static_cast<int>(MappedKeys::instance().attack)).c_str(),
+        _keyAttackBatch.draw(lm::FontProvider::instance().get("roboto80"), std::to_string(static_cast<int>(keyMapping.attack)).c_str(),
                         {SCREEN_WIDTH - 400.f, SCREEN_HEIGHT / 2 - 100.f / 2}, {1.f, 0.f, 1.f, _keyAttackAlpha});
     _keyAttackBatch.send();
 
@@ -188,23 +197,18 @@ KeyBinding::handleEvent(const lm::Event& event)
             switch (_cursor)
             {
                 case 0:
-                    MappedKeys::instance().left = event.key;
                     Settings::instance().set<SettingsEntry::KeyLeft>(event.key);
                     break;
                 case 1:
-                    MappedKeys::instance().right = event.key;
                     Settings::instance().set<SettingsEntry::KeyRight>(event.key);
                     break;
                 case 2:
-                    MappedKeys::instance().jump = event.key;
                     Settings::instance().set<SettingsEntry::KeyJump>(event.key);
                     break;
                 case 3:
-                    MappedKeys::instance().crouch = event.key;
                     Settings::instance().set<SettingsEntry::KeyCrouch>(event.key);
                     break;
                 case 4:
-                    MappedKeys::instance().attack = event.key;
                     Settings::instance().set<SettingsEntry::KeyAttack>(event.key);
                     break;
                 default:

@@ -46,7 +46,6 @@ using DeserializerMap = std::map<std::string, SettingsEntry>;
 using SerializerArray = std::array<std::string, static_cast<short>(SettingsEntry::Count)>;
 using SettingsArray = std::array<std::string, static_cast<short>(SettingsEntry::Count)>;
 
-// TODO?:  define in Lums
 std::ostream&	
 operator<<(std::ostream& lhs, const lm::Vector2i& rhs);
 
@@ -82,6 +81,7 @@ public:
 
 
 	bool						bad() const			{ return _bad; }
+	const MappedKeys&			keyMapping() const	{ return _keyMapping; }
 	void						store();
 	void						reload();
 
@@ -127,6 +127,12 @@ private:
 	SettingsArray&				_valA;
 	bool						_bad;
 	bool						_unsynced;
+
+	MappedKeys					_keyMapping;
+
+	using SettingToActionArray = std::array<MappedActions, static_cast<short>(SettingsEntry::Count)>;
+	static const SettingToActionArray&	_settingToActionA;
+
 };
 
 // get / set helper specializations.
@@ -139,6 +145,7 @@ Settings::setWithType<lm::Key>(SettingsEntry e, const lm::Key& val)
 
 	ss << static_cast<int>(val);
 	_valA[static_cast<short>(e)] = ss.str();
+	_keyMapping.actionKey(_settingToActionA[static_cast<short>(e)]) = val;
 }
 
 template<>
@@ -167,10 +174,10 @@ inline void
 Settings::getWithType<lm::Key>(SettingsEntry e, lm::Key& out)
 {
 	std::stringstream entryss(_valA[static_cast<short>(e)]);
-	int	value;
+	int	code;
 
-	entryss >> value;
-	out = static_cast<lm::Key>(value);
+	entryss >> code;
+	out = static_cast<lm::Key>(code);
 }
 
 
