@@ -2,6 +2,7 @@
 #define COMPONENTS_MOVABLE_HPP
 
 #include <Lums>
+#include "Body.hpp"
 
 namespace Component
 {
@@ -11,9 +12,13 @@ namespace Component
 
     public:
         Movable();
+        void    setBody(const lm::BValue& value);
+        void    onStateChange(lm::GameObject& go, size_t move, size_t action);
         ~Movable();
 
-        lm::Vector2f    _speed;
+        lm::Vector2f    speed;
+        Body*           body;
+        Body::Data*     data;
     };
 }
 

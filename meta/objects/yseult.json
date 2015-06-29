@@ -2,9 +2,19 @@
     "name": "yseult",
     "components": {
         "sprite": {
-            "texture": "yseult"
+            "texture": "yseult",
+            "animation": "yseult"
         },
         "state": {
+            "move": "idle",
+            "action": "none",
+            "state_machine": "yseult"
+        },
+        "input": {
+            
+        },
+        "movable": {
+            "body": "yseult"
         }
     }
 }

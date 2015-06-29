@@ -10,7 +10,8 @@ namespace System
     {
     public:
         RenderSprite();
-        void    operator()(std::vector<lm::GameObject*>& gameObjects);
+        void    render(std::vector<lm::GameObject*>& gameObjects);
+        void    update(std::vector<lm::GameObject*>& gameObjects);
         ~RenderSprite();
 
     private:

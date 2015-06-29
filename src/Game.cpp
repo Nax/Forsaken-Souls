@@ -40,8 +40,10 @@ Game::load()
 void
 Game::update()
 {
-    _physics(_gameObjects);
+    _input.update(_gameObjects);
+    _physics.update(_gameObjects);
     _camera.update(*_yseult, _level.map());
+    _renderSprite.update(_gameObjects);
     if (_gameOverTicks > 500)
         Core::instance().transition<GameOver>();
 }
@@ -84,7 +86,7 @@ Game::render()
     _parallaxBatch.render();
     lm::uniform(shader, "view", _proj.view);
     _backBatch.render();
-    _renderSprite(_gameObjects);
+    _renderSprite.render(_gameObjects);
     _frontBatch.render();
 
     lm::uniform(shader, "view", identity);
@@ -101,7 +103,7 @@ Game::render()
 void
 Game::handleEvent(const Event& event)
 {
-    _input(_gameObjects, event);
+    _input.handleEvent(_gameObjects, event);
 }
 
 void

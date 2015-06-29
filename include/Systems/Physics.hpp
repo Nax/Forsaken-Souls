@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <Lums>
+#include "Components/Movable.hpp"
 
 namespace System
 {
@@ -10,8 +11,11 @@ namespace System
     {
     public:
         Physics();
-        void    operator()(std::vector<lm::GameObject*>& gameObjects); 
+        void    update(std::vector<lm::GameObject*>& gameObjects); 
         ~Physics();
+
+    private:
+        void    move(lm::GameObject& go, Component::Movable& movable);
     };
 }
 

@@ -4,6 +4,9 @@
 #include "Screen.hpp"
 #include "MainMenu.hpp"
 #include "PauseMenu.hpp"
+#include "StateMachine.hpp"
+#include "Animation.hpp"
+#include "Body.hpp"
 
 #include "Settings.hpp"
 
@@ -29,6 +32,10 @@ main(int argc, char* argv[])
     lm::ShaderProvider::instance().loadBinary("bbd/shaders.bbd");
     lm::FontProvider::instance().loadBinary("bbd/fonts.bbd");
     lm::GameObjectProvider::instance().loadBinary("bbd/objects.bbd");
+    StateMachineProvider::instance().loadBinary("bbd/machines.bbd");
+    AnimationProvider::instance().loadBinary("bbd/animations.bbd");
+    AnimationProvider::instance().loadBinary("bbd/animations.bbd");
+    BodyProvider::instance().loadBinary("bbd/bodies.bbd");
 
     lm::mkAppDataDir((lm::userDataPath() + "Forsaken Souls/").c_str());
 

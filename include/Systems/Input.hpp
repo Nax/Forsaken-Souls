@@ -10,8 +10,12 @@ namespace System
     {
     public:
         Input();
-        void    operator()(std::vector<lm::GameObject*>& gameObjects, const lm::Event& event);
+        void    handleEvent(std::vector<lm::GameObject*>& gameObjects, const lm::Event& event);
+        void    update(std::vector<lm::GameObject*>& gameObjects);
         ~Input();
+
+    private:
+        void    sendInput(lm::GameObject& object, const char* str);
     };
 }
 

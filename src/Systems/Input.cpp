@@ -9,7 +9,7 @@ Input::Input()
 }
 
 void
-Input::operator()(std::vector<lm::GameObject*>& gameObjects, const lm::Event& event)
+Input::handleEvent(std::vector<lm::GameObject*>& gameObjects, const lm::Event& event)
 {
     if (event.type != lm::Event::Type::KeyDown && event.type != lm::Event::Type::KeyUp)
         return;
@@ -47,7 +47,34 @@ Input::operator()(std::vector<lm::GameObject*>& gameObjects, const lm::Event& ev
     }
 }
 
+void
+Input::update(std::vector<lm::GameObject*>& gameObjects)
+{
+    for (auto go : gameObjects)
+    {
+        auto component = static_cast<Component::Input*>(go->getComponent("input"));
+        if (!component)
+            continue;
+        if (component->left && !component->right)
+            sendInput(*go, "left");
+        else if (component->right && !component->left)
+            sendInput(*go, "right");
+        else
+            sendInput(*go, "no_move");
+        if (component->meleeAttack)
+            sendInput(*go, "melee");
+    }
+}
+
 Input::~Input()
 {
     
+}
+
+/* Private */
+
+void
+Input::sendInput(lm::GameObject& object, const char* str)
+{
+    object.send("switch_state", lm::sym(str));
 }
