@@ -8,6 +8,24 @@
 #include <Lums>
 #include "MappedKeys.hpp"
 
+// As of 279e0653d196b
+// Settings is a lm::Singleton (i.e.: lazily constructed)
+// Upon construction, the Settings instances initializes
+// itself from the existing config file (load defaults otherwise.)
+// 
+// Settings caches current settings and will not write to file
+// unless a store() call is issued. Thus, calling get<E> / set<E>
+// will not trigger disk IO by themselves.
+//
+// Settings manages internally an instance of the MappedKeys class.
+// Any key-binding-related call to get<E> / set<E> will update the
+// MappedKeys instance.
+// Settings provides access to a const reference to the instance of
+// MappedKeys for specific queries (such as reading actual key bindings).
+//
+// Settings provides a bad() accessor to enquire about a possible IO error.
+// Settings provides a reload() method to reload settings from the config
+// file (thus, destroying unsynced changes).
 
 enum struct SettingsEntry : short
 {

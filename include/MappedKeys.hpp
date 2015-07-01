@@ -15,6 +15,12 @@ enum struct MappedActions : short
 	, Count
 };
 
+// As of 279e0653d196b
+// MappedKeys instance is constructed, initialized and 
+// managed by the Settings class. The Settings instance
+// automatically initializes and updates the MappedKeys
+// instance.
+
 class MappedKeys
 {
 public:
