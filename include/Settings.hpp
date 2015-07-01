@@ -111,7 +111,7 @@ private:
 
 	template<typename T>
 	void
-	getWithType(SettingsEntry e, T& out)
+	getWithType(SettingsEntry e, T& out) const
 	{
 		std::stringstream entryss(_valA[static_cast<short>(e)]);
 
@@ -131,7 +131,7 @@ private:
 	MappedKeys					_keyMapping;
 
 	using SettingToActionArray = std::array<MappedActions, static_cast<short>(SettingsEntry::Count)>;
-	static const SettingToActionArray&	_settingToActionA;
+	static const SettingToActionArray	_settingToActionA;
 
 };
 
@@ -160,7 +160,7 @@ Settings::setWithType<bool>(SettingsEntry e, const bool& val)
 
 template<>
 inline void
-Settings::getWithType<bool>(SettingsEntry e, bool& out)
+Settings::getWithType<bool>(SettingsEntry e, bool& out) const
 {
 	std::stringstream entryss(_valA[static_cast<short>(e)]);
 	ExplicitBool eb = true;
@@ -171,7 +171,7 @@ Settings::getWithType<bool>(SettingsEntry e, bool& out)
 
 template<>
 inline void
-Settings::getWithType<lm::Key>(SettingsEntry e, lm::Key& out)
+Settings::getWithType<lm::Key>(SettingsEntry e, lm::Key& out) const
 {
 	std::stringstream entryss(_valA[static_cast<short>(e)]);
 	int	code;

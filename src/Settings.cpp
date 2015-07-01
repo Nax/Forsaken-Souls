@@ -9,15 +9,15 @@ static const std::string        appDataPath = lm::userDataPath() + "Forsaken Sou
 static const std::string        settingsFile = appDataPath + "settings.conf";
 // ------------
 
-const Settings::SettingToActionA  Settings::_settingToActionA =
+const Settings::SettingToActionArray    Settings::_settingToActionA =
 {
-    MappedKeys::Left
-    , MappedKeys::Left
-    , MappedKeys::Left
-    , MappedKeys::Right
-    , MappedKeys::Jump
-    , MappedKeys::Crouch
-    , MappedKeys::Attack
+    MappedActions::Left
+    , MappedActions::Left
+    , MappedActions::Left
+    , MappedActions::Right
+    , MappedActions::Jump
+    , MappedActions::Crouch
+    , MappedActions::Attack
 };
 
 
@@ -133,11 +133,11 @@ Settings::load()
     {
         const std::vector<SettingsEntry>    kSettings
         {
-            SettingsEntry::Left
-            , SettingsEntry::Right
-            , SettingsEntry::Jump
-            , SettingsEntry::Crouch
-            , SettingsEntry::Attack
+            SettingsEntry::KeyLeft
+            , SettingsEntry::KeyRight
+            , SettingsEntry::KeyJump
+            , SettingsEntry::KeyCrouch
+            , SettingsEntry::KeyAttack
         };
 
         for (short i = 0; i < kSettings.size(); ++i)

@@ -4,7 +4,6 @@
 #include <array>
 #include <Lums>
 
-//class Settings;
 
 enum struct MappedActions : short
 {

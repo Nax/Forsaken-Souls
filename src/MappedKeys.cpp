@@ -1,19 +1,6 @@
 #include "MappedKeys.hpp"
 
 
-namespace
-{
-	void
-	initActionKeyArray (MappedKeys& that, ActionKeyA& mutActionKeyAr)
-	{
-		mutActionKeyAr[static_cast<short>(MappedActions::Left)] = &that.left;
-		mutActionKeyAr[static_cast<short>(MappedActions::Right)] = &that.right;
-		mutActionKeyAr[static_cast<short>(MappedActions::Jump)] = &that.jump;
-		mutActionKeyAr[static_cast<short>(MappedActions::Crouch] = &that.crouch;
-		mutActionKeyAr[static_cast<short>(MappedActions::Attack)] = &that.attack;
-	}
-}
-
 MappedKeys::MappedKeys()
 : left(lm::Key::Left)
 , right(lm::Key::Right)
@@ -22,7 +9,13 @@ MappedKeys::MappedKeys()
 , attack(lm::Key::A)
 , _actionKeyA(*new ActionKeyA)
 {
-	initActionKeyArray(*this, const_cast<ActionKeyA&>(_actionKeyA));	
+	ActionKeyA& mutActionKeyAr = const_cast<ActionKeyA&>(_actionKeyA);
+
+	mutActionKeyAr[static_cast<short>(MappedActions::Left)] = &this->left;
+	mutActionKeyAr[static_cast<short>(MappedActions::Right)] = &this->right;
+	mutActionKeyAr[static_cast<short>(MappedActions::Jump)] = &this->jump;
+	mutActionKeyAr[static_cast<short>(MappedActions::Crouch)] = &this->crouch;
+	mutActionKeyAr[static_cast<short>(MappedActions::Attack)] = &this->attack;
 }
 
 MappedKeys::~MappedKeys()
