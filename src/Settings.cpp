@@ -15,7 +15,7 @@ namespace
 // ------------
 
 const Settings::SettingToActionArray    Settings::_settingToActionA =
-{
+{{
     MappedActions::Left
     , MappedActions::Left
     , MappedActions::Left
@@ -23,7 +23,7 @@ const Settings::SettingToActionArray    Settings::_settingToActionA =
     , MappedActions::Jump
     , MappedActions::Crouch
     , MappedActions::Attack
-};
+}};
 
 
 std::istream&   
@@ -35,7 +35,7 @@ operator>>(std::istream& in, lm::Vector2i& out)
     in >> out.x;
     fail |= in.fail();
     in >> sep;
-    fail |= in.fail();
+    fail |= in.fail() || (sep != '_');
     in >> out.y;
     fail |= in.fail();
     if (fail)
@@ -48,11 +48,11 @@ operator>>(std::istream& in, Settings::ExplicitBool& out)
 {
     std::string     s, res;
     bool            logicalResult;
-    auto            tolower = [](char c) { return static_cast<char>(std::tolower(c)); };
+    auto            toLower = [](char c) { return static_cast<char>(std::tolower(c)); };
 
     in >> s;
     res.resize(s.size());
-    std::transform(s.begin(), s.end(), res.begin(), tolower);
+    std::transform(s.begin(), s.end(), res.begin(), toLower);
     logicalResult = (s == "true");
     out.b = logicalResult;
     if (!logicalResult && (s != "false"))
@@ -94,7 +94,8 @@ operator<<(std::ostream& lhs, const lm::Vector2i& rhs)
 
 
 // Load settings from file.
-// If it does not exist, create it with defaults.
+// load() assumes the Settings instance is already initialized
+// with defaults.
 void
 Settings::load()
 {
@@ -118,7 +119,7 @@ Settings::load()
         file.getline(buf, sizeof(buf) - 1);
         iss.str(buf);
 
-        // Get key part
+        // Get the key part of the line.
         iss.getline(substr, sizeof(substr) - 1, ':');
         // Trim word from 'substr' buffer
         ss << substr;
@@ -126,7 +127,7 @@ Settings::load()
 
         mapIt = _deserializerM.find(tok);
 
-        // Misshappen key ? continue.
+        // Misshappen key ? skip to next.
         if (mapIt == _deserializerM.end())
             continue;
         
@@ -134,7 +135,7 @@ Settings::load()
         ss.clear();
         ss.str(std::string());
 
-        // Get value part
+        // Get the value part of the line.
         iss.getline(substr, sizeof(substr) - 1, ';');
         // Trim word from 'substr' buffer
         ss << substr;
@@ -142,8 +143,9 @@ Settings::load()
 
         // Reminder :
         // Map iterator points to type std::pair<std::string, SettingsEntry>
-       
+        
         // Keep default unless conversion is flawless.
+        // TODO: validate values VS supported values (resolution, key bindings...).
         if (validate(mapIt->second, tok))
             _valA[static_cast<short>(mapIt->second)] = tok;
     }
@@ -339,7 +341,7 @@ operator<<(std::ostream& o, const Settings::ExplicitBool& v)
 
 
 bool
-Settings::validate(SettingsEntry e, std::string s) const
+Settings::validate(SettingsEntry e, std::string s)
 {
     std::stringstream   ss(s);
     bool                result = false;

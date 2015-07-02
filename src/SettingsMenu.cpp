@@ -24,6 +24,13 @@ SettingsMenu::SettingsMenu()
 void
 SettingsMenu::load()
 {
+    {
+        lm::Vector2i    savedRes;
+
+        Settings::instance().get<SettingsEntry::GraphResolution>(savedRes);
+        lm::Core::instance().window().resize(savedRes.x, savedRes.y);
+    }
+
     _resumeBatch.draw(lm::FontProvider::instance().get("roboto80"), "Resume",
                     {SCREEN_WIDTH / 2 - 200.f / 2, SCREEN_HEIGHT / 2 - 500.f / 2}, {1.f, 0.f, 1.f, _resumeAlpha});
     _resumeBatch.send();

@@ -134,11 +134,11 @@ private:
     static bool
     tryConvertToType(const std::string& sdata, T& out);
 
-    bool                          validate(SettingsEntry e, std::string s) const;
-
     void                          setDefaults();
     void                          load();
     void                          storeConfiguration();
+
+    static bool                   validate(SettingsEntry e, std::string s);
 
     const DeserializerMap&        _deserializerM;
     const SerializerArray&        _serializerA;
@@ -160,7 +160,7 @@ operator>>(std::istream& in, Settings::ExplicitBool& out);
 std::istream&   
 operator>>(std::istream& in, lm::Vector2i& out);
 
-// Settings::tryConvertToType<T> definition need istream overload declarations.
+// Settings::tryConvertToType<T> definition needs istream overload declarations.
 
 template<typename T>
 inline bool
@@ -171,6 +171,31 @@ Settings::tryConvertToType(const std::string& sdata, T& out)
     entryss >> out;
     return !entryss.fail();
 }
+
+template<>
+inline bool
+Settings::tryConvertToType<bool>(const std::string& sdata, bool& out)
+{
+    std::stringstream entryss(sdata);
+    ExplicitBool eb = true;
+
+    entryss >> eb;
+    out = eb.b;
+    return !entryss.fail();
+}
+
+template<>
+inline bool
+Settings::tryConvertToType<lm::Key>(const std::string& sdata, lm::Key& out)
+{
+    std::stringstream entryss(sdata);
+    int code;
+
+    entryss >> code;
+    out = static_cast<lm::Key>(code);
+    return !entryss.fail();
+}
+
 
 // get / set helper specializations.
 
@@ -197,29 +222,6 @@ Settings::setWithType<bool>(SettingsEntry e, const bool& val)
 
 
 
-template<>
-inline bool
-Settings::tryConvertToType<bool>(const std::string& sdata, bool& out)
-{
-    std::stringstream entryss(sdata);
-    ExplicitBool eb = true;
-
-    entryss >> eb;
-    out = eb.b;
-    return !entryss.fail();
-}
-
-template<>
-inline bool
-Settings::tryConvertToType<lm::Key>(const std::string& sdata, lm::Key& out)
-{
-    std::stringstream entryss(sdata);
-    int code;
-
-    entryss >> code;
-    out = static_cast<lm::Key>(code);
-    return !entryss.fail();
-}
 
 
 #endif
