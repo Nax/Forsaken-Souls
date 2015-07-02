@@ -20,6 +20,7 @@ public:
     void    update();
     void    handleEvent(const lm::Event& event);
     void    render();
+    void    unload();
     ~KeyBinding();
 
 private:

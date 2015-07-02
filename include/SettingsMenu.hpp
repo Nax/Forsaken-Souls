@@ -11,9 +11,13 @@ public:
 	void	update();
 	void	handleEvent(const lm::Event& event);
 	void	render();
+	void	unload();
 	~SettingsMenu();
 
 private:
+
+	void					switchRes(lm::Vector2i res);
+
 	lm::Projection          _proj;
 	lm::SpriteBatch         _resumeBatch;
 	lm::SpriteBatch         _keyBatch;

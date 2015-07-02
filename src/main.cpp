@@ -1,5 +1,6 @@
 #include <cstdlib>
 #include <Lums>
+#include "Settings.hpp"
 #include "Assets.hpp"
 #include "Screen.hpp"
 #include "MainMenu.hpp"
@@ -8,7 +9,23 @@
 #include "Animation.hpp"
 #include "Body.hpp"
 
-#include "Settings.hpp"
+namespace
+{
+    int
+    initUserDataIO()
+    {
+        int err = lm::mkAppDataDir((lm::userDataPath() + "Forsaken Souls/").c_str());
+    
+        if (err)
+            std::cerr << "Fucked up Lums mkdir" << std::endl;
+        else
+        {
+            // Initialize Settings
+            static_cast<void>(Settings::instance());
+        }
+        return err;
+    }
+}
 
 int
 main(int argc, char* argv[])
@@ -24,6 +41,9 @@ main(int argc, char* argv[])
 
     srand(time(nullptr));
 
+    if (initUserDataIO())
+        return 1;
+
     lm::enableModule(lm::Module::All);
     auto& core = lm::Core::instance();
     core.setWindow(new lm::Window(width, scale * SCREEN_HEIGHT, "Forsaken Souls", false));
@@ -37,9 +57,9 @@ main(int argc, char* argv[])
     AnimationProvider::instance().loadBinary("bbd/animations.bbd");
     BodyProvider::instance().loadBinary("bbd/bodies.bbd");
 
-    lm::mkAppDataDir((lm::userDataPath() + "Forsaken Souls/").c_str());
-
+    initUserDataIO();
     core.push<MainMenu>();
     //core.push<PauseMenu>();
+    
     core.start();
 }
