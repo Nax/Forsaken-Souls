@@ -1,12 +1,17 @@
 #include "Settings.hpp"
 #include <fstream>
+#include <algorithm>
+#include <cctype>
 
 #include <iostream>
 
 
 // TODO :  Move to a file IO manager instance.
-static const std::string        appDataPath = lm::userDataPath() + "Forsaken Souls/";
-static const std::string        settingsFile = appDataPath + "settings.conf";
+namespace
+{
+    const std::string        appDataPath = lm::userDataPath() + "Forsaken Souls/";
+    const std::string        settingsFile = appDataPath + "settings.conf";
+}
 // ------------
 
 const Settings::SettingToActionArray    Settings::_settingToActionA =
@@ -20,6 +25,43 @@ const Settings::SettingToActionArray    Settings::_settingToActionA =
     , MappedActions::Attack
 };
 
+
+std::istream&   
+operator>>(std::istream& in, lm::Vector2i& out)
+{
+    bool fail = false;
+    char sep;
+
+    in >> out.x;
+    fail |= in.fail();
+    in >> sep;
+    fail |= in.fail();
+    in >> out.y;
+    fail |= in.fail();
+    if (fail)
+        in.setstate(std::ios::failbit);
+    return in;
+}
+
+std::istream&
+operator>>(std::istream& in, Settings::ExplicitBool& out)
+{
+    std::string     s, res;
+    bool            logicalResult;
+    auto            tolower = [](char c) { return static_cast<char>(std::tolower(c)); };
+
+    in >> s;
+    res.resize(s.size());
+    std::transform(s.begin(), s.end(), res.begin(), tolower);
+    logicalResult = (s == "true");
+    out.b = logicalResult;
+    if (!logicalResult && (s != "false"))
+    {
+        // Notify parse error through failbit
+        in.setstate(std::ios::failbit);
+    }
+    return in;
+}
 
 void
 Settings::storeConfiguration()
@@ -47,22 +89,9 @@ Settings::storeConfiguration()
 std::ostream&
 operator<<(std::ostream& lhs, const lm::Vector2i& rhs)
 {
-    std::string         ser;
-
-    lhs << rhs.x << '_' << rhs.y;
-    return lhs;
+    return (lhs << rhs.x << '_' << rhs.y);
 }
 
-std::istream&   
-operator>>(std::istream& in, lm::Vector2i& out)
-{
-    char sep;
-
-    in >> out.x;
-    in >> sep;
-    in >> out.y;
-    return in;
-}
 
 // Load settings from file.
 // If it does not exist, create it with defaults.
@@ -91,13 +120,13 @@ Settings::load()
 
         // Get key part
         iss.getline(substr, sizeof(substr) - 1, ':');
-        // Trim word from substr
+        // Trim word from 'substr' buffer
         ss << substr;
         ss >> tok;
 
         mapIt = _deserializerM.find(tok);
 
-        // Misshappen line ? continue.
+        // Misshappen key ? continue.
         if (mapIt == _deserializerM.end())
             continue;
         
@@ -105,15 +134,18 @@ Settings::load()
         ss.clear();
         ss.str(std::string());
 
-
         // Get value part
         iss.getline(substr, sizeof(substr) - 1, ';');
-        // Trim word from substr
+        // Trim word from 'substr' buffer
         ss << substr;
         ss >> tok;
 
+        // Reminder :
         // Map iterator points to type std::pair<std::string, SettingsEntry>
-        _valA[static_cast<short>(mapIt->second)] = tok;
+       
+        // Keep default unless conversion is flawless.
+        if (validate(mapIt->second, tok))
+            _valA[static_cast<short>(mapIt->second)] = tok;
     }
 
     _bad = !file.eof();
@@ -238,7 +270,7 @@ Settings::Settings()
 , _unsynced(false)
 {
     setDefaults();
-	load();
+    load();
     if (_bad)
     {
         std::cerr
@@ -289,7 +321,7 @@ Settings::reload()
 
 Settings::~Settings()
 {
-	delete &_deserializerM;
+    delete &_deserializerM;
     delete &_serializerA;
     delete &_valA;
 }
@@ -303,12 +335,52 @@ operator<<(std::ostream& o, const Settings::ExplicitBool& v)
     return o;
 }
 
-std::istream&
-operator>>(std::istream& in, Settings::ExplicitBool& out)
-{
-    std::string     s;
 
-    in >> s;
-    out.b = (s == "true" || s == "True");
-    return in;
+
+
+bool
+Settings::validate(SettingsEntry e, std::string s) const
+{
+    std::stringstream   ss(s);
+    bool                result = false;
+
+    switch (e)
+    {
+        // Boolean settings
+        case SettingsEntry::GraphFullScreen:
+        {
+            bool stor;
+            
+            result = tryConvertToType<bool>(s, stor);
+            break;
+        }
+
+        // lm::Vector2i settings
+        case SettingsEntry::GraphResolution:
+        {
+            lm::Vector2i stor;
+            
+            result = tryConvertToType<lm::Vector2i>(s, stor);
+            break;
+        }
+
+        // lm::Key || int settings
+        case SettingsEntry::KeyLeft:
+        case SettingsEntry::KeyRight:
+        case SettingsEntry::KeyJump:
+        case SettingsEntry::KeyCrouch:
+        case SettingsEntry::KeyAttack:
+        {
+            lm::Key stor;
+            
+            result = tryConvertToType<lm::Key>(s, stor);
+            break;
+        }
+        
+        default:
+            break;
+    }
+
+    return result;
 }
+
