@@ -4,22 +4,24 @@
 #include "Screen.hpp"
 #include "MainMenu.hpp"
 #include "PauseMenu.hpp"
-
 #include "Settings.hpp"
 
-static int
-initUserDataIO()
+namespace
 {
-    int err = lm::mkAppDataDir((lm::userDataPath() + "Forsaken Souls/").c_str());
-
-    if (err)
-        std::cerr << "Fucked up Lums mkdir" << std::endl;
-    else
+    int
+    initUserDataIO()
     {
-        // Initialize Settings
-        static_cast<void>(Settings::instance());
+        int err = lm::mkAppDataDir((lm::userDataPath() + "Forsaken Souls/").c_str());
+    
+        if (err)
+            std::cerr << "Fucked up Lums mkdir" << std::endl;
+        else
+        {
+            // Initialize Settings
+            static_cast<void>(Settings::instance());
+        }
+        return err;
     }
-    return err;
 }
 
 int
