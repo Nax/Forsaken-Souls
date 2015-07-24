@@ -9,15 +9,13 @@ class Animation
 public:
     struct Data
     {
-        size_t  start;
-        size_t  length;
-        size_t  speed;
-        bool    repeat;
+        size_t  name;
+        bool    loop;
     };
 
     Animation();
-    void       loadBinary(const lm::BObject& object);
-    Data&      animation(size_t move, size_t action);
+    void            loadBinary(const lm::BObject& object);
+    const Data&     animation(size_t move, size_t action);
     ~Animation();
 
 private:

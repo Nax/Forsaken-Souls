@@ -1,5 +1,5 @@
 {
     "name": "common_bot",
     "path": "images/common_bot.png",
-    "atlas": [12, 12]
+    "atlas": "atlases/common_bot.atlas"
 }

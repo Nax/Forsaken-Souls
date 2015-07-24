@@ -53,7 +53,7 @@ main(int argc, char* argv[])
     lm::GameObjectProvider::instance().loadBinary("bbd/objects.bbd");
     StateMachineProvider::instance().loadBinary("bbd/machines.bbd");
     AnimationProvider::instance().loadBinary("bbd/animations.bbd");
-    AnimationProvider::instance().loadBinary("bbd/animations.bbd");
+    lm::SkeletonProvider::instance().loadBinary("bbd/skeletons.bbd");
     BodyProvider::instance().loadBinary("bbd/bodies.bbd");
 
     initUserDataIO();

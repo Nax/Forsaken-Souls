@@ -29,7 +29,7 @@ Physics::~Physics()
 void
 Physics::move(lm::GameObject& go, Component::Movable& movable)
 {
-    go.position.x += movable.speed.x * 0.04f;
-    go.position.y += movable.speed.y * 0.04f;
+    go.position.x += movable.speed.x;
+    go.position.y += movable.speed.y;
     movable.speed = movable.speed * 0.95f + movable.data->speed * 0.05f;
 }

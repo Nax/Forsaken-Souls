@@ -12,8 +12,8 @@ namespace Component
 
     public:
         Movable();
-        void    setBody(const lm::BValue& value);
-        void    onStateChange(lm::GameObject& go, size_t move, size_t action);
+        void        setBody(const lm::BValue& value);
+        void        onStateChange(lm::GameObject& go, size_t move, size_t action);
         ~Movable();
 
         lm::Vector2f    speed;

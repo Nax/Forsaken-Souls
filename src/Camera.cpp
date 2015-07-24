@@ -1,8 +1,9 @@
 #include "Camera.hpp"
 #include "Screen.hpp"
 #include "Map.hpp"
+#include "Components/Movable.hpp"
 
-#define CAMERA_MIN_SPEED  (0.20f)
+#define CAMERA_MIN_SPEED  (0.01f)
 
 Camera::Camera()
 : _movingX(false)
@@ -38,7 +39,7 @@ moveCamera(bool& moving, int screenPos, int screenTiles, int mapSize, float& spe
 		moving = false;
 		return;
 	}
-	offset += speed * 0.15f;
+	offset += speed;
 	speed = speed * 0.95f + entitySpeed * 0.05f;
 	if (speed > 0.0f && speed < CAMERA_MIN_SPEED)
 		speed = CAMERA_MIN_SPEED;
@@ -80,9 +81,9 @@ void
 Camera::update(lm::GameObject& go, const Map& map)
 {
 	const lm::Vector2f screenPos = lm::Vector2f(go.position.x, go.position.y) - _offset;
-	//lm::Vector2f* speed = entity.recv<lm::Vector2f>("speed");
 
-	lm::Vector2f speed;
+    Component::Movable* movable = (Component::Movable*)go.getComponent("movable");
+	lm::Vector2f speed = movable->speed;
 
 	checkCamera(_movingX, screenPos.x, SCREEN_TILES_W, _speed.x, speed.x);
 	checkCamera(_movingY, screenPos.y, SCREEN_TILES_H, _speed.y, speed.y);

@@ -12,7 +12,7 @@ Body::loadBinary(const lm::BObject& object)
             auto& obj = actions.second.asObject();
             auto& speed = obj["speed"].asArray();
             auto& impulse = obj["impulse"].asArray();
-            _bodies[move][action] = {{speed[0].asFloat(), speed[1].asFloat()}, {impulse[0].asFloat(), impulse[1].asFloat()}};
+            _bodies[move][action] = {{speed[0].asFloat() * 0.05f, speed[1].asFloat() * 0.05f}, {impulse[0].asFloat() * 0.05f, impulse[1].asFloat() * 0.05f}};
         }
     }
 }

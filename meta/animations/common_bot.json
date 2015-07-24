@@ -1,0 +1,12 @@
+{
+    "name": "common_bot",
+    "animations": {
+        "idle": {
+            "none": ["Idle_Wait", 1],
+            "melee": ["Idle_1", 0]
+        },
+        "run": {
+            "none": ["Walk", 1]
+        }
+    }
+}

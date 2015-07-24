@@ -24,7 +24,7 @@ Game::load()
     _healTicks = 0;
     setLevel(0, 0);
 
-    _yseult = lm::GameObjectProvider::instance().get("yseult")();
+    _yseult = lm::GameObjectProvider::instance().get("common_bot")();
     _yseult->position.x = 7;
     _yseult->position.y = 14;
     _yseult->position.z = 2.5f;
@@ -42,7 +42,7 @@ Game::update()
     _input.update(_gameObjects);
     _physics.update(_gameObjects);
     _camera.update(*_yseult, _level.map());
-    _renderSprite.update(_gameObjects);
+    _renderSkeleton.update(_gameObjects);
     if (_gameOverTicks > 500)
         Core::instance().transition<GameOver>();
 }
@@ -85,7 +85,7 @@ Game::render()
     _parallaxBatch.render();
     lm::uniform(shader, "view", _proj.view);
     _backBatch.render();
-    _renderSprite.render(_gameObjects);
+    _renderSkeleton.render(_gameObjects);
     _frontBatch.render();
 
     lm::uniform(shader, "view", identity);

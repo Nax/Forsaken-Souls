@@ -6,9 +6,9 @@
 #include <Lums>
 #include "Level.hpp"
 #include "Camera.hpp"
-#include "Systems/RenderSprite.hpp"
 #include "Systems/Input.hpp"
 #include "Systems/Physics.hpp"
+#include "Systems/RenderSkeleton.hpp"
 
 
 class Game : public lm::GameState
@@ -43,9 +43,9 @@ private:
     lm::ShaderPipeline              _pipeline;
     lm::SpriteBatch                 _textBatch;
     std::vector<lm::GameObject*>    _gameObjects;
-    System::RenderSprite            _renderSprite;
     System::Input                   _input;
     System::Physics                 _physics;
+    System::RenderSkeleton          _renderSkeleton;
 };
 
 #endif
