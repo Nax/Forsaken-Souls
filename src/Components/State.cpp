@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "Components/State.hpp"
 
 LUMS_REGISTER_COMPONENT(Component::State, "state");
@@ -43,6 +45,11 @@ State::setAction(const lm::BValue& value)
 void
 State::switchState(lm::GameObject& go, size_t message)
 {
+    if (_action == lm::sym("none") && (message == lm::sym("left") || message == lm::sym("right")))
+    {
+        bool direction = (message == lm::sym("left")) ? false : true;
+        go.send("direction", direction);
+    }
     size_t newMove = _stateMachine->switchMove(_move, _action, message);
     size_t newAction = _stateMachine->switchAction(_action, message);
     if (newMove != _move || newAction != _action)

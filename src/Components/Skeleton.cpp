@@ -7,6 +7,7 @@ LUMS_BIND_SETTER("skeleton", "skeleton", &Component::Skeleton::setSkeleton);
 LUMS_BIND_SETTER("skeleton", "animation", &Component::Skeleton::setAnimation);
 
 LUMS_BIND_MESSAGE("skeleton", "state_change", &Component::Skeleton::onStateChange);
+LUMS_BIND_MESSAGE("skeleton", "direction", &Component::Skeleton::onDirectionChange);
 
 using namespace Component;
 
@@ -50,6 +51,12 @@ Skeleton::onStateChange(lm::GameObject& go, size_t move, size_t action)
 {
     const Animation::Data& data = _animation->animation(move, action);
     _skeleton.setAnimation(data.name, data.loop);
+}
+
+void
+Skeleton::onDirectionChange(lm::GameObject& go, bool direction)
+{
+    _skeleton.setFlip(direction);
 }
 
 Skeleton::~Skeleton()
