@@ -2,7 +2,6 @@
 #include "Map.hpp"
 #include "ImageProvider.hpp"
 #include "Screen.hpp"
-#include "Assets.hpp"
 
 Map::Map(std::ifstream& file)
 {
@@ -149,7 +148,7 @@ Map::draw(lm::StaticSpriteBatch& sb, int z) const
     		const uint16_t tileId = _tiles[i + j * _width + z * _width * _height];
 
     		if (tileId != 0)
-    			sb.draw(tileset, tileId - 1, {i * TILE_SIZE, SCREEN_HEIGHT - (j + 1) * TILE_SIZE, 5.0f - z});
+    			sb.draw(tileset, tileId - 1, {i * TILE_SIZE, j * TILE_SIZE, 5.0f - z});
     	}
     }
 }

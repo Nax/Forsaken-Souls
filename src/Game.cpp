@@ -6,7 +6,6 @@
 #include "Hud.hpp"
 #include "GameOver.hpp"
 #include "Physics.hpp"
-#include "Assets.hpp"
 
 using namespace lm;
 
@@ -31,7 +30,7 @@ Game::load()
     _yseult->position.z = 2.5f;
     _gameObjects.push_back(_yseult);
     _camera.focus(*_yseult, _level.map());
-    _proj.projection = lm::ortho(0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 100.f, -100.f);
+    _proj.projection = lm::ortho(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, 100.f, -100.f);
     _pipeline.setWindow(lm::Core::instance().window());
     //_pipeline.append(lm::ShaderProvider::instance().get("light"));
     _pipeline.append(lm::ShaderProvider::instance().get("border"));
@@ -75,8 +74,8 @@ Game::render()
     _pipeline.bind();
     
     _proj.view = identity;
-    lm::translate(_proj.view, -off.x * TILE_SIZE, off.y * TILE_SIZE, 0);
-    lm::translate(parallaxView, -off.x * TILE_SIZE * 0.4f, off.y * TILE_SIZE * 0.4f, 0);
+    lm::translate(_proj.view, -off.x * TILE_SIZE, -off.y * TILE_SIZE, 0);
+    lm::translate(parallaxView, -off.x * TILE_SIZE * 0.4f, -off.y * TILE_SIZE * 0.4f, 0);
     auto& shader = lm::ShaderProvider::instance().get("basic2d");
     shader.use();
 
@@ -96,7 +95,7 @@ Game::render()
     shader.use();
 
     _textBatch.begin();
-    _textBatch.draw(lm::FontProvider::instance().get("roboto80"), fps, {0.0, 0.0, -10.f});
+    _textBatch.draw(lm::FontProvider::instance().get("roboto80"), fps, {0.0, SCREEN_HEIGHT - 100.f, -10.f});
     _textBatch.end();
 }
 
@@ -142,7 +141,7 @@ Game::setLevel(int level, int map)
     for (int j = 0; j < yMax; ++j)
     {
         for (int i = 0; i < xMax; ++i)
-            _parallaxBatch.draw(parallax, perlin(i, j) % 5, {i * parallax.width() / 3, SCREEN_HEIGHT - (j + 1) * parallax.height() / 2, 10.f});
+            _parallaxBatch.draw(parallax, perlin(i, j) % 5, {i * parallax.width() / 3, j * parallax.height() / 2, 10.f});
     }
     _parallaxBatch.send();
 }

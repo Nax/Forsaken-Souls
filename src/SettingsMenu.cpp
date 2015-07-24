@@ -1,7 +1,6 @@
 #include "SettingsMenu.hpp"
 #include "Settings.hpp"
 #include "KeyBinding.hpp"
-#include "Assets.hpp"
 #include "Screen.hpp"
 
 SettingsMenu::SettingsMenu()

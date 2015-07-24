@@ -1,5 +1,4 @@
 #include "PauseMenu.hpp"
-#include "Assets.hpp"
 #include "Screen.hpp"
 #include "SettingsMenu.hpp"
 
@@ -22,7 +21,7 @@ PauseMenu::load()
 					{SCREEN_WIDTH / 2 - 200.f / 2.f, SCREEN_HEIGHT / 2 - 300.f / 2.f, 0.f}, {1.f, 0.f, 1.f, _settingsAlpha});
 	_settingsBatch.send();
 
-	_proj.projection = lm::ortho(0, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
+	_proj.projection = lm::ortho(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT);
 }
 
 void

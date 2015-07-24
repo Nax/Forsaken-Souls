@@ -1,7 +1,6 @@
 #include <cstdlib>
 #include <Lums>
 #include "Settings.hpp"
-#include "Assets.hpp"
 #include "Screen.hpp"
 #include "MainMenu.hpp"
 #include "PauseMenu.hpp"
@@ -38,6 +37,7 @@ main(int argc, char* argv[])
     if (!width)
         width = 1920;
     scale = float(width) / SCREEN_WIDTH;
+    lm::setGlobalScale(scale);
 
     srand(time(nullptr));
 
@@ -47,7 +47,6 @@ main(int argc, char* argv[])
     lm::enableModule(lm::Module::All);
     auto& core = lm::Core::instance();
     core.setWindow(new lm::Window(width, scale * SCREEN_HEIGHT, "Forsaken Souls", false));
-    Assets::setScale(scale);
     lm::TextureProvider::instance().loadBinary("bbd/textures.bbd");
     lm::ShaderProvider::instance().loadBinary("bbd/shaders.bbd");
     lm::FontProvider::instance().loadBinary("bbd/fonts.bbd");

@@ -1,5 +1,4 @@
 #include "KeyBinding.hpp"
-#include "Assets.hpp"
 #include "Screen.hpp"
 #include "Settings.hpp"
 
