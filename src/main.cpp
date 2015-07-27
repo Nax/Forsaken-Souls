@@ -7,6 +7,7 @@
 #include "StateMachine.hpp"
 #include "Animation.hpp"
 #include "Body.hpp"
+#include "BoxSet.hpp"
 
 namespace
 {
@@ -55,6 +56,7 @@ main(int argc, char* argv[])
     AnimationProvider::instance().loadBinary("bbd/animations.bbd");
     lm::SkeletonProvider::instance().loadBinary("bbd/skeletons.bbd");
     BodyProvider::instance().loadBinary("bbd/bodies.bbd");
+    BoxProvider::instance().loadBinary("bbd/boxes.bbd");
 
     initUserDataIO();
     core.push<MainMenu>();

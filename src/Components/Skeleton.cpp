@@ -54,9 +54,10 @@ Skeleton::onStateChange(lm::GameObject& go, size_t move, size_t action)
 }
 
 void
-Skeleton::onDirectionChange(lm::GameObject& go, bool direction)
+Skeleton::onDirectionChange(lm::GameObject& go, int direction)
 {
-    _skeleton.setFlip(direction);
+    if (direction)
+        _skeleton.setFlip(direction == 1);
 }
 
 Skeleton::~Skeleton()

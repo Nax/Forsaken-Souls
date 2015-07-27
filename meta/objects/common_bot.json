@@ -16,6 +16,9 @@
         },
         "movable": {
             "body": "common_bot"
+        },
+        "collidable": {
+            "box": "common_bot"
         }
     }
 }

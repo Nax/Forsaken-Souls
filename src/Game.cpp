@@ -39,8 +39,8 @@ Game::load()
 void
 Game::update()
 {
+    _physics.update(_gameObjects, _level.map());
     _input.update(_gameObjects);
-    _physics.update(_gameObjects);
     _camera.update(*_yseult, _level.map());
     _renderSkeleton.update(_gameObjects);
     if (_gameOverTicks > 500)

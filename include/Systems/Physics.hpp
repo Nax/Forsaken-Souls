@@ -4,6 +4,8 @@
 #include <vector>
 #include <Lums>
 #include "Components/Movable.hpp"
+#include "Components/Collidable.hpp"
+#include "Map.hpp"
 
 namespace System
 {
@@ -11,11 +13,12 @@ namespace System
     {
     public:
         Physics();
-        void    update(std::vector<lm::GameObject*>& gameObjects); 
+        void    update(std::vector<lm::GameObject*>& gameObjects, const Map& map); 
         ~Physics();
 
     private:
         void    move(lm::GameObject& go, Component::Movable& movable);
+        void    collide(lm::GameObject& go, Component::Collidable& collidable, const Map& map);
     };
 }
 

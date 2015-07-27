@@ -45,9 +45,9 @@ State::setAction(const lm::BValue& value)
 void
 State::switchState(lm::GameObject& go, size_t message)
 {
-    if (_action == lm::sym("none") && (message == lm::sym("left") || message == lm::sym("right")))
+    if (_action == lm::sym("none") && (message == lm::sym("left") || message == lm::sym("right") || message == lm::sym("no_move")))
     {
-        bool direction = (message == lm::sym("left")) ? false : true;
+        int direction = (message == lm::sym("left")) ? -1 : (message == lm::sym("right")) ? 1 : 0;
         go.send("direction", direction);
     }
     size_t newMove = _stateMachine->switchMove(_move, _action, message);

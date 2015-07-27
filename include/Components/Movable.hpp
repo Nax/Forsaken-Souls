@@ -14,7 +14,7 @@ namespace Component
         Movable();
         void        setBody(const lm::BValue& value);
         void        onStateChange(lm::GameObject& go, size_t move, size_t action);
-        void        onDirectionChange(lm::GameObject& go, bool direction);
+        void        onDirectionChange(lm::GameObject& go, int direction);
 
         ~Movable();
 
@@ -22,6 +22,7 @@ namespace Component
         Body*           body;
         Body::Data*     data;
         bool            direction;
+        bool            moving;
     };
 }
 

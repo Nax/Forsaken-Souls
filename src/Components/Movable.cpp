@@ -12,6 +12,7 @@ using namespace Component;
 
 Movable::Movable()
 : speed()
+, moving()
 {
 
 }
@@ -29,13 +30,19 @@ Movable::onStateChange(lm::GameObject& go, size_t move, size_t action)
     if (data->impulse.x)
         speed.x = data->impulse.x * ((direction) ? 1.f : -1.f);
     if (data->impulse.y)
-        speed.y = data->impulse.y * ((direction) ? 1.f : -1.f);
+        speed.y = data->impulse.y;
 }
 
 void
-Movable::onDirectionChange(lm::GameObject& go, bool newDirection)
+Movable::onDirectionChange(lm::GameObject& go, int newDirection)
 {
-    direction = newDirection;
+    if (newDirection)
+    {
+        moving = true;
+        direction = (newDirection == 1);
+    }
+    else
+        moving = false;
 }
 
 Movable::~Movable()

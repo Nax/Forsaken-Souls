@@ -63,6 +63,8 @@ Input::update(std::vector<lm::GameObject*>& gameObjects)
             sendInput(*go, "no_move");
         if (component->meleeAttack)
             sendInput(*go, "melee");
+        if (component->jump)
+            sendInput(*go, "jump");
     }
 }
 
