@@ -127,7 +127,12 @@ Game::handleEvent(const Event& event)
                 switchArmor("yseult_medium", _yseult, _gameObjects);
                 break;
             case lm::Key::Num3:
-               switchArmor("yseult_heavy", _yseult, _gameObjects);
+                switchArmor("yseult_heavy", _yseult, _gameObjects);
+                break;
+            case lm::Key::Num4:
+                switchArmor("yseult_god", _yseult, _gameObjects);
+                break;
+            default:
                 break;
         }
     }

@@ -50,8 +50,10 @@ State::switchState(lm::GameObject& go, size_t message)
         int direction = (message == lm::sym("left")) ? -1 : (message == lm::sym("right")) ? 1 : 0;
         go.send("direction", direction);
     }
-    size_t newMove = _stateMachine->switchMove(_move, _action, message);
+    if (message == lm::sym("jump"))
+        std::cout << "MIAOU" << std::endl;
     size_t newAction = _stateMachine->switchAction(_action, message);
+    size_t newMove = _stateMachine->switchMove(_move, newAction, message);
     if (newMove != _move || newAction != _action)
     {
         go.send("state_change", newMove, newAction);

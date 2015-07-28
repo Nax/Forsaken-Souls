@@ -1,5 +1,5 @@
 {
-    "name": "yseult_light",
+    "name": "yseult_god",
     "animations": {
         "idle": {
             "none": ["Idle_Wait", 1],
@@ -14,8 +14,8 @@
             "melee": ["Idle_1", 0]
         },
         "jump2": {
-          "none": ["Idle_Wait", 1],
-          "melee": ["Idle_1", 0]
+            "none": ["Walk", 0],
+            "melee": ["Idle_1", 0]
         }
     }
 }

@@ -1,5 +1,5 @@
 {
-    "name": "yseult_light",
+    "name": "yseult_god",
     "moves": {
         "idle": {
             "left": {
@@ -58,6 +58,9 @@
         "jump2": {
           "grounded": {
               "none": "idle"
+          },
+          "jump": {
+            "none": "jump"
           }
         },
         "fall": {
