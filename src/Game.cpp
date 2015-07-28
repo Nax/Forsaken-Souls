@@ -11,6 +11,17 @@ using namespace lm;
 
 bool debugMode = false;
 
+static void
+switchArmor(const char* name, GameObject*& yseult, std::vector<GameObject*>& gameObjects)
+{
+    lm::Vector3f pos = yseult->position;
+    gameObjects.erase(std::find(gameObjects.begin(), gameObjects.end(), yseult));
+    delete yseult;
+    yseult = lm::GameObjectProvider::instance().get(name)();
+    yseult->position = pos;
+    gameObjects.push_back(yseult);
+}
+
 Game::Game()
 {
 
@@ -22,7 +33,7 @@ Game::load()
     _clock = 0;
     _gameOverTicks = 0;
     _healTicks = 0;
-    setLevel(0, 0);
+    setLevel(0, 1);
 
     _yseult = lm::GameObjectProvider::instance().get("yseult_medium")();
     _yseult->position.x = 7;
@@ -102,6 +113,24 @@ Game::render()
 void
 Game::handleEvent(const Event& event)
 {
+    if (event.type == lm::Event::Type::KeyDown)
+    {
+        switch (event.key)
+        {
+            case lm::Key::Escape:
+                lm::Core::instance().stop();
+                break;
+            case lm::Key::Num1:
+                switchArmor("yseult_light", _yseult, _gameObjects);
+                break;
+            case lm::Key::Num2:
+                switchArmor("yseult_medium", _yseult, _gameObjects);
+                break;
+            case lm::Key::Num3:
+               switchArmor("yseult_heavy", _yseult, _gameObjects);
+                break;
+        }
+    }
     _input.handleEvent(_gameObjects, event);
 }
 

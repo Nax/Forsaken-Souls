@@ -39,7 +39,7 @@ moveCamera(bool& moving, int screenPos, int screenTiles, int mapSize, float& spe
 		moving = false;
 		return;
 	}
-	offset += speed;
+	offset += speed * (1.f / 120.f);
 	speed = speed * 0.95f + entitySpeed * 0.05f;
 	if (speed > 0.0f && speed < CAMERA_MIN_SPEED)
 		speed = CAMERA_MIN_SPEED;

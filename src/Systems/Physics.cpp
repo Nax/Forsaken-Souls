@@ -35,8 +35,8 @@ Physics::~Physics()
 void
 Physics::move(lm::GameObject& go, Component::Movable& movable)
 {
-    movable.speed = movable.speed * 0.5f + (movable.data->speed * 0.5f) * ((movable.direction) ? 1.f : -1.f) * (movable.moving ? 1 : 0);
-    movable.speed.y -= 0.007f;
+    movable.speed.x = movable.speed.x * 0.5f + (movable.data->speed.x * 0.5f) * ((movable.direction) ? 1.f : -1.f) * (movable.moving ? 1 : 0);
+    movable.speed.y -= 0.3f;
 }
 
 static void
@@ -82,9 +82,9 @@ Physics::collide(lm::GameObject& go, Component::Collidable& collidable, const Ma
 {
     auto* movable = static_cast<Component::Movable*>(go.getComponent("movable"));
     lm::Vector2f speed = movable->speed;
-    go.position.x += speed.x;
+    go.position.x += speed.x * (1.f / 120.f);
     collisions(0, go, map, speed, collidable);
-    go.position.y += speed.y;
+    go.position.y += speed.y * (1.f / 120.f);
     collisions(1, go, map, speed, collidable);
     movable->speed = speed;
 }

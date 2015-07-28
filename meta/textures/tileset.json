@@ -1,5 +1,5 @@
 {
     "name": "tileset",
-    "path": "images/tileset.png",
-    "atlas": [8, 52]
+    "path": "images/tileset_debug.png",
+    "atlas": [4, 4]
 }
