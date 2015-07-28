@@ -1,0 +1,27 @@
+{
+    "name": "yseult_light",
+    "bodies": {
+        "idle": {
+            "none": {
+                "speed": [0.0, 0.0],
+                "impulse": [0.0, 0.0]
+            },
+            "melee": {
+                "speed": [0.0, 0.0],
+                "impulse": [0.0, 0.0]
+            }
+        },
+        "run": {
+            "none": {
+                "speed": [2.5, 0.0],
+                "impulse": [2.0, 0.0]
+            }
+        },
+        "jump": {
+            "none": {
+                "speed": [2.5, 0.0],
+                "impulse": [0.0, 50.0]
+            }
+        }
+    }
+}

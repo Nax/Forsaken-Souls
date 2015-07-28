@@ -1,0 +1,84 @@
+{
+    "name": "yseult_light",
+    "moves": {
+        "idle": {
+            "left": {
+                "none": "run"
+            },
+            "right": {
+                "none": "run"
+            },
+            "jump": {
+                "none": "jump"
+            },
+            "crouch": {
+                "none": "crouch"
+            },
+            "not_grounded": {
+                "none": "fall"
+            }
+        },
+        "crouch": {
+            "not_crouch": {
+                "none": "idle"
+            },
+            "jump": {
+                "none": "jump"
+            },
+            "not_grounded": {
+                "none": "fall"
+            }
+        },
+        "run": {
+            "no_move": {
+                "none": "idle"
+            },
+            "jump": {
+                "none": "jump"
+            },
+            "not_grounded": {
+                "none": "fall"
+            },
+            "crouch": {
+                "none": "crouch"
+            }
+        },
+        "jump": {
+            "grounded": {
+                "none": "idle"
+            },
+            "falling": {
+                "none": "fall"
+            }
+        },
+        "fall": {
+            "grounded": {
+                "none": "idle"
+            }
+        }
+    },
+    "actions": {
+        "none": {
+            "melee": "melee",
+            "range": "range",
+            "damage": "hurt",
+            "death": "dead"
+        },
+        "melee": {
+            "animation_end": "none",
+            "damage": "hurt",
+            "death": "dead"
+        },
+        "range": {
+            "animation_end": "none",
+            "damage": "hurt",
+            "death": "dead"
+        },
+        "hurt": {
+            "animation_end": "none",
+            "death": "dead"
+        },
+        "dead": {
+        }
+    }
+}

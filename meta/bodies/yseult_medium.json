@@ -1,5 +1,5 @@
 {
-    "name": "yseult",
+    "name": "yseult_medium",
     "bodies": {
         "idle": {
             "none": {
@@ -13,14 +13,14 @@
         },
         "run": {
             "none": {
-                "speed": [1.0, 0.0],
-                "impulse": [0.0, 0.0]
+                "speed": [2.5, 0.0],
+                "impulse": [2.0, 0.0]
             }
         },
         "jump": {
             "none": {
-                "speed": [0.0, 0.0],
-                "impulse": [0.0, 5.0]
+                "speed": [2.5, 0.0],
+                "impulse": [0.0, 50.0]
             }
         }
     }

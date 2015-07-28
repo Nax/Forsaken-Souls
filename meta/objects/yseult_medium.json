@@ -1,0 +1,24 @@
+{
+    "name": "yseult_medium",
+    "components": {
+        "skeleton": {
+            "texture": "yseult_medium",
+            "skeleton": "yseult_medium",
+            "animation": "yseult_medium"
+        },
+        "state": {
+            "move": "idle",
+            "action": "none",
+            "state_machine": "yseult_medium"
+        },
+        "input": {
+            
+        },
+        "movable": {
+            "body": "yseult_medium"
+        },
+        "collidable": {
+            "box": "yseult_medium"
+        }
+    }
+}

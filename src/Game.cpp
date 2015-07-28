@@ -24,7 +24,7 @@ Game::load()
     _healTicks = 0;
     setLevel(0, 0);
 
-    _yseult = lm::GameObjectProvider::instance().get("common_bot")();
+    _yseult = lm::GameObjectProvider::instance().get("yseult_medium")();
     _yseult->position.x = 7;
     _yseult->position.y = 14;
     _yseult->position.z = 2.5f;

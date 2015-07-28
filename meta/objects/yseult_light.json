@@ -1,0 +1,24 @@
+{
+    "name": "yseult_light",
+    "components": {
+        "skeleton": {
+            "texture": "yseult_light",
+            "skeleton": "yseult_light",
+            "animation": "yseult_light"
+        },
+        "state": {
+            "move": "idle",
+            "action": "none",
+            "state_machine": "yseult_light"
+        },
+        "input": {
+            
+        },
+        "movable": {
+            "body": "yseult_light"
+        },
+        "collidable": {
+            "box": "yseult_light"
+        }
+    }
+}
