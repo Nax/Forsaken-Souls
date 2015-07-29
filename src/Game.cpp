@@ -79,6 +79,8 @@ Game::render()
     snprintf(fps, 256, "%5.0lf FPS", fpsc);
 
     lm::Vector2f off = _camera.offset();
+    off.x = floor(TILE_SIZE * lm::globalScale() * off.x) / (TILE_SIZE * lm::globalScale());
+    off.y = floor(TILE_SIZE * lm::globalScale() * off.y) / (TILE_SIZE * lm::globalScale());
     Matrix4f parallaxView = lm::Matrix4f::identity();
     Matrix4f identity = lm::Matrix4f::identity();
 

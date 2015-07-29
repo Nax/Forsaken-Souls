@@ -11,14 +11,14 @@
             "action": "none",
             "state_machine": "common_bot"
         },
-        "input": {
-            
-        },
         "movable": {
             "body": "common_bot"
         },
         "collidable": {
             "box": "common_bot"
+        },
+        "input": {
+
         }
     }
 }

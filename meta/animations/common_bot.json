@@ -3,13 +3,18 @@
     "animations": {
         "idle": {
             "none": ["Idle_Wait", 1],
-            "melee": ["Idle_1", 0]
+            "melee_1": ["Idle_Attack_1", 0],
+            "melee_2": ["Idle_Attack_2", 0]
         },
         "run": {
-            "none": ["Walk", 1]
+            "none": ["Run", 1]
         },
         "jump": {
-            "none": ["Walk", 0]
+            "none": ["Fall", 0],
+            "melee_1": ["Fall_Attack_1", 0]
+        },
+        "walk": {
+            "none": ["Walk", 1]
         }
     }
 }

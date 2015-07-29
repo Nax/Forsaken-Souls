@@ -38,6 +38,7 @@ main(int argc, char* argv[])
     if (!width)
         width = 1920;
     scale = float(width) / SCREEN_WIDTH;
+    std::cout << scale << std::endl;
     lm::setGlobalScale(scale);
 
     srand(time(nullptr));
