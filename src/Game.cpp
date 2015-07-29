@@ -33,7 +33,7 @@ Game::load()
     _clock = 0;
     _gameOverTicks = 0;
     _healTicks = 0;
-    setLevel(0, 1);
+    setLevel(0, 2);
 
     _yseult = lm::GameObjectProvider::instance().get("yseult_medium")();
     _yseult->position.x = 7;

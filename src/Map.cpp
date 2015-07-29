@@ -139,7 +139,7 @@ Map::~Map()
 void
 Map::draw(lm::StaticSpriteBatch& sb, int z) const
 {
-    auto& tileset = lm::TextureProvider::instance().get("tileset");
+    auto& tileset = lm::TextureProvider::instance().get("tileset_test");
 
     for (int j = 0; j < _height; ++j)
     {
