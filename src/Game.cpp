@@ -52,6 +52,8 @@ Game::update()
     _input.update(_gameObjects);
     _camera.update(*_yseult, _level.map());
     _renderSkeleton.update(_gameObjects);
+    for (auto* o : _gameObjects)
+        o->update();
     if (_gameOverTicks > 500)
         Core::instance().transition<GameOver>();
 }

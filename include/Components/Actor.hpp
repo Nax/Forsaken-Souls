@@ -11,13 +11,15 @@ namespace Component
 
     public:
         void    init(lm::GameObject& object);
-        void    setHealth(const BValue& value);
+        void    setHealth(const lm::BValue& value);
 
         bool    direction:1;
         bool    dead:1;
         bool    knockBack:1;
         int     health;
         int     maxHealth;
+        int     action;
+        int     actionAcc;
     };
 }
 

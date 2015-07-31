@@ -1,21 +1,27 @@
 {
-    "name": "yseult_medium",
-    "components": {
-        "skeleton": {
-            "texture": "yseult_medium",
-            "skeleton": "yseult_medium"
-        },
-        "input": {
-            
-        },
-        "physics": {
+  "name": "yseult_medium",
+  "components": {
+    "skeleton": {
+      "texture": "yseult_medium",
+      "skeleton": "yseult_medium"
+    },
+    "input": {
+      
+    },
+    "physics": {
 
-        },
-        "collider": {
-            "box": [0.0, -0.5, 1.0, 3.0]
-        },
-        "team": {
-            "team": "player"
-        }
+    },
+    "collider": {
+      "box": [-0.5, 0.0, 1.0, 3.0]
+    },
+    "actor": {
+      "health": 100
+    },
+    "team": {
+      "team": "player"
+    },
+    "script_yseult": {
+
     }
+  }
 }

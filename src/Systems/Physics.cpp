@@ -1,6 +1,8 @@
 #include <cmath>
 #include "Systems/Physics.hpp"
 
+#include <iostream>
+
 using namespace System;
 
 Physics::Physics()
