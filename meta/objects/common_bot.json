@@ -3,19 +3,13 @@
     "components": {
         "skeleton": {
             "texture": "common_bot",
-            "skeleton": "common_bot",
-            "animation": "common_bot"
+            "skeleton": "common_bot"
         },
-        "state": {
-            "move": "idle",
-            "action": "none",
-            "state_machine": "common_bot"
+        "physics": {
+
         },
-        "movable": {
-            "body": "common_bot"
-        },
-        "collidable": {
-            "box": "common_bot"
+        "collider": {
+
         },
         "input": {
 

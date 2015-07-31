@@ -1,6 +1,5 @@
 #include <iostream>
 #include "Map.hpp"
-#include "ImageProvider.hpp"
 #include "Screen.hpp"
 
 Map::Map(std::ifstream& file)

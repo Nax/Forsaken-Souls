@@ -1,7 +1,7 @@
 #include "Camera.hpp"
 #include "Screen.hpp"
 #include "Map.hpp"
-#include "Components/Movable.hpp"
+#include "Components/Physics.hpp"
 
 #define CAMERA_MIN_SPEED  (0.01f)
 
@@ -82,8 +82,8 @@ Camera::update(lm::GameObject& go, const Map& map)
 {
 	const lm::Vector2f screenPos = lm::Vector2f(go.position.x, go.position.y) - _offset;
 
-    Component::Movable* movable = (Component::Movable*)go.getComponent("movable");
-	lm::Vector2f speed = movable->speed;
+    Component::Physics* physics = go.getComponent<Component::Physics>("physics");
+	lm::Vector2f speed = physics->speed;
 
 	checkCamera(_movingX, screenPos.x, SCREEN_TILES_W, _speed.x, speed.x);
 	checkCamera(_movingY, screenPos.y, SCREEN_TILES_H, _speed.y, speed.y);

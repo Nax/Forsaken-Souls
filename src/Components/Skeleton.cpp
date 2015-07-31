@@ -4,10 +4,6 @@ LUMS_REGISTER_COMPONENT(Component::Skeleton, "skeleton");
 
 LUMS_BIND_SETTER("skeleton", "texture", &Component::Skeleton::setTexture);
 LUMS_BIND_SETTER("skeleton", "skeleton", &Component::Skeleton::setSkeleton);
-LUMS_BIND_SETTER("skeleton", "animation", &Component::Skeleton::setAnimation);
-
-LUMS_BIND_MESSAGE("skeleton", "state_change", &Component::Skeleton::onStateChange);
-LUMS_BIND_MESSAGE("skeleton", "direction", &Component::Skeleton::onDirectionChange);
 
 using namespace Component;
 
@@ -38,26 +34,6 @@ void
 Skeleton::setSkeleton(const lm::BValue& value)
 {
     _skeleton = lm::SkeletonProvider::instance().get(value.asString()).create();
-}
-
-void
-Skeleton::setAnimation(const lm::BValue& value)
-{
-    _animation = &(AnimationProvider::instance().get(value.asString()));
-}
-
-void
-Skeleton::onStateChange(lm::GameObject& go, size_t move, size_t action)
-{
-    const Animation::Data& data = _animation->animation(move, action);
-    _skeleton.setAnimation(data.name, data.loop);
-}
-
-void
-Skeleton::onDirectionChange(lm::GameObject& go, int direction)
-{
-    if (direction)
-        _skeleton.setFlip(direction == 1);
 }
 
 Skeleton::~Skeleton()

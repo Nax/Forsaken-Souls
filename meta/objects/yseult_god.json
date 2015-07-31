@@ -3,22 +3,16 @@
     "components": {
         "skeleton": {
             "texture": "yseult_god",
-            "skeleton": "yseult_god",
-            "animation": "yseult_god"
-        },
-        "state": {
-            "move": "idle",
-            "action": "none",
-            "state_machine": "yseult_god"
+            "skeleton": "yseult_god"
         },
         "input": {
             
         },
-        "movable": {
-            "body": "yseult_god"
+        "physics": {
+
         },
-        "collidable": {
-            "box": "yseult_god"
+        "collider": {
+
         }
     }
 }

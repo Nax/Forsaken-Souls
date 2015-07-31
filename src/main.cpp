@@ -4,10 +4,6 @@
 #include "Screen.hpp"
 #include "MainMenu.hpp"
 #include "PauseMenu.hpp"
-#include "StateMachine.hpp"
-#include "Animation.hpp"
-#include "Body.hpp"
-#include "BoxSet.hpp"
 
 namespace
 {
@@ -53,11 +49,7 @@ main(int argc, char* argv[])
     lm::ShaderProvider::instance().loadBinary("bbd/shaders.bbd");
     lm::FontProvider::instance().loadBinary("bbd/fonts.bbd");
     lm::GameObjectProvider::instance().loadBinary("bbd/objects.bbd");
-    StateMachineProvider::instance().loadBinary("bbd/machines.bbd");
-    AnimationProvider::instance().loadBinary("bbd/animations.bbd");
     lm::SkeletonProvider::instance().loadBinary("bbd/skeletons.bbd");
-    BodyProvider::instance().loadBinary("bbd/bodies.bbd");
-    BoxProvider::instance().loadBinary("bbd/boxes.bbd");
 
     initUserDataIO();
     core.push<MainMenu>();

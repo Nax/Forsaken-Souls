@@ -3,22 +3,16 @@
     "components": {
         "skeleton": {
             "texture": "yseult_heavy",
-            "skeleton": "yseult_heavy",
-            "animation": "yseult_heavy"
-        },
-        "state": {
-            "move": "idle",
-            "action": "none",
-            "state_machine": "yseult_heavy"
+            "skeleton": "yseult_heavy"
         },
         "input": {
             
         },
-        "movable": {
-            "body": "yseult_heavy"
+        "physics": {
+
         },
-        "collidable": {
-            "box": "yseult_heavy"
+        "collider": {
+
         }
     }
 }

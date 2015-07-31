@@ -3,8 +3,8 @@
 
 #include <vector>
 #include <Lums>
-#include "Components/Movable.hpp"
-#include "Components/Collidable.hpp"
+#include "Components/Physics.hpp"
+#include "Components/Collider.hpp"
 #include "Map.hpp"
 
 namespace System
@@ -17,8 +17,8 @@ namespace System
         ~Physics();
 
     private:
-        void    move(lm::GameObject& go, Component::Movable& movable);
-        void    collide(lm::GameObject& go, Component::Collidable& collidable, const Map& map);
+        void    move(lm::GameObject& go, Component::Physics& physics);
+        void    collide(lm::GameObject& go, Component::Collider& collider, const Map& map);
     };
 }
 

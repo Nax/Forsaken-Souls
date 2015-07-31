@@ -13,15 +13,15 @@ Physics::update(std::vector<lm::GameObject*>& gameObjects, const Map& map)
 {
     for (auto go : gameObjects)
     {
-        auto* movable = static_cast<Component::Movable*>(go->getComponent("movable"));
-        if (movable)
-            move(*go, *movable);
+        auto* physics = go->getComponent<Component::Physics>("physics");
+        if (physics)
+            move(*go, *physics);
     }
     for (auto go : gameObjects)
     {
-        auto* collidable = static_cast<Component::Collidable*>(go->getComponent("collidable"));
-        if (collidable)
-            collide(*go, *collidable, map);
+        auto* collider = go->getComponent<Component::Collider>("collider");
+        if (collider)
+            collide(*go, *collider, map);
     }
 }
 
@@ -33,17 +33,18 @@ Physics::~Physics()
 /* Private */
 
 void
-Physics::move(lm::GameObject& go, Component::Movable& movable)
+Physics::move(lm::GameObject& go, Component::Physics& physics)
 {
-    movable.speed.x = movable.speed.x * 0.5f + (movable.data->speed.x * 0.5f) * ((movable.direction) ? 1.f : -1.f) * (movable.moving ? 1 : 0);
-    movable.speed.y -= 0.3f;
+    physics.speed.y -= 0.3f;
 }
 
 static void
-collisions(int axis, lm::GameObject& go, const Map& map, lm::Vector2f& speed, Component::Collidable& collidable)
+collisions(int axis, lm::GameObject& go, const Map& map, lm::Vector2f& speed, Component::Collider& collider, Component::Physics& physics)
 {
+    if (axis == 1)
+       physics.grounded = false;
     redo:
-    lm::Rect2f  bb = *(collidable.currentBox);
+    lm::Rect2f  bb = collider.boundingBox;
     bb.pos += {go.position.x, go.position.y};
     const lm::Vector2f range = {std::ceil(bb.pos.x + bb.size.x), std::ceil(bb.pos.y + bb.size.y)};
     const bool faceRight = (speed[axis] >= 0.0f);
@@ -65,11 +66,10 @@ collisions(int axis, lm::GameObject& go, const Map& map, lm::Vector2f& speed, Co
                     diff = bb.pos[axis] + bb.size[axis] - tb.pos[axis];
                 else
                     diff = bb.pos[axis] - (tb.pos[axis] + tb.size[axis]);
-                std::cout << "axis :" << axis << " = " << diff << std::endl;
                 go.position[axis] -= diff;
                 bb.pos[axis] -= diff;
                 if (axis == 1 && !faceRight)
-                    go.send("switch_state", lm::sym("grounded"));
+                    physics.grounded = true;
                 speed[axis] = 0.0f;
                 goto redo;
             }
@@ -78,13 +78,13 @@ collisions(int axis, lm::GameObject& go, const Map& map, lm::Vector2f& speed, Co
 }
 
 void
-Physics::collide(lm::GameObject& go, Component::Collidable& collidable, const Map& map)
+Physics::collide(lm::GameObject& go, Component::Collider& collider, const Map& map)
 {
-    auto* movable = static_cast<Component::Movable*>(go.getComponent("movable"));
-    lm::Vector2f speed = movable->speed;
+    auto* physics = go.getComponent<Component::Physics>("physics");
+    lm::Vector2f speed = physics->speed;
     go.position.x += speed.x * (1.f / 120.f);
-    collisions(0, go, map, speed, collidable);
+    collisions(0, go, map, speed, collider, *physics);
     go.position.y += speed.y * (1.f / 120.f);
-    collisions(1, go, map, speed, collidable);
-    movable->speed = speed;
+    collisions(1, go, map, speed, collider, *physics);
+    physics->speed = speed;
 }

@@ -15,7 +15,7 @@ RenderSkeleton::render(std::vector<lm::GameObject*>& gameObjects)
     _batch.begin();
     for (auto& go : gameObjects)
     {
-        auto component = static_cast<Component::Skeleton*>(go->getComponent("skeleton"));
+        auto component = go->getComponent<Component::Skeleton>("skeleton");
         if (!component)
             continue;
         lm::Skeleton& s = component->skeleton();
@@ -30,7 +30,7 @@ RenderSkeleton::update(std::vector<lm::GameObject*>& gameObjects)
 {
     for (auto& go : gameObjects)
     {
-        auto component = static_cast<Component::Skeleton*>(go->getComponent("skeleton"));
+        auto component = go->getComponent<Component::Skeleton>("skeleton");
         if (!component)
             continue;
         lm::Skeleton& s = component->skeleton();

@@ -3,22 +3,19 @@
     "components": {
         "skeleton": {
             "texture": "yseult_medium",
-            "skeleton": "yseult_medium",
-            "animation": "yseult_medium"
-        },
-        "state": {
-            "move": "idle",
-            "action": "none",
-            "state_machine": "yseult_medium"
+            "skeleton": "yseult_medium"
         },
         "input": {
             
         },
-        "movable": {
-            "body": "yseult_medium"
+        "physics": {
+
         },
-        "collidable": {
-            "box": "yseult_medium"
+        "collider": {
+            "box": [0.0, -0.5, 1.0, 3.0]
+        },
+        "team": {
+            "team": "player"
         }
     }
 }

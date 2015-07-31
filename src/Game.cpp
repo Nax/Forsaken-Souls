@@ -1,11 +1,9 @@
 #include <iostream>
 #include <cstdlib>
 #include <chrono>
-#include "Game.hpp"
 #include "Screen.hpp"
-#include "Hud.hpp"
+#include "Game.hpp"
 #include "GameOver.hpp"
-#include "Physics.hpp"
 
 using namespace lm;
 

@@ -18,7 +18,7 @@ Input::handleEvent(std::vector<lm::GameObject*>& gameObjects, const lm::Event& e
 
     for (auto go : gameObjects)
     {
-        auto component = static_cast<Component::Input*>(go->getComponent("input"));
+        auto component = go->getComponent<Component::Input>("input");
         if (!component)
             continue;
         switch (event.key)
@@ -52,7 +52,7 @@ Input::update(std::vector<lm::GameObject*>& gameObjects)
 {
     for (auto go : gameObjects)
     {
-        auto component = static_cast<Component::Input*>(go->getComponent("input"));
+        auto component = go->getComponent<Component::Input>("input");
         if (!component)
             continue;
         if (component->left && !component->right)
