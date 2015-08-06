@@ -30,7 +30,7 @@ Yseult::update(lm::GameObject& object)
     else
         physics->speed.x = 0.f;
     if (input->jump && physics->grounded)
-        physics->speed.y = 20.f;
+        physics->speed.y = 19.8f;
     updateAnimation(object);
 }
 
@@ -42,8 +42,10 @@ Yseult::updateAnimation(lm::GameObject& object)
     auto* actor = object.getComponent<::Component::Actor>("actor");
 
     skeleton->skeleton().setFlip(actor->direction);
-    if (fabs(physics->speed.x) > 0.01f)
-        skeleton->skeleton().setAnimation("Walk", true);
+    if (!physics->grounded)
+        skeleton->skeleton().setAnimation("Fall", false);
+    else if (fabs(physics->speed.x) > 0.01f)
+        skeleton->skeleton().setAnimation("Run", true);
     else
         skeleton->skeleton().setAnimation("Idle_Wait", true);
 }

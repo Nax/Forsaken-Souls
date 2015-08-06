@@ -1,5 +1,5 @@
 {
-    "name": "yseult_medium",
-    "path": "images/yseult_medium.png",
-    "atlas": "atlases/common_bot.atlas"
+  "name": "yseult_medium",
+  "path": "images/yseult_medium.png",
+  "atlas": "atlases/yseult_medium.atlas"
 }

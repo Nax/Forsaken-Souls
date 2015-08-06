@@ -37,7 +37,14 @@ Game::load()
     _yseult->position.x = 7;
     _yseult->position.y = 14;
     _yseult->position.z = 2.5f;
+
+    auto* bot = lm::GameObjectProvider::instance().get("common_bot")();
+    bot->position.x = 7;
+    bot->position.y = 14;
+    bot->position.z = 2.5f;
+
     _gameObjects.push_back(_yseult);
+    _gameObjects.push_back(bot);
     _camera.focus(*_yseult, _level.map());
     _proj.projection = lm::ortho(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, 100.f, -100.f);
     _pipeline.setWindow(lm::Core::instance().window());
@@ -98,7 +105,9 @@ Game::render()
     _parallaxBatch.render();
     lm::uniform(shader, "view", _proj.view);
     _backBatch.render();
+    glDisable(GL_DEPTH_TEST);
     _renderSkeleton.render(_gameObjects);
+    glEnable(GL_DEPTH_TEST);
     _frontBatch.render();
 
     lm::uniform(shader, "view", identity);

@@ -13,14 +13,17 @@ void
 RenderSkeleton::render(std::vector<lm::GameObject*>& gameObjects)
 {
     _batch.begin();
-    for (auto& go : gameObjects)
+    int i = gameObjects.size() - 1;
+    while (i >= 0)
     {
+        auto& go = gameObjects[i];
         auto component = go->getComponent<Component::Skeleton>("skeleton");
         if (!component)
             continue;
         lm::Skeleton& s = component->skeleton();
         const lm::Texture& t = component->texture();
         _batch.draw(s, t, {go->position.x * TILE_SIZE, go->position.y * TILE_SIZE, go->position.z});
+        i--;
     }
     _batch.end();
 }
