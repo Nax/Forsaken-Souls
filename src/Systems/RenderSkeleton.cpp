@@ -10,28 +10,27 @@ RenderSkeleton::RenderSkeleton()
 }
 
 void
-RenderSkeleton::render(std::vector<lm::GameObject*>& gameObjects)
+RenderSkeleton::render()
 {
+    auto& gameObjects = lm::GameObjectSet::instance();
     _batch.begin();
-    int i = gameObjects.size() - 1;
-    while (i >= 0)
+    for (auto it = gameObjects.rbegin(); it != gameObjects.rend(); ++it)
     {
-        auto& go = gameObjects[i];
+        auto go = *it;
         auto component = go->getComponent<Component::Skeleton>("skeleton");
         if (!component)
             continue;
         lm::Skeleton& s = component->skeleton();
         const lm::Texture& t = component->texture();
         _batch.draw(s, t, {go->position.x * TILE_SIZE, go->position.y * TILE_SIZE, go->position.z});
-        i--;
     }
     _batch.end();
 }
 
 void
-RenderSkeleton::update(std::vector<lm::GameObject*>& gameObjects)
+RenderSkeleton::update()
 {
-    for (auto& go : gameObjects)
+    for (auto& go : lm::GameObjectSet::instance())
     {
         auto component = go->getComponent<Component::Skeleton>("skeleton");
         if (!component)

@@ -10,14 +10,13 @@ using namespace lm;
 bool debugMode = false;
 
 static void
-switchArmor(const char* name, GameObject*& yseult, std::vector<GameObject*>& gameObjects)
+switchArmor(const char* name, GameObject*& yseult)
 {
     lm::Vector3f pos = yseult->position;
-    gameObjects.erase(std::find(gameObjects.begin(), gameObjects.end(), yseult));
-    delete yseult;
-    yseult = lm::GameObjectProvider::instance().get(name)();
+    lm::GameObjectSet::instance().remove(yseult);
+    yseult = &lm::GameObjectSet::instance().create(name);
     yseult->position = pos;
-    gameObjects.push_back(yseult);
+
 }
 
 Game::Game()
@@ -33,18 +32,16 @@ Game::load()
     _healTicks = 0;
     setLevel(0, 2);
 
-    _yseult = lm::GameObjectProvider::instance().get("yseult_medium")();
+    _yseult = &lm::GameObjectSet::instance().create("yseult_medium");
     _yseult->position.x = 7;
     _yseult->position.y = 14;
     _yseult->position.z = 2.5f;
 
-    auto* bot = lm::GameObjectProvider::instance().get("common_bot")();
-    bot->position.x = 7;
-    bot->position.y = 14;
-    bot->position.z = 2.5f;
+    auto& bot = lm::GameObjectSet::instance().create("common_bot");
+    bot.position.x = 7;
+    bot.position.y = 14;
+    bot.position.z = 2.5f;
 
-    _gameObjects.push_back(_yseult);
-    _gameObjects.push_back(bot);
     _camera.focus(*_yseult, _level.map());
     _proj.projection = lm::ortho(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, 100.f, -100.f);
     _pipeline.setWindow(lm::Core::instance().window());
@@ -55,11 +52,11 @@ Game::load()
 void
 Game::update()
 {
-    _physics.update(_gameObjects, _level.map());
-    _input.update(_gameObjects);
+    _physics.update(_level.map());
+    _input.update();
     _camera.update(*_yseult, _level.map());
-    _renderSkeleton.update(_gameObjects);
-    for (auto* o : _gameObjects)
+    _renderSkeleton.update();
+    for (auto* o : lm::GameObjectSet::instance())
         o->update();
     if (_gameOverTicks > 500)
         Core::instance().transition<GameOver>();
@@ -106,7 +103,7 @@ Game::render()
     lm::uniform(shader, "view", _proj.view);
     _backBatch.render();
     glDisable(GL_DEPTH_TEST);
-    _renderSkeleton.render(_gameObjects);
+    _renderSkeleton.render();
     glEnable(GL_DEPTH_TEST);
     _frontBatch.render();
 
@@ -132,30 +129,28 @@ Game::handleEvent(const Event& event)
                 lm::Core::instance().stop();
                 break;
             case lm::Key::Num1:
-                switchArmor("yseult_light", _yseult, _gameObjects);
+                switchArmor("yseult_light", _yseult);
                 break;
             case lm::Key::Num2:
-                switchArmor("yseult_medium", _yseult, _gameObjects);
+                switchArmor("yseult_medium", _yseult);
                 break;
             case lm::Key::Num3:
-                switchArmor("yseult_heavy", _yseult, _gameObjects);
+                switchArmor("yseult_heavy", _yseult);
                 break;
             case lm::Key::Num4:
-                switchArmor("yseult_god", _yseult, _gameObjects);
+                switchArmor("yseult_god", _yseult);
                 break;
             default:
                 break;
         }
     }
-    _input.handleEvent(_gameObjects, event);
+    _input.handleEvent(event);
 }
 
 void
 Game::unload()
 {
-    for (auto go : _gameObjects)
-        delete go;
-    _gameObjects.clear();
+    lm::GameObjectSet::instance().clear();
     _pipeline.clear();
 }
 

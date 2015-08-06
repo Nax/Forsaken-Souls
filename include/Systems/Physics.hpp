@@ -13,7 +13,7 @@ namespace System
     {
     public:
         Physics();
-        void    update(std::vector<lm::GameObject*>& gameObjects, const Map& map); 
+        void    update(const Map& map); 
         ~Physics();
 
     private:

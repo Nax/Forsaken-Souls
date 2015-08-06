@@ -42,7 +42,6 @@ private:
     lm::Projection                  _proj;
     lm::ShaderPipeline              _pipeline;
     lm::SpriteBatch                 _textBatch;
-    std::vector<lm::GameObject*>    _gameObjects;
     System::Input                   _input;
     System::Physics                 _physics;
     System::RenderSkeleton          _renderSkeleton;

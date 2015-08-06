@@ -9,14 +9,14 @@ Input::Input()
 }
 
 void
-Input::handleEvent(std::vector<lm::GameObject*>& gameObjects, const lm::Event& event)
+Input::handleEvent(const lm::Event& event)
 {
     if (event.type != lm::Event::Type::KeyDown && event.type != lm::Event::Type::KeyUp)
         return;
 
     bool key = (event.type == lm::Event::Type::KeyDown);
 
-    for (auto go : gameObjects)
+    for (auto go : lm::GameObjectSet::instance())
     {
         auto component = go->getComponent<Component::Input>("input");
         if (!component)
@@ -48,9 +48,9 @@ Input::handleEvent(std::vector<lm::GameObject*>& gameObjects, const lm::Event& e
 }
 
 void
-Input::update(std::vector<lm::GameObject*>& gameObjects)
+Input::update()
 {
-    for (auto go : gameObjects)
+    for (auto go : lm::GameObjectSet::instance())
     {
         auto component = go->getComponent<Component::Input>("input");
         if (!component)

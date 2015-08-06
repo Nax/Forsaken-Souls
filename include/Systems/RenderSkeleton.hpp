@@ -10,8 +10,8 @@ namespace System
     {
     public:
         RenderSkeleton();
-        void    render(std::vector<lm::GameObject*>& gameObjects);
-        void    update(std::vector<lm::GameObject*>& gameObjects);
+        void    render();
+        void    update();
         ~RenderSkeleton();
 
     private:

@@ -10,8 +10,8 @@ namespace System
     {
     public:
         Input();
-        void    handleEvent(std::vector<lm::GameObject*>& gameObjects, const lm::Event& event);
-        void    update(std::vector<lm::GameObject*>& gameObjects);
+        void    handleEvent(const lm::Event& event);
+        void    update();
         ~Input();
 
     private:

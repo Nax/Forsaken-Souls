@@ -11,15 +11,15 @@ Physics::Physics()
 }
 
 void
-Physics::update(std::vector<lm::GameObject*>& gameObjects, const Map& map)
+Physics::update(const Map& map)
 {
-    for (auto go : gameObjects)
+    for (auto go : lm::GameObjectSet::instance())
     {
         auto* physics = go->getComponent<Component::Physics>("physics");
         if (physics)
             move(*go, *physics);
     }
-    for (auto go : gameObjects)
+    for (auto go : lm::GameObjectSet::instance())
     {
         auto* collider = go->getComponent<Component::Collider>("collider");
         if (collider)
