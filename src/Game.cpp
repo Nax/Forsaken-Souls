@@ -16,7 +16,6 @@ switchArmor(const char* name, GameObject*& yseult)
     lm::GameObjectSet::instance().remove(yseult);
     yseult = &lm::GameObjectSet::instance().create(name);
     yseult->position = pos;
-
 }
 
 Game::Game()

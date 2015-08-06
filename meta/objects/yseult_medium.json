@@ -1,5 +1,6 @@
 {
   "name": "yseult_medium",
+  "tags": ["player"],
   "components": {
     "skeleton": {
       "texture": "yseult_medium",

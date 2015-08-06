@@ -14,8 +14,21 @@ Bot::update(lm::GameObject& object)
     auto* physics = object.getComponent<::Component::Physics>("physics");
     auto* skeleton = object.getComponent<::Component::Skeleton>("skeleton");
 
-    physics->speed.x = 1.0f;
-    skeleton->skeleton().setAnimation("Run", true);
-    skeleton->skeleton().setFlip(true);
+    lm::GameObject* player = lm::GameObjectSet::instance().getObjectByTag("player");
+
+    if (player)
+    {
+        if (player->position.x > object.position.x)
+        {
+            physics->speed.x = 6.0f;
+            skeleton->skeleton().setFlip(true);
+        }
+        else
+        {
+            physics->speed.x = -6.0f;
+            skeleton->skeleton().setFlip(false);
+        }
+        skeleton->skeleton().setAnimation("Run", true);
+    }
 }
 
