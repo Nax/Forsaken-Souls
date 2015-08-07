@@ -48,7 +48,7 @@ Bot::update(lm::GameObject& object)
     if (_targeting)
     {
         float targetDist = lm::dist({object.position.x, object.position.y}, _target);
-        if (targetDist < 0.2f || _lastTargetDist - targetDist < 0.01f)
+        if ((targetDist < 0.1f  && physics->grounded) || _lastTargetDist - targetDist < 0.001f)
         {
             _targeting = false;
             if (physics->grounded)
@@ -57,19 +57,44 @@ Bot::update(lm::GameObject& object)
         else
         {
             _lastTargetDist = targetDist;
-            if (object.position.x < _target.x - 0.1f
-                || (object.position.x < _target.x && physics->grounded && _targetType == Bot::TargetType::Fall))
+            if (_targetType == Bot::TargetType::Jump)
             {
-                physics->speed.x = 6.0f;
-                skeleton->skeleton().setFlip(true);
-                skeleton->skeleton().setAnimation("Run", true);
+                if (physics->grounded)
+                    physics->speed.y = 20.f;
+                if (object.position.x < _target.x)
+                {
+                    physics->speed.x = 6.0f;
+                    skeleton->skeleton().setFlip(true);
+                    skeleton->skeleton().setAnimation("Run", true);
+                }
+                else
+                {
+                    physics->speed.x = -6.0f;
+                    skeleton->skeleton().setFlip(false);
+                    skeleton->skeleton().setAnimation("Run", true);
+                }
             }
-            else if (object.position.x > _target.x + 0.1f
-                || (object.position.x > _target.x && physics->grounded && _targetType == Bot::TargetType::Fall))
+            else if (physics->grounded)
             {
-                physics->speed.x = -6.0f;
-                skeleton->skeleton().setFlip(false);
-                skeleton->skeleton().setAnimation("Run", true);
+                if (object.position.x < _target.x - 0.1f
+                || (object.position.x < _target.x && physics->grounded && _targetType == Bot::TargetType::Fall))
+                {
+                    physics->speed.x = 6.0f;
+                    skeleton->skeleton().setFlip(true);
+                    skeleton->skeleton().setAnimation("Run", true);
+                }
+                else if (object.position.x > _target.x + 0.1f
+                    || (object.position.x > _target.x && physics->grounded && _targetType == Bot::TargetType::Fall))
+                {
+                    physics->speed.x = -6.0f;
+                    skeleton->skeleton().setFlip(false);
+                    skeleton->skeleton().setAnimation("Run", true);
+                }
+                else
+                {
+                    physics->speed.x = 0.f;
+                    skeleton->skeleton().setAnimation("Idle_Wait", true);
+                }
             }
             else
             {
@@ -120,6 +145,30 @@ computeDepth(const Map& map, lm::Vector2f position)
     return -1.f;
 }
 
+static lm::Vector2f
+evaluateJump(const Map& map, lm::Vector2f position, lm::Vector2f speed)
+{
+    // We simulate 1000 frames of jump
+    for (int i = 0; i < 1000; ++i)
+    {
+        lm::Vector2f nextPos = position;
+        nextPos += speed * (1.f/120.f);
+        speed.y -= 0.03f;
+        if (map.indexAt(nextPos.x, nextPos.y))
+        {
+            float d = computeDepth(map, position);
+            if (d > 0.f)
+                position.y -= d;
+            else
+                position.y = -1.f;
+            return position;
+        }
+        position = nextPos;
+    }
+    // Negative y indicates failure
+    return {0, -1};
+}
+
 void
 Bot::findPath(lm::GameObject& object)
 {
@@ -129,7 +178,7 @@ Bot::findPath(lm::GameObject& object)
     if (!player)
         return;
 
-    if (lm::dist(player->position, object.position) > 10.f)
+    if (lm::dist(player->position, object.position) > 1000.f)
         return;
 
     lm::Vector2f targetPos = { player->position.x, player->position.y };
@@ -188,26 +237,36 @@ Bot::findPath(lm::GameObject& object)
 
         // Now we populate the open list with possible nodes.
         TargetNode leftNode;
-        leftNode.position = best->position - lm::Vector2f(1.0f, 0.0f);
+        leftNode.position = best->position - lm::Vector2f(0.25f, 0.0f);
         leftNode.type = Bot::TargetType::Walk;
         leftNode.parent = best;
 
         TargetNode rightNode;
-        rightNode.position = best->position + lm::Vector2f(1.0f, 0.0f);
+        rightNode.position = best->position + lm::Vector2f(0.25f, 0.0f);
         rightNode.type = Bot::TargetType::Walk;
         rightNode.parent = best;
 
         TargetNode leftFall;
-        float leftDepth = computeDepth(map, best->position + lm::Vector2f(-1.0f, 0.f));
+        float leftDepth = computeDepth(map, best->position + lm::Vector2f(-0.25f, 0.f));
         leftFall.position = best->position + lm::Vector2f(-1.0f, -leftDepth);
         leftFall.type = Bot::TargetType::Fall;
         leftFall.parent = best;
 
         TargetNode rightFall;
-        float rightDepth = computeDepth(map, best->position + lm::Vector2f(1.0f, 0.f));
+        float rightDepth = computeDepth(map, best->position + lm::Vector2f(0.25f, 0.f));
         rightFall.position = best->position + lm::Vector2f(1.0f, -rightDepth);
         rightFall.type = Bot::TargetType::Fall;
         rightFall.parent = best;
+
+        TargetNode leftJump;
+        leftJump.position = evaluateJump(map, best->position, {-6.f, 20.f});
+        leftJump.type = Bot::TargetType::Jump;
+        leftJump.parent = best;
+
+        TargetNode rightJump;
+        rightJump.position = evaluateJump(map, best->position, {6.f, 20.f});
+        rightJump.type = Bot::TargetType::Jump;
+        rightJump.parent = best;
 
         if (!map.indexAt(leftNode.position.x, leftNode.position.y + 0.5f)
             && map.indexAt(leftNode.position.x, leftNode.position.y - 0.5f)
@@ -235,6 +294,18 @@ Bot::findPath(lm::GameObject& object)
         if (rightDepth > 0.5f && !isNodeClosed(rightFall, closedNodes))
         {
             nodes.push_back(rightFall);
+            openNodes.push_back(&nodes.back());
+        }
+
+        if (leftJump.position.y > 0.f && !isNodeClosed(leftJump, closedNodes))
+        {
+            nodes.push_back(leftJump);
+            openNodes.push_back(&nodes.back());
+        }
+
+        if (rightJump.position.y > 0.f && !isNodeClosed(rightJump, closedNodes))
+        {
+            nodes.push_back(rightJump);
             openNodes.push_back(&nodes.back());
         }
 
