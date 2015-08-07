@@ -29,7 +29,6 @@ public:
 private:
     void            drawBackground(lm::SpriteBatch& sb) const;
 
-    Level           _level;
     Camera          _camera;
     int             _clock;
     int             _gameOverTicks;

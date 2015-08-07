@@ -7,7 +7,7 @@
 #include <array>
 #include "Map.hpp"
 
-class Level
+class Level : public lm::Singleton<Level>
 {
 	friend class Game;
 	typedef std::array<int, 6>	t_array6i;

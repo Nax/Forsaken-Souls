@@ -13,7 +13,7 @@ namespace System
     {
     public:
         Physics();
-        void    update(const Map& map); 
+        void    update(const Map& map);
         ~Physics();
 
     private:

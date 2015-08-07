@@ -41,7 +41,7 @@ Game::load()
     bot.position.y = 14;
     bot.position.z = 2.5f;
 
-    _camera.focus(*_yseult, _level.map());
+    _camera.focus(*_yseult, Level::instance().map());
     _proj.projection = lm::ortho(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, 100.f, -100.f);
     _pipeline.setWindow(lm::Core::instance().window());
     //_pipeline.append(lm::ShaderProvider::instance().get("light"));
@@ -51,9 +51,9 @@ Game::load()
 void
 Game::update()
 {
-    _physics.update(_level.map());
+    _physics.update(Level::instance().map());
     _input.update();
-    _camera.update(*_yseult, _level.map());
+    _camera.update(*_yseult, Level::instance().map());
     _renderSkeleton.update();
     for (auto* o : lm::GameObjectSet::instance())
         o->update();
@@ -165,18 +165,19 @@ perlin(int x, int y)
 void
 Game::setLevel(int level, int map)
 {
-    _level.load(level);
-    _level.setCurrent(map);
+    auto& lvl = Level::instance();
+    lvl.load(level);
+    lvl.setCurrent(map);
     _backBatch.flush();
-    _level.map().drawBack(_backBatch);
+    lvl.map().drawBack(_backBatch);
     _backBatch.send();
     _frontBatch.flush();
-    _level.map().drawFront(_frontBatch);
+    lvl.map().drawFront(_frontBatch);
     _frontBatch.send();
     _parallaxBatch.flush();
     auto& parallax = lm::TextureProvider::instance().get("backgrounds");
-    int xMax = std::ceil((_level.map().width() * TILE_SIZE - SCREEN_WIDTH) / float(parallax.width() / 3.0f)) * 0.4f + std::ceil(SCREEN_WIDTH / float(parallax.width() / 3.0f));
-    int yMax = std::ceil((_level.map().height() * TILE_SIZE - SCREEN_HEIGHT) / float(parallax.height() / 2.0f)) * 0.4f + std::ceil(SCREEN_HEIGHT / float(parallax.height() / 2.0f));
+    int xMax = std::ceil((lvl.map().width() * TILE_SIZE - SCREEN_WIDTH) / float(parallax.width() / 3.0f)) * 0.4f + std::ceil(SCREEN_WIDTH / float(parallax.width() / 3.0f));
+    int yMax = std::ceil((lvl.map().height() * TILE_SIZE - SCREEN_HEIGHT) / float(parallax.height() / 2.0f)) * 0.4f + std::ceil(SCREEN_HEIGHT / float(parallax.height() / 2.0f));
     for (int j = 0; j < yMax; ++j)
     {
         for (int i = 0; i < xMax; ++i)
