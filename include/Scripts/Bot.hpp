@@ -10,23 +10,19 @@ namespace Script
         LUMS_COMPONENT
 
     public:
-        enum class TargetType
-        {
-            None,
-            Walk,
-            Jump,
-            Fall
-        };
+        static const int moveSpeed = 6.f;
+        static const int jumpSpeed = 20.f;
 
         void    init(lm::GameObject& object);
         void    update(lm::GameObject& object);
+        void    move(lm::GameObject& object);
         void    findPath(lm::GameObject& object);
+        void    setAnimation(lm::GameObject& object);
 
     private:
         lm::Vector2f    _target;
+        int             _targetType;
         bool            _targeting;
-        TargetType      _targetType;
-        float           _lastTargetDist;
     };
 }
 

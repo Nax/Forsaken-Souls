@@ -12,13 +12,7 @@ namespace System
     class Physics
     {
     public:
-        Physics();
         void    update(const Map& map);
-        ~Physics();
-
-    private:
-        void    move(lm::GameObject& go, Component::Physics& physics);
-        void    collide(lm::GameObject& go, Component::Collider& collider, const Map& map);
     };
 }
 
