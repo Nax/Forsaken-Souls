@@ -46,6 +46,21 @@ Game::load()
     _pipeline.setWindow(lm::Core::instance().window());
     //_pipeline.append(lm::ShaderProvider::instance().get("light"));
     _pipeline.append(lm::ShaderProvider::instance().get("border"));
+
+    // KLUDGE
+
+    static const char* musics[] = {
+        "banque1",
+        "flying_castle_survivors",
+        "holy_factory_entree",
+        "ruins_of_the_old_town_survivor",
+        "underwater_access_2",
+        "wildpark_dinonaurs"
+    };
+
+    int randomMusic = rand() % 6;
+
+    lm::MusicProvider::instance().get(musics[randomMusic]).play();
 }
 
 void

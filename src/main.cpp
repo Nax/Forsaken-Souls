@@ -50,6 +50,7 @@ main(int argc, char* argv[])
     lm::FontProvider::instance().loadBinary("bbd/fonts.bbd");
     lm::GameObjectProvider::instance().loadBinary("bbd/objects.bbd");
     lm::SkeletonProvider::instance().loadBinary("bbd/skeletons.bbd");
+    lm::MusicProvider::instance().loadBinary("bbd/music.bbd");
 
     initUserDataIO();
     core.push<MainMenu>();
