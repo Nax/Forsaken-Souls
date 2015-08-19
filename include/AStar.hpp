@@ -34,7 +34,7 @@ public:
             return;
         for (auto node : _closed)
         {
-            if (lm::dist(node->position, position) < 0.01f)
+            if (lm::dist(node->position, position) < 0.05f)
                 return;
         }
 

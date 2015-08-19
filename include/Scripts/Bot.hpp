@@ -18,6 +18,7 @@ namespace Script
         void    move(lm::GameObject& object);
         void    findPath(lm::GameObject& object);
         void    setAnimation(lm::GameObject& object);
+        void    playSfx(lm::GameObject& object);
 
     private:
         lm::Vector2f    _target;

@@ -40,15 +40,15 @@ public:
     BotFunctor(Component::Collider& collider)
     : _collider(collider)
     {
-
+        lm::SfxProvider::instance().get("footstep_common_bot").setVolume(0.3f);
     }
 
     void
     operator()(AStar& astar, AStarNode& node)
     {
         const Map& map = Level::instance().map();
-        walk(astar, node, map, -1.0f);
-        walk(astar, node, map, 1.0f);
+        walk(astar, node, map, -1.5f);
+        walk(astar, node, map, 1.5f);
         fall(astar, node, map, -Bot::moveSpeed);
         fall(astar, node, map, Bot::moveSpeed);
         jump(astar, node, map, {-Bot::moveSpeed, Bot::jumpSpeed});
@@ -93,7 +93,7 @@ public:
         int frames;
         if (!Physics::computeFinalPosition(finalPos, frames, map, boundingBox, speed))
             return;
-        float penality = (float(frames) / 120.f) * speed.x - lm::dist(boundingBox.pos, finalPos);
+        float penality = (10.f - 3 * fabs(finalPos.x - boundingBox.pos.x)) / 10.f;
         if (penality < 0.1f)
             penality = 0.1f;
         astar.addOpenNode(&node, finalPos - _collider.boundingBox.pos, 1, penality);
@@ -115,6 +115,7 @@ Bot::update(lm::GameObject& object)
     if (!_targeting)
         findPath(object);
     move(object);
+    playSfx(object);
     setAnimation(object);
 }
 
@@ -167,7 +168,9 @@ Bot::setAnimation(lm::GameObject& object)
     auto skeleton = object.getComponent<::Component::Skeleton>("skeleton");
     auto& sk = skeleton->skeleton();
 
-    if (physics->speed.x > 0.01f)
+    if (!physics->grounded)
+        sk.setAnimation("Fall", true);
+    else if (physics->speed.x > 0.01f)
     {
         sk.setAnimation("Run", true);
         sk.setFlip(true);
@@ -180,4 +183,14 @@ Bot::setAnimation(lm::GameObject& object)
     else
         sk.setAnimation("Idle_Wait", true);
 
+}
+
+void
+Bot::playSfx(lm::GameObject& object)
+{
+    auto skeleton = object.getComponent<::Component::Skeleton>("skeleton");
+    auto& sk = skeleton->skeleton();
+
+    if (sk.event() == lm::sym("Event_FootStep"))
+        lm::SfxProvider::instance().get("footstep_common_bot").play();
 }

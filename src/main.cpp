@@ -51,7 +51,7 @@ main(int argc, char* argv[])
     lm::GameObjectProvider::instance().loadBinary("bbd/objects.bbd");
     lm::SkeletonProvider::instance().loadBinary("bbd/skeletons.bbd");
     lm::MusicProvider::instance().loadBinary("bbd/music.bbd");
-
+    lm::SfxProvider::instance().loadBinary("bbd/sfx.bbd");
     initUserDataIO();
     core.push<MainMenu>();
     //core.push<PauseMenu>();
