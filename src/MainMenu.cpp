@@ -13,19 +13,6 @@ MainMenu::MainMenu()
 void
 MainMenu::load()
 {
-    auto& newGame = lm::TextureProvider::instance().get("new_game");
-    auto& quit = lm::TextureProvider::instance().get("quit");
-    auto& menuCursor = lm::TextureProvider::instance().get("menu_cursor");
-
-    _newGameBatch.draw(newGame, 0, {SCREEN_WIDTH / 2 - newGame.width() / 2, 2 * SCREEN_HEIGHT / 3 - newGame.height() / 2, 0.f});
-    _newGameBatch.send();
-
-    _quitBatch.draw(quit, 0, {SCREEN_WIDTH / 2 - quit.width() / 2, SCREEN_HEIGHT / 3 - quit.height() / 2, 0.f});
-    _quitBatch.send();
-
-    _cursorBatch.draw(menuCursor, 0, {0, -menuCursor.height() / 2, 0.f}, {1, 1}, {1, 1, 1, 1}, {true, false});
-    _cursorBatch.send();
-
     _proj.projection = lm::ortho(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT);
 }
 
@@ -78,16 +65,17 @@ void
 MainMenu::render()
 {
     auto& shader = lm::ShaderProvider::instance().get("basic2d");
+    auto& font = lm::FontProvider::instance().get("roboto200");
     shader.use();
     _proj.view = lm::Matrix4f::identity();
     lm::uniform(shader, "model", _proj.model);
     lm::uniform(shader, "view", _proj.view);
     lm::uniform(shader, "projection", _proj.projection);
-    _newGameBatch.render();
-    _quitBatch.render();
-    lm::translate(_proj.view, 300, (2 - _cursor) * SCREEN_HEIGHT / 3, 0);
-    lm::uniform(shader, "view", _proj.view);
-    _cursorBatch.render();
+    _batch.begin();
+    _batch.draw(font, "New Game", {500.f, 3 * SCREEN_HEIGHT / 4, 0.f});
+    _batch.draw(font, "Settings", {500.f, 2 * SCREEN_HEIGHT / 4, 0.f});
+    _batch.draw(font, "Quit", {500.f, SCREEN_HEIGHT / 4, 0.f});
+    _batch.end();
 }
 
 void

@@ -96,12 +96,6 @@ Map::indexAt(int x, int y, int z) const
     return _tiles[x + y * _width + z * _width * _height];
 }
 
-const Tile&
-Map::at(int x, int y, int z) const
-{
-	return Tile::fromId(indexAt(x, y, z));
-}
-
 void
 Map::drawBack(lm::StaticSpriteBatch& batch) const
 {

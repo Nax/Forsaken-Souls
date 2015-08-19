@@ -12,8 +12,6 @@ Actor::init(lm::GameObject& object)
     direction = false;
     dead = false;
     knockBack = false;
-    action = 0;
-    actionAcc = 0;
 }
 
 void

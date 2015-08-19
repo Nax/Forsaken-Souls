@@ -18,8 +18,6 @@ namespace Component
         bool    knockBack:1;
         int     health;
         int     maxHealth;
-        int     action;
-        int     actionAcc;
     };
 }
 

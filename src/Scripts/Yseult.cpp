@@ -17,20 +17,35 @@ Yseult::update(lm::GameObject& object)
     auto* physics = object.getComponent<::Component::Physics>("physics");
     auto* actor = object.getComponent<::Component::Actor>("actor");
 
-    if (input->left && !input->right)
+    if (attackType == Yseult::NoAttack)
     {
-        physics->speed.x = -10.f;
-        actor->direction = false;
-    }
-    else if (!input->left && input->right)
-    {
-        physics->speed.x = 10.f;
-        actor->direction = true;
+        if (input->left && !input->right)
+        {
+            physics->speed.x = -10.f;
+            actor->direction = false;
+        }
+        else if (!input->left && input->right)
+        {
+            physics->speed.x = 10.f;
+            actor->direction = true;
+        }
+        else
+            physics->speed.x = 0.f;
+        if (input->jump && physics->grounded)
+            physics->speed.y = 19.8f;
+        if (input->meleeAttack && physics->grounded)
+        {
+            physics->speed.x = 0.f;
+            attackType = Yseult::MeleeAttack;
+        }
     }
     else
-        physics->speed.x = 0.f;
-    if (input->jump && physics->grounded)
-        physics->speed.y = 19.8f;
+        attackAcc++;
+    if (attackType == Yseult::MeleeAttack && attackAcc > 63)
+    {
+        attackType = Yseult::NoAttack;
+        attackAcc = 0;
+    }
     updateAnimation(object);
 }
 
@@ -44,6 +59,8 @@ Yseult::updateAnimation(lm::GameObject& object)
     skeleton->skeleton().setFlip(actor->direction);
     if (!physics->grounded)
         skeleton->skeleton().setAnimation("Fall", false);
+    else if (attackType == Yseult::MeleeAttack)
+        skeleton->skeleton().setAnimation("Idle_Attack1", false);
     else if (fabs(physics->speed.x) > 0.01f)
         skeleton->skeleton().setAnimation("Run", true);
     else

@@ -6,7 +6,6 @@
 #include <vector>
 #include <array>
 #include <Lums>
-#include "Tile.hpp"
 #include "Camera.hpp"
 
 #define MAP_DEPTH	5
@@ -27,7 +26,6 @@ public:
 	uint32_t						width() const;
 	uint32_t						height() const;
     uint16_t                        indexAt(int x, int y, int z = 2) const;
-	const Tile&						at(int x, int y, int z = 2) const;
 	void							drawBack(lm::StaticSpriteBatch& batch) const;
 	void							drawFront(lm::StaticSpriteBatch& batch) const;
 	const std::vector<t_array4i>&	links() const;
