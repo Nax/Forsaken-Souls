@@ -39,7 +39,7 @@ SettingsMenu::load()
     _keyBatch.send();
 
     _resolutionBatch.draw(lm::FontProvider::instance().get("roboto80"), "Resolution",
-                    {SCREEN_WIDTH / 2 - 200.f / 2, SCREEN_HEIGHT / 2 - 300.f / 2, 0.f}, {1.f, 0.f, 1.f, _resoAlpha});
+                    {SCREEN_WIDTH / 2 - 200.f / 2, SCREEN_HEIGHT / 2 - 100.f / 2, 0.f}, {1.f, 0.f, 1.f, _resoAlpha});
     _resolutionBatch.send();
 
     _res1Batch.draw(lm::FontProvider::instance().get("roboto80"), "800x600",
@@ -55,7 +55,7 @@ SettingsMenu::load()
                     {SCREEN_WIDTH / 2 + 220.f / 2, SCREEN_HEIGHT / 2 + 100.f / 2, 0.f}, {1.f, 0.f, 1.f, _fullscreenAlpha});
     _fullscreenBatch.send();
 
-    _proj.projection = lm::ortho(0, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
+    _proj.projection = lm::ortho(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT);
 }
 
 void

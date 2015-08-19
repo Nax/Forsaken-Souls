@@ -15,7 +15,8 @@ public:
     ~MainMenu();
 
 private:
-    void moveCursor(int direction);
+    void    moveCursor(int direction);
+    void    action();
 
     lm::SpriteBatch         _batch;
     lm::Projection          _proj;
