@@ -4,17 +4,9 @@
 #include "Screen.hpp"
 
 SettingsMenu::SettingsMenu()
-: _resumeAlpha(1.f),
- _keyAlpha(0.3f),
- _resoAlpha(0.3f),
- _res1Alpha(0.f),
- _res2Alpha(0.f),
- _res3Alpha(0.f),
- _fullscreenAlpha(0.f),
- _cursor(0),
+: _cursor(0),
  _resCursor(0),
  _selectReso(false),
- _switchRes(false),
  _fullscreen(false)
 {
 
@@ -23,124 +15,18 @@ SettingsMenu::SettingsMenu()
 void
 SettingsMenu::load()
 {
-    {
-        lm::Vector2i    savedRes;
+    // {
+    //     lm::Vector2i    savedRes;
 
-        Settings::instance().get<SettingsEntry::GraphResolution>(savedRes);
-        lm::Core::instance().window().resize(savedRes.x, savedRes.y);
-    }
-
-    _resumeBatch.draw(lm::FontProvider::instance().get("roboto80"), "Resume",
-                    {SCREEN_WIDTH / 2 - 200.f / 2, SCREEN_HEIGHT / 2 - 500.f / 2, 0.f}, {1.f, 0.f, 1.f, _resumeAlpha});
-    _resumeBatch.send();
-
-    _keyBatch.draw(lm::FontProvider::instance().get("roboto80"), "Bind Keys",
-                    {SCREEN_WIDTH / 2 - 200.f / 2.f, SCREEN_HEIGHT / 2 - 300.f / 2.f, 0.f}, {1.f, 0.f, 1.f, _keyAlpha});
-    _keyBatch.send();
-
-    _resolutionBatch.draw(lm::FontProvider::instance().get("roboto80"), "Resolution",
-                    {SCREEN_WIDTH / 2 - 200.f / 2, SCREEN_HEIGHT / 2 - 100.f / 2, 0.f}, {1.f, 0.f, 1.f, _resoAlpha});
-    _resolutionBatch.send();
-
-    _res1Batch.draw(lm::FontProvider::instance().get("roboto80"), "800x600",
-                    {SCREEN_WIDTH / 2 - 1200.f / 2, SCREEN_HEIGHT / 2 - 100.f / 2, 0.f}, {1.f, 0.f, 1.f, _res1Alpha});
-    _res1Batch.send();
-    _res2Batch.draw(lm::FontProvider::instance().get("roboto80"), "1024x768",
-                    {SCREEN_WIDTH / 2 - 200.f / 2, SCREEN_HEIGHT / 2 - 100.f / 2, 0.f}, {1.f, 0.f, 1.f, _res2Alpha});
-    _res2Batch.send();
-    _res3Batch.draw(lm::FontProvider::instance().get("roboto80"), "2560x1440",
-                    {SCREEN_WIDTH / 2 + 800.f / 2, SCREEN_HEIGHT / 2 - 100.f / 2, 0.f}, {1.f, 0.f, 1.f, _res3Alpha});
-    _res3Batch.send();
-    _fullscreenBatch.draw(lm::FontProvider::instance().get("roboto80"), "Fullscreen",
-                    {SCREEN_WIDTH / 2 + 220.f / 2, SCREEN_HEIGHT / 2 + 100.f / 2, 0.f}, {1.f, 0.f, 1.f, _fullscreenAlpha});
-    _fullscreenBatch.send();
-
+        // Settings::instance().get<SettingsEntry::GraphResolution>(savedRes);
+        // lm::Core::instance().window().resize(savedRes.x, savedRes.y);
+    // }
     _proj.projection = lm::ortho(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT);
 }
 
 void
 SettingsMenu::update()
 {
-    if (_selectReso)
-    {
-        _res1Alpha = (_resCursor == 0) ? fmin(_res1Alpha + 0.03f, 1.f) : fmax(0.3f, _res1Alpha - 0.03f);
-        _res2Alpha = (_resCursor == 1) ? fmin(_res2Alpha + 0.03f, 1.f) : fmax(0.3f, _res2Alpha - 0.03f);
-        _res3Alpha = (_resCursor == 2) ? fmin(_res3Alpha + 0.03f, 1.f) : fmax(0.3f, _res3Alpha - 0.03f);
-        _fullscreenAlpha = (_resCursor == 3) ? fmin(_fullscreenAlpha + 0.03f, 1.f) : fmax(0.3f, _fullscreenAlpha - 0.03f);
-    }
-    else
-    {
-        _res1Alpha = fmax(0.f, _res1Alpha - 0.03f);
-        _res2Alpha = fmax(0.f, _res2Alpha - 0.03f);
-        _res3Alpha = fmax(0.f, _res3Alpha - 0.03f);
-        _fullscreenAlpha = fmax(0.f, _fullscreenAlpha - 0.03f);
-    }
-
-    float fsGreen = (_fullscreen) ? 1.f : 0.f;
-    float fsBlue = 1.f - fsGreen;
-
-    _resumeAlpha = (_cursor == 0) ? fmin(_resumeAlpha + 0.03f, 1.f) : fmax(0.3f, _resumeAlpha - 0.03f);
-    _keyAlpha = (_cursor == 1) ? fmin(_keyAlpha + 0.03f, 1.f) : fmax(0.3f, _keyAlpha - 0.03f);
-    _resoAlpha = (_cursor == 2) ? fmin(_resoAlpha + 0.03f, 1.f) : fmax(0.3f, _resoAlpha - 0.03f);
-
-    _resumeBatch.flush();
-    _resumeBatch.draw(lm::FontProvider::instance().get("roboto80"), "Resume",
-                    {SCREEN_WIDTH / 2 - 200.f / 2, SCREEN_HEIGHT / 2 - 500.f / 2, 0.f}, {1.f, 0.f, 1.f, _resumeAlpha});
-    _resumeBatch.send();
-
-    _keyBatch.flush();
-    _keyBatch.draw(lm::FontProvider::instance().get("roboto80"), "Bind Keys",
-                    {SCREEN_WIDTH / 2 - 200.f / 2, SCREEN_HEIGHT / 2 - 300.f / 2, 0.f}, {1.f, 0.f, 1.f, _keyAlpha});
-    _keyBatch.send();
-
-    _resolutionBatch.flush();
-    _resolutionBatch.draw(lm::FontProvider::instance().get("roboto80"), "Resolution",
-                    {SCREEN_WIDTH / 2 - 200.f / 2, SCREEN_HEIGHT / 2 - 300.f / 2, 0.f}, {1.f, 0.f, 1.f, _resoAlpha});
-    _resolutionBatch.send();
-
-    _res1Batch.flush();
-    _res1Batch.draw(lm::FontProvider::instance().get("roboto80"), "1280x800",
-                {SCREEN_WIDTH / 2 - 1200.f / 2, SCREEN_HEIGHT / 2 - 100.f / 2, 0.f}, {1.f, 0.f, 1.f, _res1Alpha});
-    _res1Batch.send();
-
-    _res2Batch.flush();
-    _res2Batch.draw(lm::FontProvider::instance().get("roboto80"), "1920x1080",
-                {SCREEN_WIDTH / 2 - 260.f / 2, SCREEN_HEIGHT / 2 - 100.f / 2, 0.f}, {1.f, 0.f, 1.f, _res2Alpha});
-    _res2Batch.send();
-
-    _res3Batch.flush();
-    _res3Batch.draw(lm::FontProvider::instance().get("roboto80"), "2560x1440",
-                {SCREEN_WIDTH / 2 + 800.f / 2, SCREEN_HEIGHT / 2 - 100.f / 2, 0.f}, {1.f, 0.f, 1.f, _res3Alpha});
-    _res3Batch.send();
-
-    _fullscreenBatch.flush();
-    _fullscreenBatch.draw(lm::FontProvider::instance().get("roboto80"), "Fullscreen",
-                    {SCREEN_WIDTH / 2 - 220.f / 2, SCREEN_HEIGHT / 2 + 100.f / 2, 0.f}, {1.0, fsGreen, fsBlue, _fullscreenAlpha});
-    _fullscreenBatch.send();
-
-    if (_switchRes)
-    {
-        switch (_resCursor)
-        {
-            case 0:
-                switchRes({1280, 800});
-                break;
-            case 1:
-                switchRes({1920, 1080});
-                break;
-            case 2:
-                switchRes({2560, 1440});
-                break;
-            case 3:
-                _fullscreen = !_fullscreen;
-                Settings::instance().set<SettingsEntry::GraphFullScreen>(_fullscreen);
-                break;
-            default:
-                break;
-        }
-        _switchRes = false;
-    }
-
 
 }
 
@@ -179,25 +65,17 @@ SettingsMenu::handleEvent(const lm::Event& event)
             switch (event.key)
             {
                 case lm::Key::Escape:
+                    _resCursor = 0;
                     _selectReso = false;
                     break;
                 case lm::Key::Return:
-                    _switchRes = true;
-                    _selectReso = (_resCursor == 3) ? true : false;
-                    break;
-                case lm::Key::Right:
-                    if (_resCursor != 3)
-                        _resCursor = (_resCursor + 1) % 3;
-                    break;
-                case lm::Key::Left:
-                    if (_resCursor != 3)
-                        _resCursor = (_resCursor == 0) ? 2 : _resCursor - 1;
+                    switchRes();
                     break;
                 case lm::Key::Down:
-                    _resCursor = 3;
+                    _resCursor = (_resCursor + 1) % 4;
                     break;
                 case lm::Key::Up:
-                    _resCursor = 1;
+                    _resCursor = (_resCursor == 0) ? 3 : --_resCursor;
                     break;
                 default:
                     break;
@@ -210,32 +88,65 @@ void
 SettingsMenu::render()
 {
     auto& shader = lm::ShaderProvider::instance().get("basic2d");
+    auto& font = lm::FontProvider::instance().get("roboto80");
+
     shader.use();
     _proj.view = lm::Matrix4f::identity();
     lm::uniform(shader, "model", _proj.model);
     lm::uniform(shader, "view", _proj.view);
     lm::uniform(shader, "projection", _proj.projection);
+ 
+    _batch.begin();
+    lm::Vector4f select = {0.2f, 0.6f, 0.2f, 1.0f};
+    lm::Vector4f none = {1.0f, 1.0f, 1.0f, 1.0f};
+    if (_selectReso)
+    {   
+        lm::Vector4f color = (_resCursor == 0) ? select : none;
+        _batch.draw(font, "1280x800", {1000.f, 3.f * SCREEN_HEIGHT / 4.f, 0.f}, color);
+        color = (_resCursor == 1) ? select : none;
+        _batch.draw(font, "1920x1080", {1000.f, 2.75f * SCREEN_HEIGHT / 4.f, 0.f}, color);
+        color = (_resCursor == 2) ? select : none;
+        _batch.draw(font, "2560x1440", {1000.f, 2.5f * SCREEN_HEIGHT / 4.f, 0.f}, color);
+        color = (_resCursor == 3) ? select : none;
+        _batch.draw(font, "Fullscreen", {1000.f, 2.25f * SCREEN_HEIGHT / 4.f, 0.f}, color);
+    }
+    lm::Vector4f color = (_cursor == 0) ? select : none;
+    _batch.draw(font, "Resume", {500.f, 3 * SCREEN_HEIGHT / 4.f, 0.f}, color);
+    color = (_cursor == 1) ? select : none;
+    _batch.draw(font, "Bind Keys", {500.f, 2.5f * SCREEN_HEIGHT / 4.f, 0.f}, color);
+    color = (_cursor == 2) ? select : none;
+    _batch.draw(font, "Resolution", {500.f, 2.f * SCREEN_HEIGHT / 4.f, 0.f}, color);
+    _batch.end();
+}
 
-    _resumeBatch.render();
-    _keyBatch.render();
-    _resolutionBatch.render();
-    _res1Batch.render();
-    _res2Batch.render();
-    _res3Batch.render();
-    _fullscreenBatch.render();
+void
+SettingsMenu::switchRes()
+{
+    switch (_resCursor)
+    {
+        case 0:
+            lm::Core::instance().window().resize(1280, 800);
+            break;
+        case 1:
+            lm::Core::instance().window().resize(1920, 1080);
+            break;
+        case 2:
+            lm::Core::instance().window().resize(2560, 1440);
+            break;
+        case 3:
+            _fullscreen = !_fullscreen;
+            Settings::instance().set<SettingsEntry::GraphFullScreen>(_fullscreen);
+            break;
+        default:
+            break;
+    }
+    // Settings::instance().set<SettingsEntry::GraphResolution>(res);
 }
 
 void
 SettingsMenu::unload()
 {
     Settings::instance().store();
-}
-
-void
-SettingsMenu::switchRes(lm::Vector2i res)
-{
-    lm::Core::instance().window().resize(res.x, res.y);
-    Settings::instance().set<SettingsEntry::GraphResolution>(res);
 }
 
 SettingsMenu::~SettingsMenu()

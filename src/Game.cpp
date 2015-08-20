@@ -4,10 +4,22 @@
 #include "Screen.hpp"
 #include "Game.hpp"
 #include "GameOver.hpp"
+#include "SettingsMenu.hpp"
 
 using namespace lm;
 
 bool debugMode = false;
+
+// KLUDGE
+const char* musics[] = {
+        "banque1",
+        "flying_castle_survivors",
+        "holy_factory_entree",
+        "ruins_of_the_old_town_survivor",
+        "underwater_access_2",
+        "wildpark_dinonaurs"
+};
+int randomMusic = rand() % 6;
 
 static void
 switchArmor(const char* name, GameObject*& yseult)
@@ -46,19 +58,6 @@ Game::load()
     _pipeline.setWindow(lm::Core::instance().window());
     //_pipeline.append(lm::ShaderProvider::instance().get("light"));
     _pipeline.append(lm::ShaderProvider::instance().get("border"));
-
-    // KLUDGE
-
-    static const char* musics[] = {
-        "banque1",
-        "flying_castle_survivors",
-        "holy_factory_entree",
-        "ruins_of_the_old_town_survivor",
-        "underwater_access_2",
-        "wildpark_dinonaurs"
-    };
-
-    int randomMusic = rand() % 6;
 
     lm::MusicProvider::instance().get(musics[randomMusic]).play();
 }
@@ -140,7 +139,7 @@ Game::handleEvent(const Event& event)
         switch (event.key)
         {
             case lm::Key::Escape:
-                lm::Core::instance().stop();
+                lm::Core::instance().pop();
                 break;
             case lm::Key::Num1:
                 switchArmor("yseult_light", _yseult);
@@ -154,6 +153,9 @@ Game::handleEvent(const Event& event)
             case lm::Key::Num4:
                 switchArmor("yseult_god", _yseult);
                 break;
+            case lm::Key::P:
+                lm::Core::instance().push<SettingsMenu>();
+                break;
             default:
                 break;
         }
@@ -164,6 +166,7 @@ Game::handleEvent(const Event& event)
 void
 Game::unload()
 {
+    lm::MusicProvider::instance().get(musics[randomMusic]).stop();
     lm::GameObjectSet::instance().clear();
     _pipeline.clear();
 }

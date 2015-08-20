@@ -105,10 +105,10 @@ MainMenu::action()
     switch (_cursor)
     {
         case 0:
-            lm::Core::instance().transition<Game>();
+            lm::Core::instance().push<Game>();
             break;
         case 1:
-            lm::Core::instance().transition<SettingsMenu>();
+            lm::Core::instance().push<SettingsMenu>();
             break;
         case 2:
             lm::Core::instance().stop();
