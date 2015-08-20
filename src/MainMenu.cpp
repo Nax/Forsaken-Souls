@@ -2,6 +2,7 @@
 #include "Game.hpp"
 #include "SettingsMenu.hpp"
 #include "Screen.hpp"
+#include "Language.hpp"
 
 #define MAX_CURSOR 3
 
@@ -69,9 +70,9 @@ MainMenu::render()
     lm::uniform(shader, "view", _proj.view);
     lm::uniform(shader, "projection", _proj.projection);
     _batch.begin();
-    _batch.draw(font, "New Game", {500.f, 3 * SCREEN_HEIGHT / 4.f, 0.f});
-    _batch.draw(font, "Settings", {500.f, 2 * SCREEN_HEIGHT / 4.f, 0.f});
-    _batch.draw(font, "Quit", {500.f, SCREEN_HEIGHT / 4.f, 0.f});
+    _batch.draw(font, tr("new_game"), {500.f, 3 * SCREEN_HEIGHT / 4.f, 0.f});
+    _batch.draw(font, tr("settings"), {500.f, 2 * SCREEN_HEIGHT / 4.f, 0.f});
+    _batch.draw(font, tr("quit"), {500.f, SCREEN_HEIGHT / 4.f, 0.f});
     _batch.draw(cursor, 0, {300.f, (3 - _cursor) * SCREEN_HEIGHT / 4.f, 0.f}, {1.0f, 1.0f}, {1, 1, 1, 1}, {true, false});
     _batch.end();
 }

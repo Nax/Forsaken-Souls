@@ -1,0 +1,12 @@
+{"new_game", "New Game"},
+{"settings", "Settings"},
+{"quit", "Quit"},
+{"resume", "Resume"},
+{"language", "Language"},
+{"resolution", "Resolution"},
+{"fullscreen", "Fullscreen"},
+{"apply", "Apply"},
+{"english", "English"},
+{"french", "French"},
+{"yes", "Yes"},
+{"no", "No"}

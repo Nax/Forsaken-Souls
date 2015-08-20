@@ -1,0 +1,12 @@
+{"new_game", "Nouvelle Partie"},
+{"settings", "Parametres"},
+{"quit", "Quitter"},
+{"resume", "Retour"},
+{"language", "Langue"},
+{"resolution", "Resolution"},
+{"fullscreen", "Plein Ecran"},
+{"apply", "Valider"},
+{"english", "Anglais"},
+{"french", "Francais"},
+{"yes", "Oui"},
+{"no", "Non"}

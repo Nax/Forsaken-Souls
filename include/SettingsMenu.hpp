@@ -2,6 +2,7 @@
 #define SETTINGS_MENU_HPP
 
 #include <Lums>
+#include "Language.hpp"
 
 class SettingsMenu : public lm::GameState
 {
@@ -25,6 +26,7 @@ private:
 	int						_cursor;
 	int						_resCursor;
 	bool					_fullscreen;
+    Language                _lang;
 
 };
 
