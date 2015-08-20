@@ -31,10 +31,15 @@ SettingsMenu::load()
         {1920, 1440},
         {2560, 1600}
     };
-    std::remove_if(_resolutions.begin(), _resolutions.end(), [&win](lm::Vector2i res)
+    _resolutions.erase(std::remove_if(_resolutions.begin(), _resolutions.end(), [&win](lm::Vector2i res)
     {
         return (res.x > win.maxSize().x || res.y > win.maxSize().y);
-    });
+    }), _resolutions.end());
+
+    auto it = std::find(_resolutions.begin(), _resolutions.end(), win.size());
+    if (it != _resolutions.end())
+        _resCursor = it - _resolutions.begin();
+    _fullscreen = win.fullscreen();
 
     // {
     //     lm::Vector2i    savedRes;
@@ -62,10 +67,10 @@ SettingsMenu::handleEvent(const lm::Event& event)
                 remove();
                 break;
             case lm::Key::Down:
-                _cursor = (_cursor + 1) % 4;
+                _cursor = (_cursor + 1) % 5;
                 break;
             case lm::Key::Up:
-                _cursor = (_cursor == 0) ? 3 : _cursor - 1;
+                _cursor = (_cursor == 0) ? 4 : _cursor - 1;
                 break;
             case lm::Key::Left:
                 if (_cursor == 2)
@@ -81,7 +86,9 @@ SettingsMenu::handleEvent(const lm::Event& event)
                 else if (_cursor == 1)
                     lm::Core::instance().push<KeyBinding>();
                 else if (_cursor == 3)
-                    switchRes();
+                    _fullscreen = !_fullscreen;
+                else if (_cursor == 4)
+                    apply();
                 break;
             default:
                 break;
@@ -114,15 +121,18 @@ SettingsMenu::render()
     snprintf(buffer, sizeof(buffer), "%dx%d", _resolutions[_resCursor].x, _resolutions[_resCursor].y);
     _batch.draw(font, buffer, {1000.f, 2.f * SCREEN_HEIGHT / 4.f, 0.f}, color);
     color = (_cursor == 3) ? select : none;
-    _batch.draw(font, "Apply", {500.f, 1.5f * SCREEN_HEIGHT / 4.f, 0.f}, color);
+    _batch.draw(font, "Fullscreen", {500.f, 1.5f * SCREEN_HEIGHT / 4.f, 0.f}, color);
+    _batch.draw(font, _fullscreen ? "On" : "Off", {1000.f, 1.5f * SCREEN_HEIGHT / 4.f, 0.f}, color);
+    color = (_cursor == 4) ? select : none;
+    _batch.draw(font, "Apply", {500.f, 1.f * SCREEN_HEIGHT / 4.f, 0.f}, color);
     _batch.end();
 }
 
 void
-SettingsMenu::switchRes()
+SettingsMenu::apply()
 {
     lm::Vector2i res = _resolutions[_resCursor];
-    lm::Core::instance().window().resize(res.x, res.y);
+    lm::Core::instance().window().resize(res.x, res.y, _fullscreen);
     float scale = float(res.x) / SCREEN_WIDTH;
     lm::setGlobalScale(scale);
     // Settings::instance().set<SettingsEntry::GraphResolution>(res);

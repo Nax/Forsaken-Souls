@@ -16,7 +16,7 @@ public:
 
 private:
 
-	void					switchRes();
+	void					apply();
 
 	lm::Projection          	_proj;
 	lm::SpriteBatch         	_batch;
