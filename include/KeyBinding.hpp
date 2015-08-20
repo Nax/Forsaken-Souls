@@ -25,31 +25,7 @@ public:
 
 private:
     lm::Projection          _proj;
-
-    lm::SpriteBatch         _leftBatch;
-    lm::SpriteBatch         _rightBatch;
-    lm::SpriteBatch         _jumpBatch;
-    lm::SpriteBatch         _crouchBatch;
-    lm::SpriteBatch         _attackBatch;
-    lm::SpriteBatch         _keyLeftBatch;
-    lm::SpriteBatch         _keyRightBatch;
-    lm::SpriteBatch         _keyJumpBatch;
-    lm::SpriteBatch         _keyCrouchBatch;
-    lm::SpriteBatch         _keyAttackBatch;
-    lm::SpriteBatch         _backBatch;
-
-
-    float                   _leftAlpha;
-    float                   _rightAlpha;
-    float                   _jumpAlpha;
-    float                   _crouchAlpha;
-    float                   _attackAlpha;
-    float                   _keyLeftAlpha;
-    float                   _keyRightAlpha;
-    float                   _keyJumpAlpha;
-    float                   _keyCrouchAlpha;
-    float                   _keyAttackAlpha;
-    float                   _backAlpha;
+    lm::SpriteBatch         _batch;
 
     int                     _cursor;
     bool                    _switch;

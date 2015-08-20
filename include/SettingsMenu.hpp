@@ -18,13 +18,14 @@ private:
 
 	void					switchRes();
 
-	lm::Projection          _proj;
-	lm::SpriteBatch         _batch;
+	lm::Projection          	_proj;
+	lm::SpriteBatch         	_batch;
+	std::vector<lm::Vector2i>	_resolutions;
 
 	int						_cursor;
 	int						_resCursor;
-	bool					_selectReso;
 	bool					_fullscreen;
+
 };
 
 #endif
